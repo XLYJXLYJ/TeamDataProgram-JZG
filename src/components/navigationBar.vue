@@ -35,7 +35,7 @@ export default {
         //标题文字
         title: {
             required: false,
-            default: "维保助手"
+            default: "建筑业优质班组数据库"
         },
         // 是否显示后退按钮
         backVisible: {
@@ -167,7 +167,7 @@ export default {
             }
             }
             .bar-title {
-                width: 148rpx;
+                width: 420rpx;
                 height: 52rpx;
                 font-size: 37rpx;
                 font-family: 'PingFangSC-Medium';

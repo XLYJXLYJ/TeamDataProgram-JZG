@@ -4,24 +4,9 @@
             <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
         </section>
         <section class="img-contain">
-            <swiper
-                :indicator-dots="true"
-                autoplay
-                :interval="3000"
-                :duration="1000"
-                circular
-                indicator-color="rgba(255,255,255,.5)"
-                indicator-active-color="#ffffff"
-            >
-                <block v-for="item in imgUrls" :key="item.id">
-                    <swiper-item>
-                        <image :src="item.url" class="slide-image" />
-                    </swiper-item>
-                </block>
-            </swiper>
+            <swiper1></swiper1>
         </section>
         <section class="maintenance">
-            <p class="record">维保记录</p>
             <card></card>
         </section>
         <section class="add">
@@ -33,6 +18,7 @@
 <script>
 import navigationBar from "@/components/navigationBar.vue";
 import bottomNavigationBar from "@/components/bottomNavigationBar.vue";
+import swiper1 from "@/components/swipe1.vue";
 import card from "@/components/card.vue";
 import add from "@/components/add.vue";
 import fly from "@/services/WxApi";
@@ -41,7 +27,8 @@ export default {
         bottomNavigationBar,
         navigationBar,
         card,
-        add
+        add,
+        swiper1
     },
     data() {
         return {
@@ -92,22 +79,6 @@ export default {
         margin: 0 auto;
         border-radius: 8rpx;
         margin-top: 40rpx;
-        image {
-            width: 670rpx;
-            height: 290rpx;
-            border-radius: 8rpx;
-        }
-    }
-    .maintenance{
-        .record{
-            width: 200rpx;
-            height: 44rpx;
-            font-size: 34rpx;
-            color: black;
-            font-family: 'PingFangSC-Medium';
-            font-weight: 550;
-            padding: 64rpx 0 24rpx 40rpx;
-        }
     }
 }
 </style>
