@@ -10,7 +10,7 @@
             </div>
         </div>
         <ul class="card-ul">
-            <li class="card-li">
+            <li class="card-li" @click="goIntro">
                 <div class="left">
                     <div class="img">
                         <img src="/static/images/mask.png" alt="">
@@ -278,6 +278,11 @@ export default {
         },
         onCancel(e) {
             console.log(e);
+        },
+        goIntro(){
+            wx.redirectTo({
+                url: '../introdution/main'
+            })
         }
     },
     props: ["text"]

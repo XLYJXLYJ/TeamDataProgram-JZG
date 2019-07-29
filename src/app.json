@@ -1,8 +1,11 @@
 {
   "pages": [
+    "pages/achievement/main",
+    "pages/introdution/main",
     "pages/index/main",
     "pages/logs/main",
     "pages/counter/main"
+
   ],
   "window": {
     "backgroundTextStyle": "light",

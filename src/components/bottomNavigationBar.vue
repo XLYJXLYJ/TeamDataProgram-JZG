@@ -27,8 +27,9 @@ export default {
                 {
                     selectedIconPath: "/static/tabs/home-active.png",
                     iconPath: "/static/tabs/home.png",
-                    pagePath: "../index/main",
-                    text: "维保记录"
+                    // pagePath: "../index/main",
+                     pagePath: "../introdution/main",
+                    text: "维保"
                 },
                 {
                     selectedIconPath: "/static/tabs/orders-active.png",
