@@ -1,0 +1,177 @@
+<template>
+    <div class="register">
+        <goBackNav title="申请加入共建共享计划"></goBackNav>
+        <div v-if="isAlert">
+            <selfAlert
+                v-bind:changeModel="ischangeModel"
+                v-bind:isModel="ifMode"
+                v-bind:val="0"
+                @func="controlAlert"
+            ></selfAlert>
+        </div>
+        <div class="contain">
+            <form>
+                <!-- 第一个表单 -->
+                <div class="get-block">
+                    <p class="title">手机号码</p>
+                    <input type="text" v-model="phone" placeholder="请输入您的手机号" autocomplete="off" />
+                </div>
+
+                <div class="get-block">
+                    <p class="title">验证码</p>
+                    <div class="get-code">
+                        <input
+                            type="text"
+                            v-model="phone_code"
+                            placeholder="请输入您的手机验证码"
+                            autocomplete="off"
+                        />
+                        <p @click="GetCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p>
+                    </div>
+                </div>
+
+                <div class="get-block">
+                    <p class="title">姓名</p>
+                    <input type="text" v-model="name" placeholder="请输入姓名" autocomplete="off" />
+                </div>
+
+                <div class="get-block">
+                    <p class="title">所在公司</p>
+                    <input type="text" v-model="company" placeholder="请输入现在的公司" autocomplete="off" />
+                </div>
+
+                <div class="get-block">
+                    <p class="title">职位</p>
+                    <input type="text" v-model="position" placeholder="请输入职位" autocomplete="off" />
+                </div>
+
+                <div class="img-block">
+                    <p
+                        class="title"
+                        style="margin-bottom:20rpx;"
+                    >在职证明（请提交三种资料之一：1.公司出具的证明函、2.工作证、3.名片）</p>
+                    <mp-uploader
+                        @upLoadSuccess="upLoadSuccess"
+                        @upLoadFail="upLoadFail"
+                        @uploadDelete="uploadDelete"
+                        :showTip="false"
+                        :count="1"
+                    ></mp-uploader>
+                </div>
+                <div>
+                    <button class="confirm">提交</button>
+                </div>
+                <p class="title">
+                    建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
+                    <span style="color:rgb(252 184 19)">《建造工用户协议》</span>
+                </p>
+            </form>
+        </div>
+    </div>
+</template>
+
+<script>
+import goBackNav from "@/components/goBackNav.vue";
+import mpUploader from "mpvue-weui/src/uploader";
+export default {
+    components: {
+        goBackNav,
+        mpUploader
+    },
+
+    data() {
+        return {
+            phone: "",
+            phone_code: "",
+            name: "",
+            company: "",
+            position: "",
+            btnTxt: "点击获取验证码",
+            disabled: false,
+            time: 0, // 验证码时间初始化
+            btn: true
+        };
+    },
+    methods: {
+        GetCode() {
+            if (!this.phone) {
+                wx.showToast({
+                    title: "请输入手机号",
+                    icon: "none",
+                    duration: 2000
+                });
+            } else if (this.phone.length !== 11) {
+                wx.showToast({
+                    title: "请输入正确手机号格式",
+                    icon: "none",
+                    duration: 2000
+                });
+            } else {
+                if (this.time == 0) {
+                    this.time = 60;
+                    this.Timer();
+                    console.log("发送请求");
+                } else {
+                    console.log("不能重复发送验证码");
+                }
+            }
+        },
+        // 验证60s
+        Timer() {
+            if (this.time > 0) {
+                this.time--;
+                this.btnTxt = this.time + "s后重新发送";
+                setTimeout(this.Timer, 1000);
+                this.btn = false;
+            } else {
+                this.time = 0;
+                this.btnTxt = "获取验证码";
+                this.btn = true;
+            }
+        }
+    }
+};
+</script>
+<style lang="scss" scoped>
+.register {
+    width: 100%;
+    height: 100%;
+    .contain {
+        width: 670rpx;
+        margin: 0 auto;
+        .get-block {
+            border-bottom: 1px solid rgb(204, 204, 204);
+            margin-bottom: 48rpx;
+            .get-code {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+        .img-block {
+            width: 100%;
+            height: 330rpx;
+        }
+        .title {
+            font-size: 28rpx;
+            color: block;
+            font-family: "PingFangSC-Regular";
+            margin-bottom: 16rpx;
+        }
+        input {
+            padding-bottom: 16rpx;
+        }
+        .confirm {
+            background: #fcb813;
+            margin-bottom: 24rpx;
+            font-size: 34rpx;
+            font-family: "PingFangSC-Medium";
+        }
+    }
+}
+.getCode {
+    color: black;
+}
+.getCodeDisabled {
+    color: rgb(204, 204, 204);
+}
+</style>

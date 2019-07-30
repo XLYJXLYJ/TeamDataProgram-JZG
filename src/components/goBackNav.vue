@@ -19,7 +19,7 @@
                     </cover-view> -->
                 </cover-view>
                 <!-- 标题 -->
-                <!-- <cover-view class="bar-title">{{title}}</cover-view> -->
+                <cover-view class="bar-title">{{title}}</cover-view>
             </cover-view>
         </cover-view>
     </div>
@@ -35,7 +35,7 @@ export default {
         //标题文字
         title: {
             required: false,
-            default: "建筑业优质班组数据库"
+            default: "我推荐的班组"
         },
         // 是否显示后退按钮
         backVisible: {
