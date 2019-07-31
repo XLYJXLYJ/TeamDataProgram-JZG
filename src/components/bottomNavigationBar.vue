@@ -15,7 +15,7 @@
                 </li>
             </ul>
         </article>
-        <button class="clickButton">加</button>
+        <img class="buttom-img" src="/static/images/button.png">
     </section>
 </template>
 <script>
@@ -27,14 +27,13 @@ export default {
                 {
                     selectedIconPath: "/static/tabs/home-active.png",
                     iconPath: "/static/tabs/home.png",
-                    // pagePath: "../index/main",
-                     pagePath: "../introdution/main",
+                    pagePath: "../index/main",
                     text: "维保"
                 },
                 {
                     selectedIconPath: "/static/tabs/orders-active.png",
                     iconPath: "/static/tabs/orders.png",
-                    pagePath: "../logs/main",
+                    pagePath: "../my/main",
                     text: "我"
                 }
             ]
@@ -87,16 +86,17 @@ export default {
     }
     .item-text {
         color: #666;
-        font-size: 9px;
+        font-size: 20rpx;
         transition: 0.24s linear;
     }
     .item-text-active {
-        color: #f33f3f;
+        color: rgb(252, 184, 19);
     }
     .item-images {
-        width: 21px;
-        height: 21px;
-        margin: 4px auto;
+        width: 40rpx;
+        height: 40rpx;
+        margin: 20rpx auto;
+        margin-bottom: 5rpx;
         text-align: center;
         transition: 0.24s linear;
         & img {
@@ -104,7 +104,7 @@ export default {
         }
     }
 }
-.clickButton{
+.buttom-img{
     position: fixed;
     bottom: 52rpx;
     left: 327rpx;

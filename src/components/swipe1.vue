@@ -28,17 +28,13 @@ export default {
             imgUrls: [
                 {
                     id: 0,
-                    url: "https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640",
+                    url: "/static/images/swipe.png",
                     text1:'深圳市建筑业优质班组',
                     text2:'查看规则'
                 },
                 {
                     id: 1,
                     url: "https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640"
-                },
-                {
-                    id: 2,
-                    url: "https://images.unsplash.com/photo-1551446591-142875a901a1?w=640"
                 }
             ],
             selectNavIndex:0

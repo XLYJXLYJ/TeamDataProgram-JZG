@@ -12,7 +12,7 @@
         <div>
             <company @alertframe="conAlert"></company>
         </div>
-        <div class="tab">
+         <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
             <div class="gene">概况</div>
             <div class="achi active">业绩</div>
         </div>
@@ -29,35 +29,76 @@
                         <img @click="previewImage" src="/static/images/mask.png" />
                         <img @click="previewImage" src="/static/images/mask.png" />
                         <div class="corner">
-                            <div class="img-corner"></div>
+                            <div class="img-corner"><img src="/static/images/more.png"> </div>
                             <span class="number">18</span>
                         </div>
                     </div>
                     <ul class="two-ul">
                         <li>
-                            <div class="one"></div>
+                            <div class="one"><img src="/static/images/1.png"></div>
                             <div class="two">挖填方</div>
                         </li>
                         <li>
-                            <div class="one"></div>
+                            <div class="one"><img src="/static/images/2.png"></div>
                             <div class="two">2015 年 5 月开工</div>
                         </li>
                         <li>
-                            <div class="one"></div>
+                            <div class="one"><img src="/static/images/3.png"></div>
                             <div class="two">建筑工程鲁班奖</div>
                         </li>
                         <li>
-                            <div class="one"></div>
+                            <div class="one"><img src="/static/images/4.png"></div>
                             <div class="two">业主：深圳市兴河建设工程公司</div>
                         </li>
                         <li>
-                            <div class="one"></div>
+                            <div class="one"><img src="/static/images/5.png"></div>
                             <div
                                 class="two"
                             >工程量：70340 吨。工程亮点：混凝土二次浇筑部位钢筋绑扎质量好，没有出现任何变形现象，钢筋最大直径为 ф50。</div>
                         </li>
                     </ul>
                 </li>
+
+                <li class="one-li">
+                    <p class="machine">三一SY60C-10履带挖掘机</p>
+                    <div class="img-contain">
+                        <img @click="previewImage" src="/static/images/mask.png" />
+                        <img @click="previewImage" src="/static/images/mask.png" />
+                        <img @click="previewImage" src="/static/images/mask.png" />
+                        <img @click="previewImage" src="/static/images/mask.png" />
+                        <img @click="previewImage" src="/static/images/mask.png" />
+                        <img @click="previewImage" src="/static/images/mask.png" />
+                        <div class="corner">
+                            <div class="img-corner"><img src="/static/images/more.png"> </div>
+                            <span class="number">18</span>
+                        </div>
+                    </div>
+                    <ul class="two-ul">
+                        <li>
+                            <div class="one"><img src="/static/images/1.png"></div>
+                            <div class="two">挖填方</div>
+                        </li>
+                        <li>
+                            <div class="one"><img src="/static/images/2.png"></div>
+                            <div class="two">2015 年 5 月开工</div>
+                        </li>
+                        <li>
+                            <div class="one"><img src="/static/images/3.png"></div>
+                            <div class="two">建筑工程鲁班奖</div>
+                        </li>
+                        <li>
+                            <div class="one"><img src="/static/images/4.png"></div>
+                            <div class="two">业主：深圳市兴河建设工程公司</div>
+                        </li>
+                        <li>
+                            <div class="one"><img src="/static/images/5.png"></div>
+                            <div
+                                class="two"
+                            >工程量：70340 吨。工程亮点：混凝土二次浇筑部位钢筋绑扎质量好，没有出现任何变形现象，钢筋最大直径为 ф50。</div>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
     </div>
@@ -72,10 +113,44 @@ export default {
         return {
             ifMode: false,
             ischangeModel: false,
-            isAlert: false
+            isAlert: false,
+            isTop:false,
+            statusBarHeight: "", // 状态栏高度
+            titleBarHeight: "", // 标题栏高度
+            navBarHeight: "" // 导航栏总高度
         };
     },
+    onPageScroll: function(res) {
+        let This = this
+        console.log(res)
+        if (res.scrollTop > 600) {
+            This.isTop = true
+        } else {
+            This.isTop = false
+        }
+    },
+    beforeMount() {
+        const self = this;
+        wx.getSystemInfo({
+            success(system) {
+                console.log(`system:`, system);
+                self.statusBarHeight = system.statusBarHeight;
+                self.platform = system.platform;
+                self.model = system.model;
+                self.brand = system.brand;
+                self.system = system.system;
 
+                let platformReg = /ios/i;
+                if (platformReg.test(system.platform)) {
+                    self.titleBarHeight = 39;
+                } else {
+                    self.titleBarHeight = 43;
+                }
+                self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
+                 console.log( self.navBarHeight)
+            }
+        });
+    },
     methods: {
         previewImage() {
             wx.previewImage({
@@ -95,6 +170,7 @@ export default {
                 ] // 需要预览的图片http链接列表
             });
         },
+
         controlAlert(data) {
             this.isAlert = data;
         },
@@ -224,6 +300,37 @@ export default {
         border-bottom: 6rpx solid rgb(252, 184, 19);
     }
 }
+.fixedTab{
+    // display: flex;
+    // justify-content: space-around;
+    // margin-top: 96rpx;
+    position: fixed;
+    top: 160rpx;
+    width: 100%;
+    height: 100rpx;
+    padding-top: 40rpx;
+    background: #fff;
+    z-index: 999;
+    .gene {
+        width: 50%;
+        text-align: center;
+        padding-bottom: 24rpx;
+        font-family: "PingFang-SC-Semibold";
+        position: absolute;
+        left: 0rpx;
+    }
+    .achi {
+        width: 50%;
+        text-align: center;
+        padding-bottom: 24rpx;
+        font-family: "PingFang-SC-Semibold";
+        position: absolute;
+        right: 0rpx;
+    }
+    .active {
+        border-bottom: 6rpx solid rgb(252, 184, 19);
+    }
+}
 .equip {
     width: 670rpx;
     height: auto;
@@ -247,23 +354,24 @@ export default {
             .img-contain {
                 position: relative;
                 img {
-                    width: 222rpx;
+                    width: 220rpx;
                     height: 222rpx;
                     border-right: 3rpx solid #fff;
                 }
                 .corner {
                     position: absolute;
-                    right: 0rpx;
-                    bottom: 20rpx;
+                    right: 6rpx;
+                    bottom: 12rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
                     .img-corner {
-                        background-image: url("/static/images/back.png")
-                            no-repeat;
                         display: inline-block;
                         width: 36rpx;
                         height: 28rpx;
-                        background: red;
+                        img{
+                            width: 36rpx;
+                            height: 28rpx;
+                        }
                     }
                     .number {
                         font-size: 30rpx;
@@ -273,6 +381,7 @@ export default {
                 }
             }
             .two-ul {
+                margin-bottom: 40rpx;
                 li {
                     display: flex;
                     flex-direction: row;
@@ -280,9 +389,12 @@ export default {
                     .one {
                         width: 32rpx;
                         height: 32rpx;
-                        background: red;
                         display: inline-block;
                         margin-top: 6rpx;
+                        img{
+                            width: 32rpx;
+                            height: 32rpx;
+                        }
                     }
                     .two {
                         width: 618rpx;

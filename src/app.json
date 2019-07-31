@@ -1,19 +1,20 @@
 {
   "pages": [
+    "pages/introdution/main",
+    "pages/RecommendedTeams/main",
+    "pages/index/main",
+    "pages/my/main",
+    "pages/point/main",
     "pages/login/main",
     "pages/welcome/main",
     "pages/aboutUs/main",
-    "pages/registerClass/main",
-    "pages/RecommendedTeams/main",
     "pages/register/main",
     "pages/userAgreement/main",
     "pages/sharing/main",
-    "pages/introdution/main",
-
     "pages/achievement/main",
-    "pages/index/main",
     "pages/logs/main",
-    "pages/counter/main"
+    "pages/registerClass/main"
+
   ],
   "window": {
     "backgroundTextStyle": "light",

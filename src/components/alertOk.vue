@@ -5,10 +5,8 @@
         <div class="modalMask" v-show="isModel" @click="hidePanel"></div>
         <div class="modalDialog" v-show="changeModel">
             <div class="modalContent">
-                <img src="/static/images/share.png" />
-                <p class="contentTip">获取更多班组联系方式</p>
-                <p class="detail">您已查看105个班组的联系方式，您可推荐新班组获得更多的权限。每成功推荐1个新班组，可增加100次的班组查看权限</p>
-                <button>推荐班组</button>
+                <p class="contentTip">优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
+                <button>好的</button>
             </div>
         </div>
     </div>
@@ -59,10 +57,10 @@ export default {
 .modalDialog {
     box-sizing: border-box;
     width: 590rpx;
-    height: 776rpx;
+    height: 332rpx;
     overflow: hidden;
     position: fixed;
-    top: 30%;
+    top: 50%;
     left: 0;
     z-index: 9999;
     background: #fff;
@@ -85,25 +83,24 @@ export default {
         font-size: 34rpx;
         color: black;
         font-family: "PingFangSC-Regular";
-    }
-    .detail {
-        font-size: 30rpx;
-        color: rgb(88, 88, 88);
-        padding: 0 40rpx 0 40rpx;
-        font-family: "PingFangSC-Regular";
+        display: flex;
+        justify-content: center;
+        width: 514rpx;
+        padding-top: 42rpx;
     }
     button {
-        width: 510rpx;
+        width: 100%;
         height: 96rpx;
-        margin-top: 20rpx;
+        margin-top: 40rpx;
         font-size: 34rpx;
-        color: black;
+        color: rgb(252, 184, 19);
         font-family: "PingFangSC-Medium";
         font-weight: 550;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: rgb(252, 184, 19);
+        background: #fff;
+        border-bottom: none;
     }
 }
 </style>

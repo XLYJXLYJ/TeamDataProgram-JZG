@@ -43,7 +43,7 @@ export default {
     .rule{
         color:#FCB813;
         width: 670rpx;
-        margin-left: 20rpx;
+        margin-left: 40rpx;
         margin-top: 48rpx;
 
     }

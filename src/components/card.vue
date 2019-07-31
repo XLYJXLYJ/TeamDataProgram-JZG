@@ -1,14 +1,34 @@
 <template>
     <div class="card-contain">
-        <div :class="{'fixedSelectCity':isTop,'selectCity':!isTop}" ref="selectCityDom">
+        <div :class="{'fixedSelectCity':isTop,'selectCity':!isTop}" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
             <div class="city">深圳市<span class=""></span></div>
             <span style="color:rgb(204,204,204)">|</span>
             <div>
-                <div class="select" type="default" @click="showMulLinkageTwoPicker">{{ClassClassification}}</div>
-                    <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
-                <span></span>
+                <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+                    <div class="select picker" type="default">{{ClassClassification}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                </picker>
+                
+                    <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
+                    <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
+                <!-- <span><img style="width:20.2rpx;height:12rpx;" src="/static/images/mask.png"> </span> -->
             </div>
         </div>
+
+        <!-- <picker
+            mode="multiSelector"
+            @change="bindCityChange"
+            @columnchange="bindCityColumnChange"
+            :value="multiIndex"
+            :range="multiArray"
+            range-key="name"
+        >
+            <view class="picker">选择城市sdsdsd</view>
+        </picker> -->
+
+
+
+
+
         <ul class="card-ul">
             <li class="card-li" @click="goIntro">
                 <div class="left">
@@ -27,7 +47,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                    <img src="/static/images/right.png" alt="">
                 </div>
             </li>
             <li class="card-li">
@@ -47,7 +67,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                    <img src="/static/images/right.png" alt="">
                 </div>
             </li>
             <li class="card-li">
@@ -67,7 +87,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                   <img src="/static/images/right.png" alt="">
                 </div>
             </li>
             <li class="card-li">
@@ -87,7 +107,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                    <img src="/static/images/right.png" alt="">
                 </div>
             </li>
             <li class="card-li">
@@ -107,7 +127,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                    <img src="/static/images/right.png" alt="">
                 </div>
             </li>
             <li class="card-li">
@@ -127,7 +147,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                    <img src="/static/images/right.png" alt="">
                 </div>
             </li>
             <li class="card-li">
@@ -147,7 +167,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                    <img src="/static/images/right.png" alt="">
                 </div>
             </li>
             <li class="card-li">
@@ -167,7 +187,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                    <img src="/static/images/right.png" alt="">
                 </div>
             </li>
             <li class="card-li">
@@ -187,7 +207,7 @@
                     </div>
                 </div>
                 <div class="right">
-
+                    <img src="/static/images/right.png" alt="">
                 </div>
             </li>
         </ul>
@@ -206,55 +226,48 @@ export default {
         ClassClassification:'班组分类', // 班组分类
         mode: 'multiLinkageSelector',
         isTop:false,
-        pickerValueArray: [
+        statusBarHeight: "", // 状态栏高度
+        titleBarHeight: "", // 标题栏高度
+        navBarHeight: "", // 导航栏总高度
+        date:'', //不填写默认今天日期，填写后是默认日期
+       
+
+        multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物']],
+        objectMultiArray: [
+        [
             {
-            label: '飞机票',
-            value: 100,
-            children: [
-                {
-                label: '经济舱',
-                value: 101
-                },
-                {
-                label: '商务舱',
-                value: 102
-                }
-            ]
+            id: 0,
+            name: '无脊柱动物'
             },
             {
-            label: '火车票',
-            value: 200,
-            children: [
-                {
-                label: '卧铺',
-                value: 210
-                },
-                {
-                label: '坐票',
-                value: 202
-                },
-                {
-                label: '站票',
-                value: 203
-                }
-            ]
-            },
-            {
-            label: '汽车票',
-            value: 300,
-            children: [
-                {
-                label: '快班',
-                value: 301
-                },
-                {
-                label: '普通',
-                value: 302
-                }
-            ]
+            id: 1,
+            name: '脊柱动物'
             }
+        ], [
+            {
+            id: 0,
+            name: '扁性动物'
+            },
+            {
+            id: 1,
+            name: '线形动物'
+            },
+            {
+            id: 2,
+            name: '环节动物'
+            },
+            {
+            id: 3,
+            name: '软体动物'
+            },
+            {
+            id: 3,
+            name: '节肢动物'
+            }
+        ]
         ],
-        pickerValueDefault: [1, 0]
+        multiIndex: [0, 0]
+
         };
     },
     onPageScroll: function(res) {
@@ -265,24 +278,41 @@ export default {
             This.isTop = false
         }
     },
+    beforeMount() {
+        const self = this;
+        wx.getSystemInfo({
+            success(system) {
+                console.log(`system:`, system);
+                self.statusBarHeight = system.statusBarHeight;
+                self.platform = system.platform;
+                self.model = system.model;
+                self.brand = system.brand;
+                self.system = system.system;
+
+                let platformReg = /ios/i;
+                if (platformReg.test(system.platform)) {
+                    self.titleBarHeight = 39;
+                } else {
+                    self.titleBarHeight = 43;
+                }
+                console.log(self.statusBarHeight)
+                console.log(self.titleBarHeight)
+                self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
+                 console.log( self.navBarHeight)
+            }
+        });
+    },
     methods: {
-        showMulLinkageTwoPicker() {
-            this.$refs.mpPicker.show();
-        },
-        onConfirm(e) {
-            console.log(e);
-            this.ClassClassification = e.label
-        },
-        onChange(e) {
-            console.log(e);
-        },
-        onCancel(e) {
-            console.log(e);
-        },
         goIntro(){
             wx.redirectTo({
                 url: '../introdution/main'
             })
+        },
+        bindMultiPickerChange: function (e) {
+            console.log('picker发送选择改变，携带值为', e)
+        },
+        bindMultiPickerColumnChange: function (e) {
+            console.log('修改的列为', e, '，值为', e);
         }
     },
     props: ["text"]
@@ -299,8 +329,8 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        padding-top: 76rpx;
         height: 66rpx;
+        padding-top:60rpx;
         border-bottom: 1px solid rgb(204, 204, 204);
     }
     .fixedSelectCity{
@@ -312,7 +342,7 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
-        padding-top: 76rpx;
+        align-items: center;
         height: 66rpx;
         background: white;
     }
@@ -379,6 +409,10 @@ export default {
                 width: 16rpx;
                 height: 25rpx;
                 margin-top: 1.6rpx;
+                img{
+                    width: 16rpx;
+                    height: 25.2rpx;
+                }
             }
         }
     }

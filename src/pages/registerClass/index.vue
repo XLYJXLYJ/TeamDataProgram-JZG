@@ -25,26 +25,22 @@
 
                 <div class="get-block">
                     <p class="title">班组类别</p>
-                    <input
-                        type="text"
-                        v-model="ClassClassification"
-                        placeholder="请输入现在的公司"
-                        autocomplete="off"
-                        @focus="showMulLinkageTwoPicker"
-                    />
+
+
+                    <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+                        <input
+                            class="picker"
+                            type="text"
+                            v-model="ClassClassification"
+                            placeholder="请输入现在的公司"
+                            autocomplete="off"
+                            @focus="showMulLinkageTwoPicker"
+                        />
+                    </picker>
+
                 </div>
 
-                <mp-picker
-                    ref="mpPicker"
-                    :mode="mode"
-                    themeColor="rgb(252,184,19)"
-                    :deepLength="deepLength"
-                    :pickerValueDefault="pickerValueDefault"
-                    @onChange="onChange"
-                    @onConfirm="onConfirm"
-                    @onCancel="onCancel"
-                    :pickerValueArray="pickerValueArray"
-                ></mp-picker>
+
 
                 <!-- <div class="img-block">
                 <p class="title" style="margin-bottom:20rpx;">在职证明（请提交三种资料之一：1.公司出具的证明函、2.工作证、3.名片）</p>
@@ -83,71 +79,49 @@ export default {
             time: 0, // 验证码时间初始化
             btn: true,
             ClassClassification: "班组分类", // 班组分类
-            mode: "multiLinkageSelector",
-            pickerValueArray: [
+            multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物']],
+            objectMultiArray: [
+            [
                 {
-                    label: "飞机票",
-                    value: 100,
-                    children: [
-                        {
-                            label: "经济舱",
-                            value: 101
-                        },
-                        {
-                            label: "商务舱",
-                            value: 102
-                        }
-                    ]
+                id: 0,
+                name: '无脊柱动物'
                 },
                 {
-                    label: "火车票",
-                    value: 200,
-                    children: [
-                        {
-                            label: "卧铺",
-                            value: 210
-                        },
-                        {
-                            label: "坐票",
-                            value: 202
-                        },
-                        {
-                            label: "站票",
-                            value: 203
-                        }
-                    ]
-                },
-                {
-                    label: "汽车票",
-                    value: 300,
-                    children: [
-                        {
-                            label: "快班",
-                            value: 301
-                        },
-                        {
-                            label: "普通",
-                            value: 302
-                        }
-                    ]
+                id: 1,
+                name: '脊柱动物'
                 }
+            ], [
+                {
+                id: 0,
+                name: '扁性动物'
+                },
+                {
+                id: 1,
+                name: '线形动物'
+                },
+                {
+                id: 2,
+                name: '环节动物'
+                },
+                {
+                id: 3,
+                name: '软体动物'
+                },
+                {
+                id: 3,
+                name: '节肢动物'
+                }
+            ]
             ],
-            pickerValueDefault: [1, 0]
+            multiIndex: [0, 0]
         };
     },
     methods: {
-        showMulLinkageTwoPicker() {
-            this.$refs.mpPicker.show();
+        bindMultiPickerChange: function (e) {
+            console.log('picker发送选择改变，携带值为', e)
         },
-        onConfirm(e) {
-            console.log(e);
-            this.ClassClassification = e.label;
-        },
-        onChange(e) {
-            console.log(e);
-        },
-        onCancel(e) {
-            console.log(e);
+        bindMultiPickerColumnChange: function (e) {
+            console.log('修改的列为', e, '，值为', e);
         }
     }
 };
@@ -159,6 +133,7 @@ export default {
     .contain {
         width: 670rpx;
         margin: 0 auto;
+        margin-top: 40rpx;
         .get-block {
             border-bottom: 1px solid rgb(204, 204, 204);
             margin-bottom: 48rpx;

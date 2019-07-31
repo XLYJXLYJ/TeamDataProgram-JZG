@@ -115,6 +115,7 @@ export default {
         top: 0;
         width: 100%;
         z-index: 999;
+
         .nav-titlebar {
             // border: 1px solid green;
             width: 100%;
@@ -140,6 +141,7 @@ export default {
             background: #fff;
             border-radius: 27px;
             padding-right: 5rpx;
+
             .opt {
                 width: 50rpx;
                 height: 50rpx;
@@ -174,6 +176,7 @@ export default {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                padding: 10rpx 0 10rpx 0;
             }
         }
     }

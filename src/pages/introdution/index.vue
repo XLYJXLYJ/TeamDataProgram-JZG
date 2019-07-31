@@ -14,7 +14,7 @@
             <company @alertframe="conAlert"></company>
         </div>
 
-        <div class="tab">
+          <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
             <div class="gene active">概况</div>
             <div class="achi">业绩</div>
         </div>
@@ -41,18 +41,22 @@
             <p>贴室内墙砖</p>
             <ul>
                 <li>
+                    <img src='/static/images/point.png' alt="">
                     <span class="one">贴室内地砖</span>
                     <span class="two">30.00元/m2</span>
                 </li>
                 <li>
+                    <img src='/static/images/point.png' alt="">
                     <span class="one">电梯楼层内外地砖</span>
                     <span class="two">3000.00元/m2</span>
                 </li>
                 <li>
+                    <img src='/static/images/point.png' alt="">
                     <span class="one">小高层贴外墙砖</span>
                     <span class="two">300.00元/m2</span>
                 </li>
                 <li>
+                    <img src='/static/images/point.png' alt="">
                     <span class="one">酒店室内贴砖</span>
                     <span class="two">30000.00元/m2</span>
                 </li>
@@ -66,7 +70,7 @@
                     <div class="img-contain">
                         <img @click="previewImage" src="/static/images/mask.png" />
                         <div class="corner">
-                            <div class="img-corner"></div>
+                            <div class="img-corner"><img src="/static/images/more.png"> </div>
                             <span class="number">18</span>
                         </div>
                     </div>
@@ -85,10 +89,46 @@ export default {
         return {
             ifMode: false,
             ischangeModel: false,
-            isAlert: false
+            isAlert: false,
+            isTop:false,
+            statusBarHeight: "", // 状态栏高度
+            titleBarHeight: "", // 标题栏高度
+            navBarHeight: "", // 导航栏总高度
         };
     },
+    onPageScroll: function(res) {
+        let This = this
+        console.log('This.statusBarHeight'+This.navBarHeight)
+        if (res.scrollTop > 580) {
+            This.isTop = true
+        } else {
+            This.isTop = false
+        }
+    },
+    beforeMount() {
+        const self = this;
+        wx.getSystemInfo({
+            success(system) {
+                console.log(`system:`, system);
+                self.statusBarHeight = system.statusBarHeight;
+                self.platform = system.platform;
+                self.model = system.model;
+                self.brand = system.brand;
+                self.system = system.system;
 
+                let platformReg = /ios/i;
+                if (platformReg.test(system.platform)) {
+                    self.titleBarHeight = 39;
+                } else {
+                    self.titleBarHeight = 43;
+                }
+                console.log(self.statusBarHeight)
+                console.log(self.titleBarHeight)
+                self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
+                 console.log( self.navBarHeight)
+            }
+        });
+    },
     methods: {
         previewImage() {
             wx.previewImage({
@@ -150,6 +190,37 @@ export default {
         border-bottom: 6rpx solid rgb(252, 184, 19);
     }
 }
+.fixedTab{
+    // display: flex;
+    // justify-content: space-around;
+    // margin-top: 96rpx;
+    position: fixed;
+    // top: 160rpx;
+    width: 100%;
+    height: 100rpx;
+    // padding-top: 40rpx;
+    background: #fff;
+    z-index: 999;
+    .gene {
+        width: 50%;
+        text-align: center;
+        padding-bottom: 24rpx;
+        font-family: "PingFang-SC-Semibold";
+        position: absolute;
+        left: 0rpx;
+    }
+    .achi {
+        width: 50%;
+        text-align: center;
+        padding-bottom: 24rpx;
+        font-family: "PingFang-SC-Semibold";
+        position: absolute;
+        right: 0rpx;
+    }
+    .active {
+        border-bottom: 6rpx solid rgb(252, 184, 19);
+    }
+}
 .basic {
     width: 670rpx;
     height: auto;
@@ -192,12 +263,35 @@ export default {
     }
     ul {
         li {
-            display: flex;
-            justify-content: space-between;
+            // display: flex;
+            // justify-content: space-between;
             font-size: 34rpx;
             color: black;
             font-family: "PingFangSC-Regular";
             margin-bottom: 24rpx;
+            position: relative;
+            .one{
+                position: absolute;
+                left: 0rpx;
+                z-index: 100;
+                padding-right: 20rpx;
+                background: #fff;
+            }
+            .two{
+                position: absolute;
+                right: 0rpx;
+                z-index: 100;
+                padding-left: 20rpx;
+                background: #fff;
+            }
+            img{
+                width: 100%;
+                height: 8rpx;
+                position: relative;
+                top: -6rpx;
+                z-index: 0;
+
+            }
         }
     }
 }
@@ -235,17 +329,22 @@ export default {
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
                     .img-corner {
-                        background-image: url("/static/images/back.png")
-                            no-repeat;
                         display: inline-block;
                         width: 36rpx;
                         height: 28rpx;
-                        background: red;
+                        img{
+                            width: 36rpx;
+                            height: 28rpx;
+                        }
                     }
                     .number {
                         font-size: 30rpx;
                         color: white;
                         font-family: "PingFangSC-Regular";
+                        margin-bottom: 6rpx;
+                        margin-left: 6rpx;
+                        position: relative;
+                        top: -2rpx;
                     }
                 }
             }

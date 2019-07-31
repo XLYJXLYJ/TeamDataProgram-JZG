@@ -139,6 +139,7 @@ export default {
     .contain {
         width: 670rpx;
         margin: 0 auto;
+        margin-top: 40rpx;
         .get-block {
             border-bottom: 1px solid rgb(204, 204, 204);
             margin-bottom: 48rpx;

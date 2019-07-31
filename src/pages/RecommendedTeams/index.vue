@@ -10,25 +10,25 @@
                 <li>
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
-                    <span class="time">2019年7月13日推荐</span>
+                    <span class="time">    2019年7月13日推荐</span>
                     <p class="cause">原因：资料不全</p>
                 </li>
                 <li>
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
-                    <span class="time">2019年7月13日推荐</span>
+                    <span class="time">    2019年7月13日推荐</span>
                     <p class="cause">原因：资料不全</p>
                 </li>
                 <li>
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
-                    <span class="time">2019年7月13日推荐</span>
+                    <span class="time">    2019年7月13日推荐</span>
                     <p class="cause">原因：资料不全</p>
                 </li>
                 <li>
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
-                    <span class="time">2019年7月13日推荐</span>
+                    <span class="time">    2019年7月13日推荐</span>
                     <p class="cause">原因：资料不全</p>
                 </li>
             </ul>
