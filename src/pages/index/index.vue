@@ -50,12 +50,11 @@ export default {
         };
     },
     mounted() {
-        fly.post('http://test.guest.qb-tech.net/QbBotCmsService/acs/v1.0/chat/priority',{key: '6758fab29abe7d27e2a91d7b0d76c7dc'}).then(function (response) {
-            console.log(response);
-        })
+        // fly.post('',{key: '6758fab29abe7d27e2a91d7b0d76c7dc'}).then(function (response) {
+        //     console.log(response);
+        // })
     },
     methods:{
-
     }
 };
 </script>

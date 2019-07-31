@@ -282,7 +282,6 @@ export default {
         const self = this;
         wx.getSystemInfo({
             success(system) {
-                console.log(`system:`, system);
                 self.statusBarHeight = system.statusBarHeight;
                 self.platform = system.platform;
                 self.model = system.model;
@@ -295,10 +294,7 @@ export default {
                 } else {
                     self.titleBarHeight = 43;
                 }
-                console.log(self.statusBarHeight)
-                console.log(self.titleBarHeight)
                 self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
-                 console.log( self.navBarHeight)
             }
         });
     },

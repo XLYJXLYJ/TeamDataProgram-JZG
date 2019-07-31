@@ -44,7 +44,7 @@ export default {
                     url: "https://images.unsplash.com/photo-1551446591-142875a901a1?w=640"
                 }
             ],
-            selectNavIndex:0
+            selectNavIndex:1
         };
     },
     mounted() {

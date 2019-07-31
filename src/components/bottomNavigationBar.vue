@@ -15,7 +15,7 @@
                 </li>
             </ul>
         </article>
-        <img class="buttom-img" src="/static/images/button.png" @click="getUser">
+        <button open-type="getUserInfo" @getuserinfo="getUserInfo"> <img class="buttom-img" src="/static/images/button.png"></button>
     </section>
 </template>
 <script>
@@ -27,13 +27,13 @@ export default {
                 {
                     selectedIconPath: "/static/tabs/home-active.png",
                     iconPath: "/static/tabs/home.png",
-                    pagePath: "../index/main",
+                    pagePath: "/pages/index/main",
                     text: "维保"
                 },
                 {
                     selectedIconPath: "/static/tabs/orders-active.png",
                     iconPath: "/static/tabs/orders.png",
-                    pagePath: "../my/main",
+                    pagePath: "/pages/my/main",
                     text: "我"
                 }
             ]
@@ -44,11 +44,11 @@ export default {
             if (index === this.selectNavIndex) {
                 return false;
             }
-            console.log(index);
-            if (index == 0 && this.selectNavIndex == -1) {
-                this.$emit("fetchIndex",index);
-            }
+            // if (index == 0 && this.selectNavIndex == -1) {
+            // this.$emit("fetchIndex",index);
+            // }
             this.bindViewTap(pagePath);
+
         },
         bindNavigateTo(url) {
             wx.navigateTo({
@@ -63,20 +63,8 @@ export default {
                 url
             });
         },
-        getUser(){
-            wx.getSetting({
-                success(res) {
-                    if (!res.authSetting['scope.record']) {
-                    wx.authorize({
-                        scope: 'scope.record',
-                        success () {
-                        // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-                        wx.startRecord()
-                        }
-                    })
-                    }
-                }
-            })
+        getUserInfo (e) {
+            console.log(e)
         }
     }
 };

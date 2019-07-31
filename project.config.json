@@ -9,8 +9,8 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "touristappid",
-	"projectname": "project-x",
+	"appid": "wx9da7b7d41029b825",
+	"projectname": "TeamDataProgram",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

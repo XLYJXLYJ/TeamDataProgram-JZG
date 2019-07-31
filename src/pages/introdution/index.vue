@@ -98,7 +98,6 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        console.log('This.statusBarHeight'+This.navBarHeight)
         if (res.scrollTop > 580) {
             This.isTop = true
         } else {
@@ -109,23 +108,18 @@ export default {
         const self = this;
         wx.getSystemInfo({
             success(system) {
-                console.log(`system:`, system);
                 self.statusBarHeight = system.statusBarHeight;
                 self.platform = system.platform;
                 self.model = system.model;
                 self.brand = system.brand;
                 self.system = system.system;
-
                 let platformReg = /ios/i;
                 if (platformReg.test(system.platform)) {
                     self.titleBarHeight = 39;
                 } else {
                     self.titleBarHeight = 43;
                 }
-                console.log(self.statusBarHeight)
-                console.log(self.titleBarHeight)
                 self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
-                 console.log( self.navBarHeight)
             }
         });
     },
@@ -133,23 +127,22 @@ export default {
         previewImage() {
             wx.previewImage({
                 current:
-                    "http://test.guest.qb-tech.net/QbBotCmsService/img/aimi-big.png", // 当前显示图片的http链接
+                    "", // 当前显示图片的http链接
                 urls: [
-                    "http://test.guest.qb-tech.net/QbBotCmsService/img/aimi-big.png"
+                    ""
                 ] // 需要预览的图片http链接列表
             });
         },
         headPreviewImage() {
             wx.previewImage({
                 current:
-                    "http://test.guest.qb-tech.net/QbBotCmsService/img/aimi-big.png", // 当前显示图片的http链接
+                    "", // 当前显示图片的http链接
                 urls: [
-                    "http://test.guest.qb-tech.net/QbBotCmsService/img/aimi-big.png"
+                    ""
                 ] // 需要预览的图片http链接列表
             });
         },
         controlAlert(data) {
-            console.log(data);
             this.isAlert = data;
         },
         seePhone() {

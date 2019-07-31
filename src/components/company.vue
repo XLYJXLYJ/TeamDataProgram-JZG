@@ -25,14 +25,13 @@ export default {
         headPreviewImage() {
             wx.previewImage({
                 current:
-                    "http://test.guest.qb-tech.net/QbBotCmsService/img/aimi-big.png", // 当前显示图片的http链接
+                    "", // 当前显示图片的http链接
                 urls: [
-                    "http://test.guest.qb-tech.net/QbBotCmsService/img/aimi-big.png"
+                    ""
                 ] // 需要预览的图片http链接列表
             });
         },
         seePhone() {
-            console.log(0);
             this.$emit("alertframe", true);
         }
     }

@@ -17,7 +17,6 @@
 export default {
     props: ["changeModel", "isModel", "val"],
     mounted() {
-        console.log(this.changeModel);
     },
     methods: {
         //  弹框取消
