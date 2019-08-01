@@ -8,8 +8,8 @@
                     <div class="select picker" type="default">{{ClassClassification}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
                 </picker>
                 
-                    <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
-                    <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
+                <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
+                <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
                 <!-- <span><img style="width:20.2rpx;height:12rpx;" src="/static/images/mask.png"> </span> -->
             </div>
         </div>
@@ -217,6 +217,7 @@
 
 <script>
 import mpPicker from 'mpvue-weui/src/picker';
+import fly from "@/services/WxApi";
 export default {
     components: {
         mpPicker,
@@ -230,44 +231,11 @@ export default {
         titleBarHeight: "", // 标题栏高度
         navBarHeight: "", // 导航栏总高度
         date:'', //不填写默认今天日期，填写后是默认日期
-       
-
-        multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物']],
-        objectMultiArray: [
-        [
-            {
-            id: 0,
-            name: '无脊柱动物'
-            },
-            {
-            id: 1,
-            name: '脊柱动物'
-            }
-        ], [
-            {
-            id: 0,
-            name: '扁性动物'
-            },
-            {
-            id: 1,
-            name: '线形动物'
-            },
-            {
-            id: 2,
-            name: '环节动物'
-            },
-            {
-            id: 3,
-            name: '软体动物'
-            },
-            {
-            id: 3,
-            name: '节肢动物'
-            }
-        ]
-        ],
-        multiIndex: [0, 0]
-
+        //multiArray: [['工装/家装/房建/园建','土建混凝土结构','土石方/爆破','桩/支护/地基','市政配套','路桥隧道/地铁/铁路','水利/港航','机电工程','其他'], [{id:'100',name:"防水补漏"},{id:'2',name:"贴砖 (装修)"},{id:'3',name:"砌墙/抹灰"},{id:'4',name:"木工 (装修)"},{id:'5',name:"吊顶 (装修)"},{id:'6',name:"油漆/涂料"}, {id:'7',name:"不锈钢/玻璃"},{id:'8',name:"门窗/幕墙"},{id:'9',name:"木地板/窗帘"},{id:'10',name:"水电安装"},{id:'11',name:"安防弱电系统"},{id:'12',name:"暖通安装"},{id:'13',name:"电梯设备"},{id:'14',name:"消防"},{id:'15',name:"园林景观小品"},{id:'16',name:"古建筑"},{id:'17',name:"轻钢隔墙"}]],
+        multiArray:[],
+        multiIndex: [0,0],
+        Array:'', // 接受到的选择器总数据
+        selectIndex:'' // 选中的班组index位置
         };
     },
     onPageScroll: function(res) {
@@ -287,7 +255,6 @@ export default {
                 self.model = system.model;
                 self.brand = system.brand;
                 self.system = system.system;
-
                 let platformReg = /ios/i;
                 if (platformReg.test(system.platform)) {
                     self.titleBarHeight = 39;
@@ -298,6 +265,24 @@ export default {
             }
         });
     },
+    mounted() {
+        let This = this
+        let oneRowArray = []
+        let oneColumnArray = []
+        fly.get('/contractor/getContractorType').then(function (data) {
+            This.Array = data.response
+            console.log(This.Array)
+            data.response[0].childList.map(
+                (items,index) => oneColumnArray.push(items.name)
+            )
+            data.response.map(
+                (items,index) => oneRowArray.push(items.name)
+            )
+            This.multiArray[0] = oneRowArray
+            This.multiArray[1] = oneColumnArray
+            This.$set(This.multiArray,This.multiArray)
+        })
+    },
     methods: {
         goIntro(){
             wx.redirectTo({
@@ -306,9 +291,43 @@ export default {
         },
         bindMultiPickerChange: function (e) {
             console.log('picker发送选择改变，携带值为', e)
+            let This = this
+            This.selectIndex = e.mp.detail.value
+            let one = This.selectIndex[0]
+            let two = This.selectIndex[1]
+            let projectType = this.Array[one].childList[two].projectType
+            console.log(projectType)
+            this.getClass(projectType)
+        },
+        getClass(index){
+            let data = {
+                page:1,
+                pageSize:5,
+                projectType:index,
+                area:''
+            }
+            fly.post('/contractor/getHQContractorList',data).then(function (data) {
+                console.log(data)
+            })
         },
         bindMultiPickerColumnChange: function (e) {
-            console.log('修改的列为', e, '，值为', e);
+            let oneColumnArray = [];
+            let oneRowArray = [];
+            let This = this
+            This.Array.map(
+                (items,index) => oneRowArray.push(items.name)
+            )
+            if(e.mp.detail.column==0){
+                for(let i=0;i<20;i++){
+                    if(i==e.mp.detail.value){
+                        This.Array[i].childList.map((items,index) => oneColumnArray.push(items.name))
+                        This.multiArray[0] = oneRowArray
+                        This.multiArray[1] = oneColumnArray
+                        This.multiIndex = [i,0]
+                        This.$set(This.multiArray,This.multiArray)
+                    }
+                }
+            }
         }
     },
     props: ["text"]

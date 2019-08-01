@@ -19,6 +19,7 @@
     </section>
 </template>
 <script>
+import fly from "@/services/WxApi";
 export default {
     props: ["selectNavIndex", "needButton", "handButton", "btnText"],
     data() {
@@ -65,6 +66,18 @@ export default {
         },
         getUserInfo (e) {
             console.log(e)
+            let userInfo = JSON.parse(e.mp.detail.rawData)
+            console.log(userInfo)
+            let data = {
+                nickName:userInfo.nickName,
+                headImg:userInfo.avatarUrl,
+                gender:userInfo.gender,
+                areaName:[userInfo.country,userInfo.province,userInfo.city]
+            }
+            fly.post('/contractor/weChatAuth',data).then(function (res) {
+                console.log(res)
+                wx.setStorageSync('token', res.response.authorization)
+            })
         }
     }
 };

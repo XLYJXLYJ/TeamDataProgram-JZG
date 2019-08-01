@@ -1,10 +1,15 @@
 const Fly = require("flyio/dist/npm/wx");
 const fly = new Fly()
 
-fly.config.baseURL = '';
+fly.config.baseURL = 'https://app.test.jianzaogong.com/rest/applets';
 fly.config.timeout = 10000
 fly.interceptors.request.use((request) => {
   //给所有请求添加自定义header
+  let token = wx.getStorageSync('token') || '';
+	if (token) {
+    request.headers['Authorization'] = token;
+    console.log(token)
+	}
   request.headers["Content-Type"] = "application/x-www-form-urlencoded";
   return request;
 })

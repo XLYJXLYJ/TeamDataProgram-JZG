@@ -11,9 +11,9 @@
             >
                 <block v-for="item in imgUrls" :key="item.id">
                     <swiper-item>
-                        <image :src="item.url" class="slide-image" />
-                        <text class="text1">{{item.text1}}</text>
-                        <text class="text2">{{item.text2}}</text>
+                        <image :src="item.img" class="slide-image" />
+                        <!-- <text class="text1">{{item.text1}}</text>
+                        <text class="text2">{{item.text2}}</text> -->
                     </swiper-item>
                 </block>
             </swiper>
@@ -21,24 +21,19 @@
 </template>
 
 <script>
-
+import fly from "@/services/WxApi";
 export default {
     data() {
         return {
-            imgUrls: [
-                {
-                    id: 0,
-                    url: "/static/images/swipe.png",
-                    text1:'深圳市建筑业优质班组',
-                    text2:'查看规则'
-                },
-                {
-                    id: 1,
-                    url: "https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640"
-                }
-            ],
+            imgUrls:'',
             selectNavIndex:0
         };
+    },
+    mounted() {
+        let This = this
+        fly.post('/contractor/getBanner',{bannerType: 6}).then(function (data) {
+            This.imgUrls = data.response
+        })
     },
 };
 </script>

@@ -30,7 +30,7 @@
                 </div>
 
                 <div>
-                    <button class="confirm">提交</button>
+                    <button class="confirm" @click="login">提交</button>
                 </div>
                 <p class="title">
                     建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
@@ -44,6 +44,7 @@
 <script>
 import goBackNav from "@/components/goBackNav.vue";
 import mpUploader from "mpvue-weui/src/uploader";
+import fly from "@/services/WxApi";
 export default {
     components: {
         goBackNav,
@@ -70,24 +71,43 @@ export default {
                     title: "请输入手机号",
                     icon: "none",
                     duration: 2000
-                });
+                })
             } else if (this.phone.length !== 11) {
                 wx.showToast({
                     title: "请输入正确手机号格式",
                     icon: "none",
                     duration: 2000
-                });
+                })
             } else {
                 if (this.time == 0) {
                     this.time = 60;
                     this.Timer();
                     console.log("发送请求");
+                    this.send()
                 } else {
                     console.log("不能重复发送验证码");
                 }
             }
         },
-        // 验证60s
+        sent(){
+            let This = this
+            let data = {
+                mobile:This.phone
+            }
+            fly.post('/contractor/getVerificationCode',data).then(function (res) {
+                console.log(res)
+            })
+        },
+        login(){
+            let This = this
+            let data = {
+                mobile:This.phone,
+                vaCode:This.phone_code
+            }
+            fly.post('/contractor/login',data).then(function (res) {
+                console.log(res)
+            })
+        },
         Timer() {
             if (this.time > 0) {
                 this.time--;
@@ -101,7 +121,7 @@ export default {
             }
         }
     }
-};
+}
 </script>
 <style lang="scss" scoped>
 .login {
