@@ -1,19 +1,24 @@
 <template>
     <div class="card-contain">
         <div :class="{'fixedSelectCity':isTop,'selectCity':!isTop}" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
-            <div class="city">深圳市<span class=""></span></div>
+            <div>
+                <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
+                    <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
+                </picker> 
+            
+            </div>
+
+
             <span style="color:rgb(204,204,204)">|</span>
             <div>
                 <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
-                    <div class="select picker" type="default">{{ClassClassification}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
-                </picker>
-                
+                    <div class="select picker" type="default">{{family}}{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                </picker> 
                 <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
                 <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
                 <!-- <span><img style="width:20.2rpx;height:12rpx;" src="/static/images/mask.png"> </span> -->
             </div>
         </div>
-
         <!-- <picker
             mode="multiSelector"
             @change="bindCityChange"
@@ -24,11 +29,6 @@
         >
             <view class="picker">选择城市sdsdsd</view>
         </picker> -->
-
-
-
-
-
         <ul class="card-ul">
             <li class="card-li" @click="goIntro">
                 <div class="left">
@@ -224,18 +224,25 @@ export default {
     },
     data() {
         return {
-        ClassClassification:'班组分类', // 班组分类
-        mode: 'multiLinkageSelector',
-        isTop:false,
-        statusBarHeight: "", // 状态栏高度
-        titleBarHeight: "", // 标题栏高度
-        navBarHeight: "", // 导航栏总高度
-        date:'', //不填写默认今天日期，填写后是默认日期
-        //multiArray: [['工装/家装/房建/园建','土建混凝土结构','土石方/爆破','桩/支护/地基','市政配套','路桥隧道/地铁/铁路','水利/港航','机电工程','其他'], [{id:'100',name:"防水补漏"},{id:'2',name:"贴砖 (装修)"},{id:'3',name:"砌墙/抹灰"},{id:'4',name:"木工 (装修)"},{id:'5',name:"吊顶 (装修)"},{id:'6',name:"油漆/涂料"}, {id:'7',name:"不锈钢/玻璃"},{id:'8',name:"门窗/幕墙"},{id:'9',name:"木地板/窗帘"},{id:'10',name:"水电安装"},{id:'11',name:"安防弱电系统"},{id:'12',name:"暖通安装"},{id:'13',name:"电梯设备"},{id:'14',name:"消防"},{id:'15',name:"园林景观小品"},{id:'16',name:"古建筑"},{id:'17',name:"轻钢隔墙"}]],
-        multiArray:[],
-        multiIndex: [0,0],
-        Array:'', // 接受到的选择器总数据
-        selectIndex:'' // 选中的班组index位置
+            mode: 'multiLinkageSelector',
+            isTop:false,
+            statusBarHeight: "", // 状态栏高度
+            titleBarHeight: "", // 标题栏高度
+            navBarHeight: "", // 导航栏总高度
+            multiArray:[],
+            multiIndex: [0,0],
+            Array:'', // 接受到的选择器总数据
+            selectIndex:'', // 选中的班组index位置
+            family: "班组", // 班组分类
+            sort:'分类', // 班组分类
+            projectType:'', // 班组id
+
+            cityMultiArray:[],
+            cityMultiIndex: [0,0],
+            cityArray:'', // 接受到的选择器总数据
+            citySelectIndex:'', // 选中的班组index位置
+            city: "城市", // 班组分类
+            cityId:'' // 城市id
         };
     },
     onPageScroll: function(res) {
@@ -267,11 +274,27 @@ export default {
     },
     mounted() {
         let This = this
-        let oneRowArray = []
-        let oneColumnArray = []
+
+        fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
+            let oneRowArray = []
+            let oneColumnArray = []
+            console.log(data)
+            This.cityArray = data.response
+            data.response[0].childList.map(
+                (items,index) => oneColumnArray.push(items.name)
+            )
+            data.response.map(
+                (items,index) => oneRowArray.push(items.name)
+            )
+            This.cityMultiArray[0] = oneRowArray
+            This.cityMultiArray[1] = oneColumnArray
+            This.$set(This.cityMultiArray,This.cityMultiArray)
+        })
+
         fly.get('/contractor/getContractorType').then(function (data) {
+            let oneRowArray = []
+            let oneColumnArray = []
             This.Array = data.response
-            console.log(This.Array)
             data.response[0].childList.map(
                 (items,index) => oneColumnArray.push(items.name)
             )
@@ -295,19 +318,21 @@ export default {
             This.selectIndex = e.mp.detail.value
             let one = This.selectIndex[0]
             let two = This.selectIndex[1]
-            let projectType = this.Array[one].childList[two].projectType
-            console.log(projectType)
-            this.getClass(projectType)
+            This.projectType = this.Array[one].childList[two].projectType
+            This.family = this.Array[one].name
+            This.sort = this.Array[one].childList[two].name
+            this.getClass()
         },
-        getClass(index){
+        getClass(){
+            let This = this
             let data = {
                 page:1,
                 pageSize:5,
-                projectType:index,
-                area:''
+                projectType:This.projectType,
+                area:This.cityId || ''
             }
-            fly.post('/contractor/getHQContractorList',data).then(function (data) {
-                console.log(data)
+            fly.post('/contractor/getHQContractorList',data).then(function (res) {
+                console.log(res)
             })
         },
         bindMultiPickerColumnChange: function (e) {
@@ -318,7 +343,7 @@ export default {
                 (items,index) => oneRowArray.push(items.name)
             )
             if(e.mp.detail.column==0){
-                for(let i=0;i<20;i++){
+                for(let i=0;i<40;i++){
                     if(i==e.mp.detail.value){
                         This.Array[i].childList.map((items,index) => oneColumnArray.push(items.name))
                         This.multiArray[0] = oneRowArray
@@ -328,7 +353,50 @@ export default {
                     }
                 }
             }
+        },
+
+        cityMultiPickerChange: function (e) {
+            console.log('picker发送选择改变，携带值为', e)
+            let This = this
+            This.citySelectIndex = e.mp.detail.value
+            let one = This.citySelectIndex[0]
+            let two = This.citySelectIndex[1]
+            This.cityId = this.cityArray[one].childList[two].id
+            This.city = this.cityArray[one].childList[two].name
+            this.getCity()
+        },
+        getCity(){
+            let This = this
+            let data = {
+                page:1,
+                pageSize:5,
+                projectType:This.projectType || '',
+                area:This.cityId
+            }
+            fly.post('/contractor/getHQContractorList',data).then(function (data) {
+                console.log(data)
+            })
+        },
+        cityMultiPickerColumnChange: function (e) {
+            let oneColumnArray = [];
+            let oneRowArray = [];
+            let This = this
+            This.cityArray.map(
+                (items,index) => oneRowArray.push(items.name)
+            )
+            if(e.mp.detail.column==0){
+                for(let i=0;i<20;i++){
+                    if(i==e.mp.detail.value){
+                        This.cityArray[i].childList.map((items,index) => oneColumnArray.push(items.name))
+                        This.cityMultiArray[0] = oneRowArray
+                        This.cityMultiArray[1] = oneColumnArray
+                        This.cityMultiIndex = [i,0]
+                        This.$set(This.cityMultiArray,This.cityMultiArray)
+                    }
+                }
+            }
         }
+
     },
     props: ["text"]
 };

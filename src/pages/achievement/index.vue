@@ -108,6 +108,7 @@
 import goBackNav from "@/components/goBackNav.vue";
 import selfAlert from "@/components/alert.vue";
 import company from "@/components/company.vue";
+import fly from "@/services/WxApi";
 export default {
     data() {
         return {
@@ -146,6 +147,15 @@ export default {
                 self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
             }
         });
+    },
+    mounted() {
+        let This = this
+        let data = {
+            contractorId:10462
+        }
+        fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
+            console.log(res) 
+        })
     },
     methods: {
         previewImage() {

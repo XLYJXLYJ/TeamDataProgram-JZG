@@ -14,10 +14,12 @@
             <company @alertframe="conAlert"></company>
         </div>
 
-          <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
+        <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
             <div class="gene active">概况</div>
             <div class="achi">业绩</div>
         </div>
+
+
         <div class="basic">
             <div class="basic-sigle">
                 <span class="one">服务地区:</span>
@@ -84,6 +86,7 @@
 import goBackNav from "@/components/goBackNav.vue";
 import selfAlert from "@/components/alert.vue";
 import company from "@/components/company.vue";
+import fly from "@/services/WxApi";
 export default {
     data() {
         return {
@@ -122,6 +125,17 @@ export default {
                 self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
             }
         });
+    },
+    mounted() {
+        let This = this
+        let data = {
+            page:1,
+            pageSize:5,
+            contractorId:10462
+        }
+        fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
+            console.log(res) 
+        })
     },
     methods: {
         previewImage() {

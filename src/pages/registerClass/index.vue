@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <goBackNav title="申请加入共建共享计划"></goBackNav>
+        <goBackNav title="推荐班组"></goBackNav>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -27,7 +27,7 @@
                     <p class="title">班组类别</p>
 
 
-                    <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+                    <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                         <input
                             class="picker"
                             type="text"
@@ -36,7 +36,13 @@
                             autocomplete="off"
                             @focus="showMulLinkageTwoPicker"
                         />
-                    </picker>
+                    </picker> -->
+
+                <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+                    <div class="select picker" type="default"><p class="title">{{family}}{{sort}}</p></div>
+                </picker>
+
+
 
                 </div>
 
@@ -47,7 +53,7 @@
                 <mp-uploader @upLoadSuccess="upLoadSuccess" @upLoadFail="upLoadFail" @uploadDelete="uploadDelete" :showTip=false :count=1></mp-uploader>
                 </div>-->
                 <div>
-                    <button class="confirm">提交</button>
+                    <button class="confirm" @click="reClass">提交</button>
                 </div>
                 <p class="title">
                     成功推荐新班组，可获得更多权限与资源，详见
@@ -61,6 +67,7 @@
 <script>
 import goBackNav from "@/components/goBackNav.vue";
 import mpPicker from "mpvue-weui/src/picker";
+import fly from "@/services/WxApi";
 export default {
     components: {
         goBackNav,
@@ -69,59 +76,74 @@ export default {
 
     data() {
         return {
-            phone: "",
-            phone_code: "",
-            name: "",
-            company: "",
-            position: "",
-            btnTxt: "点击获取验证码",
-            disabled: false,
-            time: 0, // 验证码时间初始化
-            btn: true,
-            ClassClassification: "班组分类", // 班组分类
-            multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物']],
-            objectMultiArray: [
-            [
-                {
-                id: 0,
-                name: '无脊柱动物'
-                },
-                {
-                id: 1,
-                name: '脊柱动物'
-                }
-            ], [
-                {
-                id: 0,
-                name: '扁性动物'
-                },
-                {
-                id: 1,
-                name: '线形动物'
-                },
-                {
-                id: 2,
-                name: '环节动物'
-                },
-                {
-                id: 3,
-                name: '软体动物'
-                },
-                {
-                id: 3,
-                name: '节肢动物'
-                }
-            ]
-            ],
-            multiIndex: [0, 0]
+            phone: "", // 手机号
+            name: "", // 班组负责人名字
+            family: "班组", // 班组分类
+            sort:'分类', // 班组分类
+            multiArray:[], // 班组数据
+            multiIndex: [0,0], // 班组index
+            Array:'', // 接受到的选择器总数据
+            selectIndex:'', // 选中的班组位置；数组
+            projectType:'' // 选中的班组ID
         };
+    },
+    mounted() {
+        let This = this
+        let oneRowArray = []
+        let oneColumnArray = []
+        fly.get('/contractor/getContractorType').then(function (data) {
+            This.Array = data.response
+            console.log(This.Array)
+            data.response[0].childList.map(
+                (items,index) => oneColumnArray.push(items.name)
+            )
+            data.response.map(
+                (items,index) => oneRowArray.push(items.name)
+            )
+            This.multiArray[0] = oneRowArray
+            This.multiArray[1] = oneColumnArray
+            This.$set(This.multiArray,This.multiArray)
+        })
     },
     methods: {
         bindMultiPickerChange: function (e) {
-            console.log('picker发送选择改变，携带值为', e)
+            let This = this
+            This.selectIndex = e.mp.detail.value
+            let one = This.selectIndex[0]
+            let two = This.selectIndex[1]
+            This.projectType = this.Array[one].childList[two].projectType
+            This.family = this.Array[one].name
+            This.sort = this.Array[one].childList[two].name
+        },
+        reClass(index){
+            let This = this
+            let data = {
+                username:This.name,
+                mobile:This.phone,
+                projectType:This.projectType,
+            }
+            fly.post('/contractor/recommendContractor',data).then(function (data) {
+                console.log(data)
+            })
         },
         bindMultiPickerColumnChange: function (e) {
-            console.log('修改的列为', e, '，值为', e);
+            let oneColumnArray = [];
+            let oneRowArray = [];
+            let This = this
+            This.Array.map(
+                (items,index) => oneRowArray.push(items.name)
+            )
+            if(e.mp.detail.column==0){
+                for(let i=0;i<20;i++){
+                    if(i==e.mp.detail.value){
+                        This.Array[i].childList.map((items,index) => oneColumnArray.push(items.name))
+                        This.multiArray[0] = oneRowArray
+                        This.multiArray[1] = oneColumnArray
+                        This.multiIndex = [i,0]
+                        This.$set(This.multiArray,This.multiArray)
+                    }
+                }
+            }
         }
     }
 };

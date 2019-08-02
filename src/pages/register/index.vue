@@ -26,7 +26,7 @@
                             placeholder="请输入您的手机验证码"
                             autocomplete="off"
                         />
-                        <p @click="GetCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p>
+                        <p @click="GetClassCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p>
                     </div>
                 </div>
 
@@ -54,12 +54,14 @@
                         @upLoadSuccess="upLoadSuccess"
                         @upLoadFail="upLoadFail"
                         @uploadDelete="uploadDelete"
-                        :showTip="false"
-                        :count="1"
+                        ref="uploader"
+                        :showTip=false
+                        :maxLength=1
+                        :isMaxHiddenChoose=true
                     ></mp-uploader>
                 </div>
                 <div>
-                    <button class="confirm">提交</button>
+                    <button class="confirm" @click="applicationSharing">提交</button>
                 </div>
                 <p class="title">
                     建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
@@ -73,6 +75,7 @@
 <script>
 import goBackNav from "@/components/goBackNav.vue";
 import mpUploader from "mpvue-weui/src/uploader";
+import fly from "@/services/WxApi";
 export default {
     components: {
         goBackNav,
@@ -89,11 +92,12 @@ export default {
             btnTxt: "点击获取验证码",
             disabled: false,
             time: 0, // 验证码时间初始化
-            btn: true
+            btn: true,
+            imgMessage:[]
         };
     },
     methods: {
-        GetCode() {
+        GetClassCode() {
             if (!this.phone) {
                 wx.showToast({
                     title: "请输入手机号",
@@ -111,6 +115,7 @@ export default {
                     this.time = 60;
                     this.Timer();
                     console.log("发送请求");
+                    this.sendClass()
                 } else {
                     console.log("不能重复发送验证码");
                 }
@@ -128,6 +133,108 @@ export default {
                 this.btnTxt = "获取验证码";
                 this.btn = true;
             }
+        },
+        sendClass(){
+            let This = this
+            let data = {
+                mobile:This.phone
+            }
+            fly.post('/contractor/getVerificationCode',data).then(function (res) {
+                console.log(res)
+            })
+        },
+        upLoadSuccess(successRes){
+            let This = this
+            console.log(successRes)
+            wx.getFileSystemManager().readFile({
+                filePath: successRes.tempFilePaths[0], //选择图片返回的相对路径
+                encoding: 'base64', //编码格式
+                success:(res) =>{
+                    // let img = 'data:image/png;base64,' + res.data
+                    let img = res.data
+                    let data = {
+                        imgs:img
+                    }
+                    fly.post('/uploadImg',data).then(function (res) {
+                        console.log(res)
+                        This.imgMessage.push(res.response)
+                        console.log(This.imgMessage)    
+                    })
+                }
+            })
+        },
+        upLoadFail(errMsg){
+            console.log(errMsg)
+        },
+        uploadDelete(DeleteRes){
+            console.log(DeleteRes)
+            let This = this
+            let index = DeleteRes.index
+            This.imgMessage.splice(index,1)
+            console.log(This.imgMessage)          
+
+        },
+        applicationSharing(){
+            let This = this
+            if(!This.phone){
+                wx.showToast({
+                    title: "手机号不能为空",
+                    icon: "none",
+                    duration: 2000
+                });
+                return;
+            }
+            if(!This.phone_code){
+                wx.showToast({
+                    title: "验证码不能为空",
+                    icon: "none",
+                    duration: 2000
+                });
+                return;
+            }
+            if(!This.name){
+                wx.showToast({
+                    title: "姓名不能为空",
+                    icon: "none",
+                    duration: 2000
+                });
+                return;
+            }
+            if(!This.company){
+                wx.showToast({
+                    title: "公司名不能为空",
+                    icon: "none",
+                    duration: 2000
+                });
+                return;
+            }
+            if(!This.position){
+                wx.showToast({
+                    title: "职位不能为空",
+                    icon: "none",
+                    duration: 2000
+                });
+                return;
+            }
+            if(!This.imgMessage){
+                wx.showToast({
+                    title: "请上传在职证明",
+                    icon: "none",
+                    duration: 2000
+                });
+                return;
+            }
+            let data = {
+                mobile:This.phone,
+                vaCode:This.phone_code,
+                username:This.name,
+                companyName:This.company,
+                positionName:This.position,
+                imgs:This.imgMessage.join(",")
+            }
+            fly.post('/contractor/applyJoinSharingPlan',data).then(function (res) {
+                console.log(res)
+            })
         }
     }
 };

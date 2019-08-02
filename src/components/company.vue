@@ -16,11 +16,17 @@
             <p class="three">深圳市新丰建筑工程有限公司</p>
         </div>
         <div class="brief">成立于 1998 年，总部位于深圳市福田区，曾多次获得深圳市政府颁发的工程质量奖项，团队规模在 500 人以上，拥有专业的设备。欢迎来电洽谈业务。</div>
-        <button class="phone" @click="seePhone">查看联系方式</button>
+        <button class="phone" @click="seePhone">{{phone}}</button>
     </div>
 </template>
 <script>
+import fly from "@/services/WxApi";
 export default {
+    data(){
+        return{
+            phone:'查看联系方式'
+        }
+    },
     methods: {
         headPreviewImage() {
             wx.previewImage({
@@ -32,7 +38,15 @@ export default {
             });
         },
         seePhone() {
-            this.$emit("alertframe", true);
+            let This = this
+            This.$emit("alertframe", true);
+            let data = {
+                contractorId:10462
+            }
+            fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
+                console.log(res)
+                This.phone = res.response.mobile
+            })
         }
     }
 };

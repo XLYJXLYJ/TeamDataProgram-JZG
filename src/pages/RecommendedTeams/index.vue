@@ -39,10 +39,20 @@
 
 <script>
 import goBackNav from "@/components/goBackNav.vue";
-
+import fly from "@/services/WxApi";
 export default {
     components: {
         goBackNav
+    },
+    mounted() {
+        this.recommond()
+    },
+    methods: {
+        recommond(){
+            fly.post('/contractor/getMyRecommendContractor').then(function (res) {
+                console.log(res)
+            }) 
+        }
     }
 };
 </script>

@@ -13,10 +13,12 @@
         </div>
     </div>
 </template>
- <script>
+<script>
+import fly from "@/services/WxApi";
 export default {
     props: ["changeModel", "isModel", "val"],
     mounted() {
+
     },
     methods: {
         //  弹框取消

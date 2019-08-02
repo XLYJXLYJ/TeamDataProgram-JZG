@@ -1,22 +1,22 @@
 {
   "pages": [
-    "pages/login/main",
-    "pages/register/main",
-    "pages/index/main",
+    "pages/achievement/main",
     "pages/introdution/main",
+    "pages/index/main",
+    "pages/sharing/main",
+    "pages/registerClass/main",
     "pages/RecommendedTeams/main",
+    "pages/register/main",
+    "pages/editMy/main", 
+    "pages/login/main",
+  
     "pages/my/main",
     "pages/point/main",
-
     "pages/welcome/main",
     "pages/aboutUs/main",
- 
     "pages/userAgreement/main",
-    "pages/sharing/main",
-    "pages/achievement/main",
-    "pages/logs/main",
-    "pages/registerClass/main"
 
+    "pages/logs/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -5,35 +5,29 @@
             <ul class="one-ul">
                 <li class="one-li">
                     <p class="one">加入状态</p>
-                    <p class="two">审核中</p>
+                    <p class="two">{{status}}</p>
                 </li>
                 <li class="one-li">
                     <p class="one">手机号码</p>
-                    <p class="two">13610293812</p>
+                    <p class="two">{{phone}}</p>
                 </li>
                 <li class="one-li">
                     <p class="one">姓名</p>
-                    <p class="two">张晓波</p>
+                    <p class="two">{{name}}</p>
                 </li>
                 <li class="one-li">
                     <p class="one">所在公司</p>
-                    <p class="two">深圳市新丰建筑工程有限公司</p>
+                    <p class="two">{{company}}</p>
                 </li>
                 <li class="one-li">
                     <p class="one">职位</p>
-                    <p class="two">项目经理</p>
+                    <p class="two">{{position}}</p>
                 </li>
                 <li class="one-li">
                     <p class="one">在职证明</p>
                     <ul class="two-ul">
                         <li class="two-li">
-                            <img src="/static/images/mask.png" />
-                        </li>
-                        <li class="two-li">
-                            <img src="/static/images/mask.png" />
-                        </li>
-                        <li class="two-li">
-                            <img src="/static/images/mask.png" />
+                            <img :src="imgs" />
                         </li>
                     </ul>
                 </li>
@@ -48,7 +42,36 @@
 
 <script>
 import goBackNav from "@/components/goBackNav.vue";
+import fly from "@/services/WxApi";
 export default {
+    data() {
+        return {
+            status:'',
+            phone: "",
+            name: "",
+            company: "",
+            position: "",
+            imgs:''
+        };
+    },
+    mounted() {
+        let This = this
+        fly.post('/contractor/getMySharingPlan').then(function (res) {
+            let data = res.response
+            if(data.reviewStatus==1){
+                This.status='通过'
+            }else if(data.reviewStatus==2){
+                This.status='不通过'
+            }else{
+                This.status='审核中...'
+            }
+            This.phone=data.mobile,
+            This.name=data.username,
+            This.company=data.companyName,
+            This.position=data.positionName,
+            This.imgs=data.imgs
+        })
+    },
     components: {
         goBackNav
     }
