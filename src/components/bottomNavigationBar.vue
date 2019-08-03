@@ -74,7 +74,11 @@ export default {
             }
             fly.post('/contractor/weChatAuth',data).then(function (res) {
                 console.log(res)
-                wx.setStorageSync('token', res.response.authorization)
+                wx.setStorageSync('token', res.response.authorization) 
+                wx.setStorageSync('gender', res.response.gender) 
+                wx.setStorageSync('mobile', res.response.mobile) 
+                wx.setStorageSync('nickName', res.response.nickName) 
+                wx.setStorageSync('username', res.response.username) 
             })
         }
     }

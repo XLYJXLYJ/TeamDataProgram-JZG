@@ -62,12 +62,20 @@ export default {
             name: "",
             company: "",
             wx:'',
+            gender:'',
             position: "",
             btnTxt: "点击获取验证码",
             disabled: false,
             time: 0, // 验证码时间初始化
             btn: true
         };
+    },
+    mounted() {
+        let This = this   
+        This.gender = wx.getStorageSync('gender') 
+        This.phone = wx.getStorageSync('mobile') 
+        This.wx = wx.getStorageSync('nickName') 
+        This.name = wx.getStorageSync('username') 
     },
     methods: {
         selfSave(){
@@ -77,7 +85,8 @@ export default {
                 gender:This.gender='男'?1:0
             }
             fly.post('/contractor/saveMyInfo',data).then(function (res) {
-
+                wx.setStorageSync('gender', This.name)
+                wx.setStorageSync('username', This.gender)
             })
         }
     }

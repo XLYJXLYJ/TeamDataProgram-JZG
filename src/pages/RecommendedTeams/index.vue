@@ -3,11 +3,18 @@
         <goBackNav></goBackNav>
         <!-- <div class="no-recommend">
           <img>
-
         </div>-->
         <div class="content">
             <ul>
-                <li>
+                <li class="card-li" v-for="(item,index) in list" :key="index">
+                    <p class="company-name">{{item.organizationName}}</p>
+                    <span class="status" v-if='item.reviewStatus==3'>审核中</span>
+                    <span class="status" v-if='item.reviewStatus==2'>不通过</span>
+                    <span class="status" v-if='item.reviewStatus==1'>通过</span>
+                    <span class="time">    {{item.recommendTime}}</span>
+                    <p class="cause" v-if='item.remark'>原因：{{remark}}</p>
+                </li>
+                <!-- <li>
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
                     <span class="time">    2019年7月13日推荐</span>
@@ -24,16 +31,10 @@
                     <span class="status">审核中</span>
                     <span class="time">    2019年7月13日推荐</span>
                     <p class="cause">原因：资料不全</p>
-                </li>
-                <li>
-                    <p class="company-name">呼勒浩特好利建筑有限公司</p>
-                    <span class="status">审核中</span>
-                    <span class="time">    2019年7月13日推荐</span>
-                    <p class="cause">原因：资料不全</p>
-                </li>
+                </li> -->
             </ul>
         </div>
-        <div class="shareButton">推荐班组</div>
+        <div class="shareButton" @click="goReClass">推荐班组</div>
     </div>
 </template>
 
@@ -47,11 +48,22 @@ export default {
     mounted() {
         this.recommond()
     },
+    data(){
+        return{
+            list:''
+        }
+    },
     methods: {
         recommond(){
+            let This = this
             fly.post('/contractor/getMyRecommendContractor').then(function (res) {
-
+                This.list = res.response
             }) 
+        },
+        goReClass(){
+            wx.navigateTo({
+                url:'/pages/registerClass/main'
+            });
         }
     }
 };

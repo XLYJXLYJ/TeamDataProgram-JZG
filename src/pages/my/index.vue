@@ -4,14 +4,12 @@
             <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
         </section>
         <section class="maintenance">
-            <img src="/static/images/mask.png">
+            <img  @click="goMy" src="/static/images/mask.png">
             <p>赵小龙</p>
         </section>
         <section>
             <ul>
-                <li><span>我推荐的班组</span><span><img src="/static/images/right.png"></span></li>
-                <li><span>共建共享计划</span><span><img src="/static/images/right.png"></span></li>
-                <li><span>关于我们</span><span><img src="/static/images/right.png"></span></li>
+                <li v-for="(item,index) in list" :key="index" @click="goUrl(item.url)"><span>{{item.name}}</span><span><img src="/static/images/right.png"></span></li>
             </ul>
         </section>
         <section class="add">
@@ -30,18 +28,21 @@ export default {
     },
     data() {
         return {
-            imgUrls: [
+            list: [
                 {
                     id: 0,
-                    url: "https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640"
+                    name:'我推荐的班组',
+                    url: "/pages/RecommendedTeams/main"
                 },
                 {
                     id: 1,
-                    url: "https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640"
+                    name:'共建共享计划',
+                    url: "/pages/sharing/main"
                 },
                 {
                     id: 2,
-                    url: "https://images.unsplash.com/photo-1551446591-142875a901a1?w=640"
+                    name:'关于我们',
+                    url: "/pages/aboutUs/main"
                 }
             ],
             selectNavIndex:1
@@ -50,7 +51,16 @@ export default {
     mounted() {
     },
     methods:{
-
+        goUrl(url){
+            wx.navigateTo({
+                url
+            });
+        },
+        goMy(){
+            wx.navigateTo({
+                url:"/pages/editMy/main"
+            });
+        }
     }
 };
 </script>

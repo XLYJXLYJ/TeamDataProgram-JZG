@@ -30,180 +30,19 @@
             <view class="picker">选择城市sdsdsd</view>
         </picker> -->
         <ul class="card-ul">
-            <li class="card-li" @click="goIntro">
+            <li class="card-li" @click="goIntro" v-for="(item,index) in list" :key="index">
                 <div class="left">
                     <div class="img">
                         <img src="/static/images/mask.png" alt="">
                     </div>
                     <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
+                        <div class="company">{{item.organizationName}}</div>
                         <div>
                             <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
+                                <li class="text-li" v-for="(twoItem,twoIndex) in ContractorProjectType" :key="twoIndex">{{twoItem.projectTypeName}} * {{twoItem.medalNum}}</li>
                             </ul>
                         </div>
-                        <div class="achievement">8 项工程业绩</div>
-                    </div>
-                </div>
-                <div class="right">
-                    <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
-            <li class="card-li">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
-                            </ul>
-                        </div>
-                        <div class="achievement">8 项工程业绩</div>
-                    </div>
-                </div>
-                <div class="right">
-                    <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
-            <li class="card-li">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
-                            </ul>
-                        </div>
-                        <div class="achievement">8 项工程业绩</div>
-                    </div>
-                </div>
-                <div class="right">
-                   <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
-            <li class="card-li">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
-                            </ul>
-                        </div>
-                        <div class="achievement">8 项工程业绩</div>
-                    </div>
-                </div>
-                <div class="right">
-                    <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
-            <li class="card-li">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
-                            </ul>
-                        </div>
-                        <div class="achievement">8 项工程业绩</div>
-                    </div>
-                </div>
-                <div class="right">
-                    <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
-            <li class="card-li">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
-                            </ul>
-                        </div>
-                        <div class="achievement">8 项工程业绩</div>
-                    </div>
-                </div>
-                <div class="right">
-                    <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
-            <li class="card-li">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
-                            </ul>
-                        </div>
-                        <div class="achievement">8 项工程业绩</div>
-                    </div>
-                </div>
-                <div class="right">
-                    <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
-            <li class="card-li">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
-                            </ul>
-                        </div>
-                        <div class="achievement">8 项工程业绩</div>
-                    </div>
-                </div>
-                <div class="right">
-                    <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
-            <li class="card-li">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">吉峰机械工程有限公司</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li">挖填方 * 6</li>
-                                <li class="text-li">运输队 * 9</li>
-                            </ul>
-                        </div>
-                        <div class="achievement">8 项工程业绩</div>
+                        <div class="achievement">{{item.projectPerformanceCount}} 项工程业绩</div>
                     </div>
                 </div>
                 <div class="right">
@@ -242,7 +81,9 @@ export default {
             cityArray:'', // 接受到的选择器总数据
             citySelectIndex:'', // 选中的班组index位置
             city: "城市", // 班组分类
-            cityId:'' // 城市id
+            cityId:'', // 城市id
+
+            list:''
         };
     },
     onPageScroll: function(res) {
@@ -332,6 +173,7 @@ export default {
             }
             fly.post('/contractor/getHQContractorList',data).then(function (res) {
                 console.log(res)
+                This.list = res.response.list
             })
         },
         bindMultiPickerColumnChange: function (e) {
@@ -372,8 +214,9 @@ export default {
                 projectType:This.projectType || '',
                 area:This.cityId
             }
-            fly.post('/contractor/getHQContractorList',data).then(function (data) {
-                console.log(data)
+            fly.post('/contractor/getHQContractorList',data).then(function (res) {
+                console.log(res)
+                This.list = res.response.list
             })
         },
         cityMultiPickerColumnChange: function (e) {
