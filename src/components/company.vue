@@ -3,19 +3,18 @@
         <div class="img-head">
             <img @click="headPreviewImage" src="/static/images/mask.png" />
         </div>
-        <div class="title">吉峰机械工程有限公司</div>
+        <div class="title">{{organizationName}}</div>
         <div class="tag">
             <ul class="text-ul">
-                <li class="text-li">挖填方 * 6</li>
-                <li class="text-li">运输队 * 9</li>
+                <li class="text-li" v-for="(item,index) in ContractorProjectType" :key="index">{{item.projectTypeName}} * {{item.medalNum}}</li>
             </ul>
         </div>
-        <div class="detail">
+        <!-- <div class="detail">
             <p class="one">"该班组技术好，态度好，做事负责"</p>
             <p class="two">推荐人：张三 项目经理</p>
             <p class="three">深圳市新丰建筑工程有限公司</p>
-        </div>
-        <div class="brief">成立于 1998 年，总部位于深圳市福田区，曾多次获得深圳市政府颁发的工程质量奖项，团队规模在 500 人以上，拥有专业的设备。欢迎来电洽谈业务。</div>
+        </div> -->
+        <div class="brief">{{contractorDesc}}</div>
         <button class="phone" @click="seePhone">{{phone}}</button>
     </div>
 </template>
@@ -24,8 +23,32 @@ import fly from "@/services/WxApi";
 export default {
     data(){
         return{
-            phone:'查看联系方式'
+            phone:'查看联系方式',
+            organizationName:'', // 公司名称
+            ContractorProjectType:'', // 标签
+            contractorDesc:''
         }
+    },
+    mounted() {
+        let This = this
+        let data = {
+            page:1,
+            pageSize:5,
+            contractorId:10462
+        }
+        fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
+            console.log('获取工程业绩')
+            console.log(res.response)
+            let resData = res.response.list[0]
+            This.organizationName = resData.organizationName
+        })
+        fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
+            console.log('获取优质班组详细信息')
+            let resData = res.response
+            console.log(resData)
+            This.ContractorProjectType = resData.contractorProjectTypes
+            This.contractorDesc = resData.contractorDesc
+        })
     },
     methods: {
         headPreviewImage() {

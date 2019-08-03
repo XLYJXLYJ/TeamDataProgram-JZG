@@ -84,16 +84,9 @@ export default {
     },
     methods: {
         backClick() {
-            if (getCurrentPages().length == 1) {
-                // 打开分享卡片无法回退
-                wx.redirectTo({
-                    url: this.homePath
-                });
-            } else {
-                wx.navigateBack({
-                    delta: 1
-                });
-            }
+            wx.redirectTo({
+                url: '/pages/index/main'
+            });
         },
         homeClick() {
             wx.redirectTo({

@@ -278,7 +278,6 @@ export default {
         fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
             let oneRowArray = []
             let oneColumnArray = []
-            console.log(data)
             This.cityArray = data.response
             data.response[0].childList.map(
                 (items,index) => oneColumnArray.push(items.name)

@@ -13,21 +13,19 @@
             <company @alertframe="conAlert"></company>
         </div>
          <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
-            <div class="gene">概况</div>
+            <div class="gene" @click="gointro">概况</div>
             <div class="achi active">业绩</div>
         </div>
         <div class="equip">
-            <p class="self">自有设备(2种)</p>
             <ul class="one-ul">
-                <li class="one-li">
-                    <p class="machine">三一SY60C-10履带挖掘机</p>
+                <li class="one-li" v-for="(item,index) in list" :key="index">
+                    <p class="self">{{item.projectName}}</p>
+                    <p class="machine">{{item.areaFullName}}</p>
                     <div class="img-contain">
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
+                        <ul class="three-ul">
+                            <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
+                            <li class="three-li" v-for="(threeItem,threeIndex) in imgList" :key="threeIndex"><img @click="previewImage(threeItem,imgList)" :src='threeItem' /></li>
+                        </ul>
                         <div class="corner">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
                             <span class="number">18</span>
@@ -36,69 +34,26 @@
                     <ul class="two-ul">
                         <li>
                             <div class="one"><img src="/static/images/1.png"></div>
-                            <div class="two">挖填方</div>
+                            <div class="two">{{item.projectName}}</div>
                         </li>
                         <li>
                             <div class="one"><img src="/static/images/2.png"></div>
-                            <div class="two">2015 年 5 月开工</div>
+                            <div class="two">{{item.startTime}}</div>
                         </li>
                         <li>
                             <div class="one"><img src="/static/images/3.png"></div>
-                            <div class="two">建筑工程鲁班奖</div>
+                            <div class="two">{{item.prizeList}}</div>
                         </li>
                         <li>
                             <div class="one"><img src="/static/images/4.png"></div>
-                            <div class="two">业主：深圳市兴河建设工程公司</div>
+                            <div class="two">{{item.employers}}</div>
                         </li>
                         <li>
                             <div class="one"><img src="/static/images/5.png"></div>
-                            <div
-                                class="two"
-                            >工程量：70340 吨。工程亮点：混凝土二次浇筑部位钢筋绑扎质量好，没有出现任何变形现象，钢筋最大直径为 ф50。</div>
+                            <div class="two">{{item.remarks}}</div>
                         </li>
                     </ul>
                 </li>
-
-                <li class="one-li">
-                    <p class="machine">三一SY60C-10履带挖掘机</p>
-                    <div class="img-contain">
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <img @click="previewImage" src="/static/images/mask.png" />
-                        <div class="corner">
-                            <div class="img-corner"><img src="/static/images/more.png"> </div>
-                            <span class="number">18</span>
-                        </div>
-                    </div>
-                    <ul class="two-ul">
-                        <li>
-                            <div class="one"><img src="/static/images/1.png"></div>
-                            <div class="two">挖填方</div>
-                        </li>
-                        <li>
-                            <div class="one"><img src="/static/images/2.png"></div>
-                            <div class="two">2015 年 5 月开工</div>
-                        </li>
-                        <li>
-                            <div class="one"><img src="/static/images/3.png"></div>
-                            <div class="two">建筑工程鲁班奖</div>
-                        </li>
-                        <li>
-                            <div class="one"><img src="/static/images/4.png"></div>
-                            <div class="two">业主：深圳市兴河建设工程公司</div>
-                        </li>
-                        <li>
-                            <div class="one"><img src="/static/images/5.png"></div>
-                            <div
-                                class="two"
-                            >工程量：70340 吨。工程亮点：混凝土二次浇筑部位钢筋绑扎质量好，没有出现任何变形现象，钢筋最大直径为 ф50。</div>
-                        </li>
-                    </ul>
-                </li>
-
             </ul>
         </div>
     </div>
@@ -118,12 +73,14 @@ export default {
             isTop:false,
             statusBarHeight: "", // 状态栏高度
             titleBarHeight: "", // 标题栏高度
-            navBarHeight: "" // 导航栏总高度
+            navBarHeight: "", // 导航栏总高度
+            list:'',
+            imgList:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg']
         };
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 600) {
+        if (res.scrollTop > 400) {
             This.isTop = true
         } else {
             This.isTop = false
@@ -153,30 +110,29 @@ export default {
         let data = {
             contractorId:10462
         }
-        fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
-            console.log(res) 
+        fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
+            let resData = res.response
+            console.log(222)
+            console.log(resData)
+            This.list = resData.list
         })
     },
     methods: {
-        previewImage() {
+        previewImage(current,urls) {
             wx.previewImage({
-                current:
-                    "", // 当前显示图片的http链接
-                urls: [
-                    ""
-                ] // 需要预览的图片http链接列表
+                current:current, // 当前显示图片的http链接
+                urls:urls // 需要预览的图片http链接列表
             });
+            // wx.previewImage({
+            //     current:"http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg", // 当前显示图片的http链接
+            //     urls:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg'] // 需要预览的图片http链接列表
+            // });
         },
-        headPreviewImage() {
-            wx.previewImage({
-                current:
-                    "", // 当前显示图片的http链接
-                urls: [
-                    ""
-                ] // 需要预览的图片http链接列表
-            });
+        gointro(){
+            wx.navigateTo({
+                url:'/pages/introdution/main'
+            })
         },
-
         controlAlert(data) {
             this.isAlert = data;
         },
@@ -359,10 +315,14 @@ export default {
             }
             .img-contain {
                 position: relative;
-                img {
-                    width: 220rpx;
-                    height: 222rpx;
-                    border-right: 3rpx solid #fff;
+                .three-ul{
+                    display: flex;
+                    justify-content: space-around;
+                    img {
+                        width: 220rpx;
+                        height: 222rpx;
+                        border-right: 3rpx solid #fff;
+                    }
                 }
                 .corner {
                     position: absolute;

@@ -58,8 +58,6 @@ export default {
         },
         bindViewTap(url) {
             let page = getCurrentPages();
-            console.log(page);
-
             wx.reLaunch({
                 url
             });

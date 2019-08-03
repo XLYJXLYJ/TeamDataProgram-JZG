@@ -16,18 +16,18 @@
 
         <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
             <div class="gene active">概况</div>
-            <div class="achi">业绩</div>
+            <div class="achi" @click="goachi">业绩</div>
         </div>
 
 
         <div class="basic">
             <div class="basic-sigle">
                 <span class="one">服务地区:</span>
-                <span class="two">深圳市河源市武汉市湖南省全省福建省全省</span>
+                <span class="two">{{areaName}}</span>
             </div>
             <div class="basic-sigle">
                 <span class="one">主营业务:</span>
-                <span class="two">贴砖(装修) 木工 土石方</span>
+                <span class="two">{{projectTypeName}}</span>
             </div>
             <div class="basic-sigle">
                 <span class="one">人员规模:</span>
@@ -35,45 +35,38 @@
             </div>
             <div class="basic-sigle">
                 <span class="one">联系人:</span>
-                <span class="two">洪辉立</span>
+                <span class="two">{{linkMan}}</span>
             </div>
         </div>
         <div class="work">
-            <title>施工报价(9项)</title>
-            <p>贴室内墙砖</p>
             <ul>
-                <li>
-                    <img src='/static/images/point.png' alt="">
-                    <span class="one">贴室内地砖</span>
-                    <span class="two">30.00元/m2</span>
-                </li>
-                <li>
-                    <img src='/static/images/point.png' alt="">
-                    <span class="one">电梯楼层内外地砖</span>
-                    <span class="two">3000.00元/m2</span>
-                </li>
-                <li>
-                    <img src='/static/images/point.png' alt="">
-                    <span class="one">小高层贴外墙砖</span>
-                    <span class="two">300.00元/m2</span>
-                </li>
-                <li>
-                    <img src='/static/images/point.png' alt="">
-                    <span class="one">酒店室内贴砖</span>
-                    <span class="two">30000.00元/m2</span>
+                <title>施工报价(9项)</title>
+                <li v-for="(item,index) in subModels" :key="index">
+                    <p>{{item.name}}</p>
+                    <ul class="two-ul">
+                        <li class="two-li" v-for="(twoItem,twoIndex) in item.quotationDetailList" :key="twoIndex">
+                            <img src='/static/images/point.png' alt="">
+                            <span class="one">{{twoItem.name}}</span>
+                            <span class="two">{{twoItem.price}}元/m2</span>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
         <div class="equip">
             <p class="self">自有设备(2种)</p>
-            <ul>
-                <li>
-                    <p class="machine">三一SY60C-10履带挖掘机</p>
+            <ul class="one-ul">
+                <li class="one-li" v-for="(item,index) in eqList" :key="index">
+                    <p class="machine">{{item.remark}}</p>
                     <div class="img-contain">
-                        <img @click="previewImage" src="/static/images/mask.png" />
+                        <ul class="two-ul">
+                            <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
+                            <li class="two-li" v-for="(twoItem,twoIndex) in imgList" :key="twoIndex"><img @click="previewImage(twoItem,testImg)" :src='twoItem' /></li>
+                        </ul>
+
                         <div class="corner">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
-                            <span class="number">18</span>
+                            <span class="number">{{item.imgs}}</span>
                         </div>
                     </div>
                 </li>
@@ -97,11 +90,20 @@ export default {
             statusBarHeight: "", // 状态栏高度
             titleBarHeight: "", // 标题栏高度
             navBarHeight: "", // 导航栏总高度
+            areaName:'',
+            projectTypeName:'',
+            teamPersonCountName:'',
+            linkMan:'',
+            subModels:'',
+            eqList:'',
+            imgLength:'',
+            imgList:'',
+            testImg:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg']
         };
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 580) {
+        if (res.scrollTop > 400) {
             This.isTop = true
         } else {
             This.isTop = false
@@ -133,31 +135,37 @@ export default {
             pageSize:5,
             contractorId:10462
         }
-        fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
-            console.log(res) 
+        fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
+            console.log('获取优质班组详细信息')
+            let resData = res.response
+            console.log(resData)
+            This.areaName = resData.areaName
+            This.projectTypeName = resData.projectTypeName
+            This.teamPersonCountName = resData.teamPersonCountName
+            This.linkMan = resData.linkMan
+            This.subModels = resData.quotationBillModels.subModels
+            This.eqList = resData.eqList
+            This.imgList = resData.imgList
         })
     },
     methods: {
-        previewImage() {
+        previewImage(current,urls) {
             wx.previewImage({
-                current:
-                    "", // 当前显示图片的http链接
-                urls: [
-                    ""
-                ] // 需要预览的图片http链接列表
+                current:current, // 当前显示图片的http链接
+                urls:urls // 需要预览的图片http链接列表
             });
-        },
-        headPreviewImage() {
-            wx.previewImage({
-                current:
-                    "", // 当前显示图片的http链接
-                urls: [
-                    ""
-                ] // 需要预览的图片http链接列表
-            });
+            // wx.previewImage({
+            //     current:"http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg", // 当前显示图片的http链接
+            //     urls:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg'] // 需要预览的图片http链接列表
+            // });
         },
         controlAlert(data) {
             this.isAlert = data;
+        },
+        goachi(){
+            wx.navigateTo({
+                url:'/pages/achievement/main'
+            })
         },
         seePhone() {
             (this.ifMode = true), (this.ischangeModel = true);
@@ -268,8 +276,8 @@ export default {
         font-family: "PingFangSC-Regular";
         margin: 24rpx 0 24rpx 0;
     }
-    ul {
-        li {
+    .two-ul {
+        .two-li {
             // display: flex;
             // justify-content: space-between;
             font-size: 34rpx;
@@ -313,8 +321,8 @@ export default {
         font-weight: 550;
         margin-bottom: 18rpx;
     }
-    ul {
-        li {
+    .one-ul {
+        .one-li {
             .machine {
                 font-size: 34rpx;
                 color: black;
@@ -324,11 +332,16 @@ export default {
             }
             .img-contain {
                 position: relative;
-                img {
-                    width: 222rpx;
-                    height: 222rpx;
-                    border-right: 3rpx solid #fff;
+                .two-ul{
+                    display: flex;
+                    justify-content: space-around;
+                    img {
+                        width: 222rpx;
+                        height: 222rpx;
+                        border-right: 3rpx solid #fff;
+                    }
                 }
+
                 .corner {
                     position: absolute;
                     right: 0rpx;

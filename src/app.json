@@ -2,20 +2,21 @@
   "pages": [
     "pages/achievement/main",
     "pages/introdution/main",
+
     "pages/index/main",
+
+ 
     "pages/sharing/main",
     "pages/registerClass/main",
     "pages/RecommendedTeams/main",
     "pages/register/main",
     "pages/editMy/main", 
     "pages/login/main",
-  
     "pages/my/main",
     "pages/point/main",
     "pages/welcome/main",
     "pages/aboutUs/main",
     "pages/userAgreement/main",
-
     "pages/logs/main"
   ],
   "window": {

@@ -50,7 +50,7 @@ export default {
     methods: {
         recommond(){
             fly.post('/contractor/getMyRecommendContractor').then(function (res) {
-                console.log(res)
+
             }) 
         }
     }

@@ -77,7 +77,7 @@ export default {
                 gender:This.gender='男'?1:0
             }
             fly.post('/contractor/saveMyInfo',data).then(function (res) {
-                console.log(res)
+
             })
         }
     }
