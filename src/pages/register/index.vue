@@ -234,6 +234,14 @@ export default {
             }
             fly.post('/contractor/applyJoinSharingPlan',data).then(function (res) {
                 console.log(res)
+                wx.showToast({
+                    title: "申请加入成功",
+                    icon: "none",
+                    duration: 2000
+                });
+                wx.navigateTo({
+                    url:'/pages/index/main'
+                });
             })
         }
     }

@@ -7,12 +7,11 @@
                 </picker> 
             
             </div>
-
-
             <span style="color:rgb(204,204,204)">|</span>
             <div>
                 <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
-                    <div class="select picker" type="default">{{family}}{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                     <!-- <div class="select picker" type="default">{{family}}{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div> -->
+                    <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
                 </picker> 
                 <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
                 <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
@@ -30,27 +29,33 @@
             <view class="picker">选择城市sdsdsd</view>
         </picker> -->
         <ul class="card-ul">
-            <li class="card-li" @click="goIntro" v-for="(item,index) in list" :key="index">
-                <div class="left">
-                    <div class="img">
-                        <img src="/static/images/mask.png" alt="">
-                    </div>
-                    <div class="text-detail">
-                        <div class="company">{{item.organizationName}}</div>
-                        <div>
-                            <ul class="text-ul">
-                                <li class="text-li" v-for="(twoItem,twoIndex) in ContractorProjectType" :key="twoIndex">{{twoItem.projectTypeName}} * {{twoItem.medalNum}}</li>
-                            </ul>
+            <div class="img-contain" v-if="!list">
+                <img src="/static/images/none.png">
+            </div>
+            <div v-if="list">
+                <li class="card-li" @click="goIntro(item.id)" v-for="(item,index) in list" :key="index">
+                    <div class="left">
+                        <div class="img">
+                            <img :src="item.compressUrl" alt="" v-if="item.compressUrl">
+                             <img src="/static/images/user.png" alt="" v-if="!item.compressUrl">
                         </div>
-                        <div class="achievement">{{item.projectPerformanceCount}} 项工程业绩</div>
+                        <div class="text-detail">
+                            <div class="company">{{item.organizationName}}</div>
+                            <div>
+                                <ul class="text-ul">
+                                    <li class="text-li" v-for="(twoItem,twoIndex) in item.contractorProjectTypes" :key="twoIndex">{{twoItem.projectTypeName}} * {{twoItem.medalNum}}</li>
+                                </ul>
+                            </div>
+                            <div class="achievement">{{item.projectPerformanceCount}} 项工程业绩</div>
+                        </div>
                     </div>
-                </div>
-                <div class="right">
-                    <img src="/static/images/right.png" alt="">
-                </div>
-            </li>
+                    <div class="right">
+                        <img src="/static/images/right.png" alt="">
+                    </div>
+                </li>
+            </div>
         </ul>
-        <button class="shareButton">加入共建共享计划，查看更多班组</button>
+        <button class="shareButton" @click="goPoint" v-show="showButton">加入共建共享计划，查看更多班组</button>
     </div>
 </template>
 
@@ -73,26 +78,43 @@ export default {
             Array:'', // 接受到的选择器总数据
             selectIndex:'', // 选中的班组index位置
             family: "班组", // 班组分类
-            sort:'分类', // 班组分类
-            projectType:'', // 班组id
-
+            sort:'班组分类', // 班组分类
+            projectType:89, // 班组id
+            page:1,
             cityMultiArray:[],
             cityMultiIndex: [0,0],
             cityArray:'', // 接受到的选择器总数据
             citySelectIndex:'', // 选中的班组index位置
-            city: "城市", // 班组分类
-            cityId:'', // 城市id
+            city: "深圳市", // 班组分类
+            cityId:1971, // 城市id
 
-            list:''
+            showButton:false,
+            list:[]
         };
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 190) {
+        if (res.scrollTop > 170) {
             This.isTop = true
         } else {
             This.isTop = false
         }
+    },
+    onPullDownRefresh:function(){
+        console.log("刷新"); 
+    },
+    onReachBottom () {
+        console.log('数据加载完了')
+        let This = this
+        This.page = This.page + 1
+        This.getClass()
+        // if (this.page > this.total_page) {
+        // console.log('数据加载完了')
+        // } else {
+        // // 下一页
+        // this.page = this.page + 1
+        // this.getList()
+        // }
     },
     beforeMount() {
         const self = this;
@@ -115,7 +137,6 @@ export default {
     },
     mounted() {
         let This = this
-
         fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
             let oneRowArray = []
             let oneColumnArray = []
@@ -130,7 +151,6 @@ export default {
             This.cityMultiArray[1] = oneColumnArray
             This.$set(This.cityMultiArray,This.cityMultiArray)
         })
-
         fly.get('/contractor/getContractorType').then(function (data) {
             let oneRowArray = []
             let oneColumnArray = []
@@ -145,11 +165,12 @@ export default {
             This.multiArray[1] = oneColumnArray
             This.$set(This.multiArray,This.multiArray)
         })
+        This.getClass()
     },
     methods: {
-        goIntro(){
-            wx.redirectTo({
-                url: '../introdution/main'
+        goIntro(index){
+            wx.navigateTo({
+                url:'/pages/introdution/main?contractorId=' + index
             })
         },
         bindMultiPickerChange: function (e) {
@@ -164,16 +185,29 @@ export default {
             this.getClass()
         },
         getClass(){
+            wx.startPullDownRefresh()
             let This = this
             let data = {
-                page:1,
+                page:This.page,
                 pageSize:5,
                 projectType:This.projectType,
                 area:This.cityId || ''
             }
             fly.post('/contractor/getHQContractorList',data).then(function (res) {
                 console.log(res)
-                This.list = res.response.list
+                wx.stopPullDownRefresh()
+                if(This.page == 1){
+                   This.list = res.response.list
+                   This.showButton = res.response.list.length ==0?true:false
+                   console.log(This.list)
+                }else{
+                //    This.list.push(JSON.parse(JSON.stringify([res.response.list])))
+                   This.showButton = res.response.list.length ==0?true:false
+                   console.log(This.showButton)
+                   console.log(res.response.list)
+                   This.list = This.list.concat(res.response.list)
+                   console.log(This.list)
+                }   
             })
         },
         bindMultiPickerColumnChange: function (e) {
@@ -195,7 +229,6 @@ export default {
                 }
             }
         },
-
         cityMultiPickerChange: function (e) {
             console.log('picker发送选择改变，携带值为', e)
             let This = this
@@ -204,21 +237,22 @@ export default {
             let two = This.citySelectIndex[1]
             This.cityId = this.cityArray[one].childList[two].id
             This.city = this.cityArray[one].childList[two].name
-            this.getCity()
+            this.getClass()
         },
-        getCity(){
-            let This = this
-            let data = {
-                page:1,
-                pageSize:5,
-                projectType:This.projectType || '',
-                area:This.cityId
-            }
-            fly.post('/contractor/getHQContractorList',data).then(function (res) {
-                console.log(res)
-                This.list = res.response.list
-            })
-        },
+        // getCity(){
+        //     let This = this
+        //     let data = {
+        //         page:This.page,
+        //         pageSize:5,
+        //         projectType:This.projectType || '',
+        //         area:This.cityId
+        //     }
+        //     fly.post('/contractor/getHQContractorList',data).then(function (res) {
+        //         console.log(res)
+        //         wx.stopPullDownRefresh()
+        //         This.list = res.response.list
+        //     })
+        // },
         cityMultiPickerColumnChange: function (e) {
             let oneColumnArray = [];
             let oneRowArray = [];
@@ -237,8 +271,12 @@ export default {
                     }
                 }
             }
+        },
+        goPoint(){
+            wx.navigateTo({
+                url:'/pages/point/main'
+            })
         }
-
     },
     props: ["text"]
 };
@@ -275,6 +313,17 @@ export default {
         width: 670rpx;
         height: auto;
         margin: 0 auto;
+        .img-contain{
+            width: 100%;
+            height: 660rpx;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img{
+                width: 128rpx;
+                height: 134rpx;
+            }
+        }
         .card-li{
             height: 190rpx;
             width: 670rpx;

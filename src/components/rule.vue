@@ -3,7 +3,7 @@
         <goBackNav :title='title'></goBackNav>
         <p class="about">{{message}}</p>
         <p class="rule">{{rules}}</p>
-        <button class="confirm">{{buttonContent}}</button>
+        <button class="confirm" @click="goSharing">{{buttonContent}}</button>
     </div>
 </template>
 
@@ -13,6 +13,13 @@ export default {
     props:['title','message','rules','buttonContent','url'],
     components: {
         goBackNav
+    },
+    methods: {
+        goSharing(){
+            wx.navigateTo({
+                url:'/pages/register/main'
+            });
+        }
     },
 }
 </script>

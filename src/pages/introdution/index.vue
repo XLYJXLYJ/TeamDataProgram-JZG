@@ -11,7 +11,9 @@
         </div>
 
         <div>
-            <company @alertframe="conAlert"></company>
+            <company @alertframe="conAlert" :contractorId="contractorId">
+                
+            </company>
         </div>
 
         <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
@@ -31,7 +33,7 @@
             </div>
             <div class="basic-sigle">
                 <span class="one">人员规模:</span>
-                <span class="two">101-200人</span>
+                <span class="two">{{teamPersonCount}}人</span>
             </div>
             <div class="basic-sigle">
                 <span class="one">联系人:</span>
@@ -60,10 +62,11 @@
                     <p class="machine">{{item.remark}}</p>
                     <div class="img-contain">
                         <ul class="two-ul">
+                            <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
+                                <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,testImg)" :src='twoItem' /></li>
+                            </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
-                            <li class="two-li" v-for="(twoItem,twoIndex) in imgList" :key="twoIndex"><img @click="previewImage(twoItem,testImg)" :src='twoItem' /></li>
                         </ul>
-
                         <div class="corner">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
                             <span class="number">{{item.imgs}}</span>
@@ -98,6 +101,8 @@ export default {
             eqList:'',
             imgLength:'',
             imgList:'',
+            contractorId:'',
+            teamPersonCount:'',
             testImg:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg']
         };
     },
@@ -108,6 +113,12 @@ export default {
         } else {
             This.isTop = false
         }
+    },
+    onLoad(options){
+        let This = this
+        This.contractorId = options.contractorId
+        console.log('options信息')
+        console.log(options)
     },
     beforeMount() {
         const self = this;
@@ -133,7 +144,7 @@ export default {
         let data = {
             page:1,
             pageSize:5,
-            contractorId:10462
+            contractorId:This.contractorId
         }
         fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
             console.log('获取优质班组详细信息')
@@ -146,6 +157,7 @@ export default {
             This.subModels = resData.quotationBillModels.subModels
             This.eqList = resData.eqList
             This.imgList = resData.imgList
+            This.teamPersonCount = resData.teamPersonCount
         })
     },
     methods: {

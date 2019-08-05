@@ -54,6 +54,7 @@
                 </div>-->
                 <div>
                     <button class="confirm" @click="reClass">提交</button>
+                    <!-- <button class="confirm" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取电话号码权限</button> -->
                 </div>
                 <p class="title">
                     成功推荐新班组，可获得更多权限与资源，详见
@@ -104,6 +105,18 @@ export default {
             This.multiArray[1] = oneColumnArray
             This.$set(This.multiArray,This.multiArray)
         })
+
+//         wx.login({    
+//             success: function (res) {    
+//                 if (res.code) {    
+//                     //发起网络请求    
+//                      console.log('获取用户登录态成功！')    
+//                     console.log(res.code)    
+//                 } else {    
+//                     console.log('获取用户登录态失败！' + res.errMsg)    
+//                 }    
+//             }    
+//         });
     },
     methods: {
         bindMultiPickerChange: function (e) {
@@ -115,6 +128,9 @@ export default {
             This.family = this.Array[one].name
             This.sort = this.Array[one].childList[two].name
         },
+        getPhoneNumber (e) {
+            console.log(e)
+        },
         reClass(index){
             let This = this
             let data = {
@@ -124,6 +140,9 @@ export default {
             }
             fly.post('/contractor/recommendContractor',data).then(function (data) {
                 console.log(data)
+                wx.navigateTo({
+                    url:'/pages/index/main'
+                });
             })
         },
         bindMultiPickerColumnChange: function (e) {

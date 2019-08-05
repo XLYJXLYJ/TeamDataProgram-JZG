@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="img-head">
-            <img @click="headPreviewImage" src="/static/images/mask.png" />
+            <img @click="headPreviewImage" :src="headimg" />
         </div>
         <div class="title">{{organizationName}}</div>
         <div class="tag">
@@ -21,20 +21,28 @@
 <script>
 import fly from "@/services/WxApi";
 export default {
+    props:['contractorId'],
     data(){
         return{
             phone:'查看联系方式',
             organizationName:'', // 公司名称
             ContractorProjectType:'', // 标签
-            contractorDesc:''
+            contractorDesc:'',
+            headimg:''
         }
     },
-    mounted() {
+    onShow() {
+
         let This = this
+        This.organizationName = ''
+        This.ContractorProjectType = ''
+        This.contractorDesc = ''
+        This.headimg = ''
+
         let data = {
             page:1,
             pageSize:5,
-            contractorId:10462
+            contractorId:This.contractorId
         }
         fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
             console.log('获取工程业绩')
@@ -46,17 +54,19 @@ export default {
             console.log('获取优质班组详细信息')
             let resData = res.response
             console.log(resData)
-            This.ContractorProjectType = resData.contractorProjectTypes
-            This.contractorDesc = resData.contractorDesc
+                    This.ContractorProjectType = resData.contractorProjectTypes
+                    This.contractorDesc = resData.contractorDesc
+                    This.headimg = resData.headimg
         })
     },
     methods: {
         headPreviewImage() {
+            let This = this
             wx.previewImage({
                 current:
-                    "", // 当前显示图片的http链接
+                    This.headimg?This.headimg:'/static/images/user.png', // 当前显示图片的http链接
                 urls: [
-                    ""
+                    This.headimg?This.headimg:'/static/images/user.png'
                 ] // 需要预览的图片http链接列表
             });
         },
@@ -64,11 +74,11 @@ export default {
             let This = this
             This.$emit("alertframe", true);
             let data = {
-                contractorId:10462
+                contractorId:This.contractorId
             }
             fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
                 console.log(res)
-                This.phone = res.response.mobile
+                This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
             })
         }
     }

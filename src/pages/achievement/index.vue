@@ -10,7 +10,7 @@
             ></selfAlert>
         </div>
         <div>
-            <company @alertframe="conAlert"></company>
+            <company @alertframe="conAlert" :contractorId="contractorId"></company>
         </div>
          <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
             <div class="gene" @click="gointro">概况</div>
@@ -23,12 +23,15 @@
                     <p class="machine">{{item.areaFullName}}</p>
                     <div class="img-contain">
                         <ul class="three-ul">
+                            <div v-for="(threeItem,threeIndex) in imgList" :key="threeIndex">
+                                <li class="three-li" v-if="threeIndex<3"><img @click="previewImage(threeItem,imgList)" :src='threeItem' /></li>
+                            </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
-                            <li class="three-li" v-for="(threeItem,threeIndex) in imgList" :key="threeIndex"><img @click="previewImage(threeItem,imgList)" :src='threeItem' /></li>
+
                         </ul>
                         <div class="corner">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
-                            <span class="number">18</span>
+                            <span class="number">{{imgList.length}}</span>
                         </div>
                     </div>
                     <ul class="two-ul">
@@ -75,7 +78,8 @@ export default {
             titleBarHeight: "", // 标题栏高度
             navBarHeight: "", // 导航栏总高度
             list:'',
-            imgList:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg']
+            contractorId:'',
+            imgList:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg']
         };
     },
     onPageScroll: function(res) {
@@ -108,7 +112,7 @@ export default {
     mounted() {
         let This = this
         let data = {
-            contractorId:10462
+            contractorId:This.contractorId
         }
         fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
             let resData = res.response
@@ -116,6 +120,11 @@ export default {
             console.log(resData)
             This.list = resData.list
         })
+    },
+    onLoad(options){
+        let This = this
+        This.contractorId = options.contractorId
+        console.log(options)
     },
     methods: {
         previewImage(current,urls) {

@@ -1,12 +1,12 @@
 <template>
     <div class="recommend">
         <goBackNav></goBackNav>
-        <!-- <div class="no-recommend">
-          <img>
-        </div>-->
-        <div class="content">
+        <div class="no-recommend" v-if="!list.length">
+          <img src="/static/images/none.png">
+        </div>
+        <div class="content" v-if="list.length">
             <ul>
-                <li class="card-li" v-for="(item,index) in list" :key="index">
+                <li class="card-li" v-for="(item,index) in list" :key="index" @click="goClass(item.contractorId)">
                     <p class="company-name">{{item.organizationName}}</p>
                     <span class="status" v-if='item.reviewStatus==3'>审核中</span>
                     <span class="status" v-if='item.reviewStatus==2'>不通过</span>
@@ -14,13 +14,13 @@
                     <span class="time">    {{item.recommendTime}}</span>
                     <p class="cause" v-if='item.remark'>原因：{{remark}}</p>
                 </li>
-                <!-- <li>
+                <!-- <li @click="goClass(10462)">
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
                     <span class="time">    2019年7月13日推荐</span>
                     <p class="cause">原因：资料不全</p>
                 </li>
-                <li>
+                <li @click="goClass(item.contractorId)">
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
                     <span class="time">    2019年7月13日推荐</span>
@@ -50,7 +50,7 @@ export default {
     },
     data(){
         return{
-            list:''
+            list:[]
         }
     },
     methods: {
@@ -58,12 +58,18 @@ export default {
             let This = this
             fly.post('/contractor/getMyRecommendContractor').then(function (res) {
                 This.list = res.response
+                console.log(res)
             }) 
         },
         goReClass(){
             wx.navigateTo({
                 url:'/pages/registerClass/main'
             });
+        },
+        goClass(index){
+            wx.navigateTo({
+                url:'/pages/introdution/main?contractorId=' + index
+            })
         }
     }
 };
@@ -77,12 +83,11 @@ export default {
         position: absolute;
         left: 50%;
         top: 50%;
-        margin-top: -44rpx;
-        margin-left: -46rpx;
+        margin-top: -67rpx;
+        margin-left: -64rpx;
         img {
-            width: 96rpx;
-            height: 96rpx;
-            background: red;
+            width: 128rpx;
+            height: 134rpx;
         }
     }
     .shareButton {

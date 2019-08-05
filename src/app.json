@@ -1,22 +1,19 @@
 {
   "pages": [
-    "pages/registerClass/main",
     "pages/index/main",
-    "pages/achievement/main",
+    "pages/my/main",
     "pages/introdution/main",
-    "pages/register/main",
-    "pages/login/main",
+    "pages/RecommendedTeams/main",
+    "pages/achievement/main",
     "pages/point/main",
+    "pages/login/main",
+    "pages/register/main",
     "pages/welcome/main",
     "pages/userAgreement/main",
     "pages/logs/main",
-
-
-
-    
+    "pages/registerClass/main",
     "pages/sharing/main",
-    "pages/my/main",
-    "pages/RecommendedTeams/main",
+
     "pages/editMy/main", 
     "pages/aboutUs/main"
   ],

@@ -79,6 +79,10 @@ export default {
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
+
+                wx.navigateTo({
+                    url:'/pages/point/main'
+                })
             })
         }
     }

@@ -84,9 +84,14 @@ export default {
     },
     methods: {
         backClick() {
-            wx.redirectTo({
-                url: '/pages/index/main'
+            
+            wx.navigateBack({ 
+                delta: 2, 
             });
+
+            // wx.redirectTo({
+            //     url: '/pages/index/main'
+            // });
         },
         homeClick() {
             wx.redirectTo({

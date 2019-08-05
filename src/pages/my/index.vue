@@ -4,8 +4,8 @@
             <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
         </section>
         <section class="maintenance">
-            <img  @click="goMy" src="/static/images/mask.png">
-            <p>赵小龙</p>
+            <img  @click="goMy" src="/static/images/user.png">
+            <p>{{name}}</p>
         </section>
         <section>
             <ul>
@@ -28,6 +28,7 @@ export default {
     },
     data() {
         return {
+            name:'',
             list: [
                 {
                     id: 0,
@@ -49,6 +50,8 @@ export default {
         };
     },
     mounted() {
+        let This = this
+        This.name = wx.getStorageSync('username') 
     },
     methods:{
         goUrl(url){
