@@ -18,6 +18,11 @@ fly.interceptors.response.use(res => {
   if (res.status == 200) {
     console.log(res)
     return res.data
+  }else{
+    wx.showModal({
+      title: '提示',
+      content: res.data.message,
+    })
   }
   return Promise.reject(res)
 }, error => {

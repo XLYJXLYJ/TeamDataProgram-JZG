@@ -54,9 +54,9 @@ export default {
             console.log('获取优质班组详细信息')
             let resData = res.response
             console.log(resData)
-                    This.ContractorProjectType = resData.contractorProjectTypes
-                    This.contractorDesc = resData.contractorDesc
-                    This.headimg = resData.headimg
+            This.ContractorProjectType = resData.contractorProjectTypes
+            This.contractorDesc = resData.contractorDesc
+            This.headimg = resData.headimg
         })
     },
     methods: {
