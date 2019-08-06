@@ -2,32 +2,25 @@
     <div class="card-contain">
         <div :class="{'fixedSelectCity':isTop,'selectCity':!isTop}" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
             <div>
-                <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
+                <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
                     <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
-                </picker> 
+                </picker>  -->
+
+                <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
+                <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
             
             </div>
             <span style="color:rgb(204,204,204)">|</span>
             <div>
-                <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
-                     <!-- <div class="select picker" type="default">{{family}}{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div> -->
+                <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
-                </picker> 
-                <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
-                <!-- <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker> -->
-                <!-- <span><img style="width:20.2rpx;height:12rpx;" src="/static/images/mask.png"> </span> -->
+                </picker>  -->
+
+                <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+
             </div>
         </div>
-        <!-- <picker
-            mode="multiSelector"
-            @change="bindCityChange"
-            @columnchange="bindCityColumnChange"
-            :value="multiIndex"
-            :range="multiArray"
-            range-key="name"
-        >
-            <view class="picker">选择城市sdsdsd</view>
-        </picker> -->
         <ul class="card-ul">
             <div class="img-contain" v-if="!list">
                 <img src="/static/images/none.png">
@@ -88,6 +81,9 @@ export default {
             city: "深圳市", // 班组分类
             cityId:1971, // 城市id
 
+            pickerValueArray:[],
+            pickerCityValueArray:[],
+
             showButton:false,
             list:[]
         };
@@ -108,13 +104,6 @@ export default {
         let This = this
         This.page = This.page + 1
         This.getClass()
-        // if (this.page > this.total_page) {
-        // console.log('数据加载完了')
-        // } else {
-        // // 下一页
-        // this.page = this.page + 1
-        // this.getList()
-        // }
     },
     beforeMount() {
         const self = this;
@@ -138,32 +127,60 @@ export default {
     mounted() {
         let This = this
         fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
-            let oneRowArray = []
-            let oneColumnArray = []
-            This.cityArray = data.response
-            data.response[0].childList.map(
-                (items,index) => oneColumnArray.push(items.name)
-            )
-            data.response.map(
-                (items,index) => oneRowArray.push(items.name)
-            )
-            This.cityMultiArray[0] = oneRowArray
-            This.cityMultiArray[1] = oneColumnArray
-            This.$set(This.cityMultiArray,This.cityMultiArray)
+            // let oneRowArray = []
+            // let oneColumnArray = []
+            // This.cityArray = data.response
+            // console.log('66666')
+            // console.log(data.response)
+            // data.response[0].childList.map(
+            //     (items,index) => oneColumnArray.push(items.name)
+            // )
+            // data.response.map(
+            //     (items,index) => oneRowArray.push(items.name)
+            // )
+            // This.cityMultiArray[0] = oneRowArray
+            // This.cityMultiArray[1] = oneColumnArray
+            // This.$set(This.cityMultiArray,This.cityMultiArray)
+
+            let arr = []
+            data.response.map((value,index,arry)=>{
+                arr.push({ 'label': value.name, 'value': value.id,'getchildren': value.childList,'children': [] })
+                arr[index].getchildren.map((value1,index1,arry1) => {
+                    arr[index].children.push({ 'label': value1.name, 'value': value1.id })
+                })
+            })
+            This.pickerCityValueArray = arr
+
+
         })
         fly.get('/contractor/getContractorType').then(function (data) {
-            let oneRowArray = []
-            let oneColumnArray = []
-            This.Array = data.response
-            data.response[0].childList.map(
-                (items,index) => oneColumnArray.push(items.name)
-            )
-            data.response.map(
-                (items,index) => oneRowArray.push(items.name)
-            )
-            This.multiArray[0] = oneRowArray
-            This.multiArray[1] = oneColumnArray
-            This.$set(This.multiArray,This.multiArray)
+            // 用于原声小程序picker
+            // let oneRowArray = []
+            // let oneColumnArray = []
+            // This.Array = data.response
+            // data.response[0].childList.map(
+            //     (items,index) => oneColumnArray.push(items.name)
+            // )
+            // data.response.map(
+            //     (items,index) => oneRowArray.push(items.name)
+            // )
+            // This.multiArray[0] = oneRowArray
+            // This.multiArray[1] = oneColumnArray
+            // This.$set(This.multiArray,This.multiArray)
+            let arr = []
+            data.response.map((value,index,arry)=>{
+                arr.push({ 'label': value.name, 'value': value.id,'getchildren': value.childList,'children': [] })
+                arr[index].getchildren.map((value1,index1,arry1) => {
+                    arr[index].children.push({ 'label': value1.name, 'value': value1.id })
+                })
+            })
+            This.pickerValueArray = arr
+            // arr.map((value,index,arry)=>{
+            //     arr.children.map((value,index,arry)=>{
+            //         console.log(value)
+            //         // arr[index].children.push({ 'label': value.name, 'value': value.id})
+            //     })
+            // })
         })
         This.getClass()
     },
@@ -239,20 +256,6 @@ export default {
             This.city = this.cityArray[one].childList[two].name
             this.getClass()
         },
-        // getCity(){
-        //     let This = this
-        //     let data = {
-        //         page:This.page,
-        //         pageSize:5,
-        //         projectType:This.projectType || '',
-        //         area:This.cityId
-        //     }
-        //     fly.post('/contractor/getHQContractorList',data).then(function (res) {
-        //         console.log(res)
-        //         wx.stopPullDownRefresh()
-        //         This.list = res.response.list
-        //     })
-        // },
         cityMultiPickerColumnChange: function (e) {
             let oneColumnArray = [];
             let oneRowArray = [];
@@ -276,6 +279,41 @@ export default {
             wx.navigateTo({
                 url:'/pages/point/main'
             })
+        },
+        show(){
+            this.$refs.mpPicker.show();
+        },
+        onConfirm(e) {
+            console.log(e);
+            let This = this
+            This.projectType = e.value[1]
+            This.sort = e.label
+            This.getClass()
+            console.log(this.projectType)
+        },
+        onChange(e) {
+            console.log(e);
+        },
+        onCancel(e) {
+            console.log(e);
+        },
+
+        showCity(){
+            this.$refs.cityPicker.show();
+        },
+        onCityConfirm(e) {
+            console.log(e);
+            let This = this
+            This.cityId = e.value[1]
+            This.city = e.label
+            This.page = 1
+            console.log(this.projectType)
+        },
+        onCityChange(e) {
+            console.log(e);
+        },
+        onCityCancel(e) {
+            console.log(e);
         }
     },
     props: ["text"]
