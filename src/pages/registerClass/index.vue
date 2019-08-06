@@ -106,17 +106,17 @@ export default {
             This.$set(This.multiArray,This.multiArray)
         })
 
-//         wx.login({    
-//             success: function (res) {    
-//                 if (res.code) {    
-//                     //发起网络请求    
-//                      console.log('获取用户登录态成功！')    
-//                     console.log(res.code)    
-//                 } else {    
-//                     console.log('获取用户登录态失败！' + res.errMsg)    
-//                 }    
-//             }    
-//         });
+        wx.login({    
+            success: function (res) {    
+                if (res.code) {    
+                    //发起网络请求    
+                     console.log('获取用户登录态成功！')    
+                    console.log(res.code)    
+                } else {    
+                    console.log('获取用户登录态失败！' + res.errMsg)    
+                }    
+            }    
+        });
     },
     methods: {
         bindMultiPickerChange: function (e) {

@@ -21,6 +21,7 @@
 
             </div>
         </div>
+
         <ul class="card-ul">
             <div class="img-contain" v-if="!list">
                 <img src="/static/images/none.png">
@@ -30,7 +31,7 @@
                     <div class="left">
                         <div class="img">
                             <img :src="item.compressUrl" alt="" v-if="item.compressUrl">
-                             <img src="/static/images/user.png" alt="" v-if="!item.compressUrl">
+                            <img src="/static/images/user.png" alt="" v-if="!item.compressUrl">
                         </div>
                         <div class="text-detail">
                             <div class="company">{{item.organizationName}}</div>
@@ -48,7 +49,7 @@
                 </li>
             </div>
         </ul>
-        <button class="shareButton" @click="goPoint" v-show="showButton">加入共建共享计划，查看更多班组</button>
+         <button class="shareButton" @click="goPoint" v-show="showButton" open-type="getUserInfo" @getuserinfo="getUserInfo">加入共建共享计划，查看更多班组</button>
     </div>
 </template>
 
@@ -202,17 +203,15 @@ export default {
             this.getClass()
         },
         getClass(){
-            wx.startPullDownRefresh()
             let This = this
             let data = {
                 page:This.page,
-                pageSize:5,
+                pageSize:10,
                 projectType:This.projectType,
                 area:This.cityId || ''
             }
             fly.post('/contractor/getHQContractorList',data).then(function (res) {
                 console.log(res)
-                wx.stopPullDownRefresh()
                 if(This.page == 1){
                    This.list = res.response.list
                    This.showButton = res.response.list.length ==0?true:false
@@ -222,7 +221,10 @@ export default {
                    This.showButton = res.response.list.length ==0?true:false
                    console.log(This.showButton)
                    console.log(res.response.list)
-                   This.list = This.list.concat(res.response.list)
+                //    This.list = This.list.concat(res.response.list)
+
+                  This.list.push(...res.response.list)
+
                    console.log(This.list)
                 }   
             })
@@ -305,7 +307,7 @@ export default {
             console.log(e);
             let This = this
             This.cityId = e.value[1]
-            This.city = e.label
+            This.city = '深圳市'
             This.page = 1
             console.log(this.projectType)
         },
@@ -314,6 +316,30 @@ export default {
         },
         onCityCancel(e) {
             console.log(e);
+        },
+        getUserInfo (e) {
+            console.log('66666')
+            console.log(e)
+            let userInfo = JSON.parse(e.mp.detail.rawData)
+            console.log(userInfo)
+            let data = {
+                nickName:userInfo.nickName,
+                headImg:userInfo.avatarUrl,
+                gender:userInfo.gender,
+                areaName:[userInfo.country,userInfo.province,userInfo.city]
+            }
+            fly.post('/contractor/weChatAuth',data).then(function (res) {
+                console.log(res)
+                wx.setStorageSync('token', res.response.authorization) 
+                wx.setStorageSync('gender', res.response.gender) 
+                wx.setStorageSync('mobile', res.response.mobile) 
+                wx.setStorageSync('nickName', res.response.nickName) 
+                wx.setStorageSync('username', res.response.username) 
+
+                wx.navigateTo({
+                    url:'/pages/point/main'
+                })
+            })
         }
     },
     props: ["text"]
@@ -333,6 +359,7 @@ export default {
         height: 66rpx;
         padding-top:60rpx;
         border-bottom: 1px solid rgb(204, 204, 204);
+        font-weight: 550;
     }
     .fixedSelectCity{
         width: 672rpx;
@@ -346,8 +373,11 @@ export default {
         align-items: center;
         height: 66rpx;
         background: white;
+        border-bottom: 1px solid rgb(204, 204, 204);
+        font-weight: 550;
     }
-    .card-ul{
+
+.card-ul{
         width: 670rpx;
         height: auto;
         margin: 0 auto;
@@ -362,6 +392,7 @@ export default {
                 height: 134rpx;
             }
         }
+
         .card-li{
             height: 190rpx;
             width: 670rpx;
@@ -393,9 +424,11 @@ export default {
                         font-size: 34rpx;
                         color: black;
                         margin-top: -16rpx;
+                        font-weight: 550;
                     }
                     .text-ul{
                         list-style: none;
+                        margin-top: -6rpx;
                         .text-li{
                             float: left;
                             height: 40rpx;
@@ -414,6 +447,7 @@ export default {
                     .achievement{
                         font-family: 'PingFangSC-PingFangSC-Light';
                         font-size: 28rpx;
+                        margin-top: -6rpx;
                     }
                 }
             }
@@ -428,6 +462,7 @@ export default {
             }
         }
     }
+    
     .shareButton{
         width: 670rpx;
         height: 96rpx;

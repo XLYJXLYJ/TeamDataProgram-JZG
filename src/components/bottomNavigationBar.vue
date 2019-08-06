@@ -128,10 +128,10 @@ export default {
 }
 .buttom-img{
     position: fixed;
-    bottom: 52rpx;
+    bottom: 32rpx;
     left: 327rpx;
-    width: 96rpx;
-    height: 96rpx;
+    width: 126rpx;
+    height: 126rpx;
     display: flex;
     justify-content: center;
     margin: 0 auto;
