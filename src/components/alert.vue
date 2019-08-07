@@ -6,9 +6,9 @@
         <div class="modalDialog" v-show="changeModel">
             <div class="modalContent">
                 <img src="/static/images/share.png" />
-                <p class="contentTip">获取更多班组联系方式</p>
-                <p class="detail">您已查看105个班组的联系方式，您可推荐新班组获得更多的权限。每成功推荐1个新班组，可增加100次的班组查看权限</p>
-                <button>推荐班组</button>
+                <p class="contentTip">{{title}}</p>
+                <p class="detail"></p>
+                <button @click="goWhere">{{text}}</button>
             </div>
         </div>
     </div>
@@ -17,8 +17,32 @@
 import fly from "@/services/WxApi";
 export default {
     props: ["changeModel", "isModel", "val"],
+    data() {
+        return {
+            remainCount:'',
+            title:'',
+            content:'',
+            text:''
+        }
+    },
     mounted() {
-
+        let This = this
+        console.log('设置弹框内容')
+        console.log(This.val)
+        if(This.val.alertType==1){
+            This.title = '查看联系方式'
+            This.content = '您已查看'+This.val.viewCount+'个班组的联系方式，您剩余'+This.val.remainCount+'次班组联系方式查看机会。'
+            This.text = '好的'
+        }else if(This.val.alertType==2){
+            This.title = '查看联系方式'
+            This.content = '您已查看'+This.val.viewCount+'个班组的联系方式，您有5次体验机会，请加入共建共享计划获得更多权限，成功通过审核，可增加100次的班组查看权限。'
+            This.text = '立即加入共建共享计划'
+        }else{
+            This.title = '获取更多班组联系方式'
+            This.content = '您已查看'+This.val.viewCount+'个班组的联系方式，您可推荐新班组获得更多的权限。每成功推荐1个新班组，可增加100次的班组查看权限'
+            This.text = '推荐班组'
+        }
+        This.remainCount = This.val.remainCount
     },
     methods: {
         //  弹框取消
@@ -40,6 +64,21 @@ export default {
         hidePanel: function(event) {
             //这句是说如果我们点击到了id为myPanel以外的区域
             this.$emit("func", false);
+        },
+        goWhere(){
+            let This = this
+            if(This.text == '好的'){
+                This.changeModel = !This.changeModel;
+                This.isModel = !This.isModel;
+            }else if(This.text == '立即加入共建共享计划'){
+                wx.navigateTo({
+                    url:'/pages/sharing/main'
+                })
+            }else{
+                wx.navigateTo({
+                    url:'/pages/registerClass/main'
+                })
+            }
         }
     }
 };

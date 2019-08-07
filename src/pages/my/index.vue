@@ -5,11 +5,15 @@
         </section>
         <section class="maintenance">
             <img  @click="goMy" src="/static/images/user.png">
-            <p>{{name}}</p>
+            <p v-if="mobile">{{name}}</p>
+            <p v-if="!mobile" style="font-weight:100;" @click="goLogin" open-type="getUserInfo" @getuserinfo="getUserInfo">点击登陆</p>
         </section>
         <section>
             <ul>
-                <li v-for="(item,index) in list" :key="index" @click="goUrl(item.url)"><span>{{item.name}}</span><span><img src="/static/images/right.png"></span></li>
+                <li @click="goC" v-if="mobile"><span>我推荐的班组</span><span><img src="/static/images/right.png"></span></li>
+                <li @click="goS"><span>共建共享计划</span><span><img src="/static/images/right.png"></span></li>
+                <li @click="goW"><span>关于我们</span><span><img src="/static/images/right.png"></span></li>
+                <!-- <li v-for="(item,index) in list" :key="index" @click="goUrl(item.url)"><span>{{item.name}}</span><span><img src="/static/images/right.png"></span></li> -->
             </ul>
         </section>
         <section class="add">
@@ -28,6 +32,7 @@ export default {
     },
     data() {
         return {
+            mobile:'',
             name:'',
             list: [
                 {
@@ -51,7 +56,8 @@ export default {
     },
     mounted() {
         let This = this
-        This.name = wx.getStorageSync('username') 
+        This.mobile = wx.getStorageSync('mobile') 
+        This.name = wx.getStorageSync('username')
     },
     methods:{
         goUrl(url){
@@ -63,6 +69,56 @@ export default {
             wx.navigateTo({
                 url:"/pages/editMy/main"
             });
+        },
+        goLogin(){
+            wx.navigateTo({
+                url:"/pages/login/main"
+            });  
+        },
+        goC(){
+            wx.navigateTo({
+                url:"/pages/RecommendedTeams/main"
+            }); 
+        },
+        goS(){
+            wx.navigateTo({
+                url:"/pages/sharing/main"
+            }); 
+        },
+        goW(){
+            wx.navigateTo({
+                url:"/pages/aboutUs/main"
+            }); 
+        },
+        getUserInfo (e) {
+            console.log(e)
+            let userInfo = JSON.parse(e.mp.detail.rawData)
+            console.log(userInfo)
+            let data = {
+                nickName:userInfo.nickName,
+                headImg:userInfo.avatarUrl,
+                gender:userInfo.gender,
+                areaName:[userInfo.country,userInfo.province,userInfo.city]
+            }
+            fly.post('/contractor/weChatAuth',data).then(function (res) {
+                console.log(res)
+
+                if(res.response.mobile){
+                    wx.setStorageSync('token', res.response.authorization) 
+                    wx.setStorageSync('gender', res.response.gender) 
+                    wx.setStorageSync('mobile', res.response.mobile) 
+                    wx.setStorageSync('nickName', res.response.nickName) 
+                    wx.setStorageSync('username', res.response.username) 
+                    wx.navigateTo({
+                        url:'/pages/my/main'
+                    })
+                }else{
+                    wx.navigateTo({
+                        url:'/pages/point/main'
+                    })
+                }
+
+            })
         }
     }
 };

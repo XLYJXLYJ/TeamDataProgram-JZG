@@ -125,6 +125,14 @@ export default {
             }
         });
     },
+    onShow(){
+        let This = this
+        This.isTop = false
+    },
+    onUnload(){
+        let This = this
+        This.isTop = false
+    },
     mounted() {
         let This = this
         fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
@@ -151,6 +159,7 @@ export default {
                 })
             })
             This.pickerCityValueArray = arr
+
 
 
         })

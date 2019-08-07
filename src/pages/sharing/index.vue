@@ -35,6 +35,9 @@
                 <li class="one-li">
                     <p style="color:rgb(252,184,19)">建筑业优质班组共建共享计划规则</p>
                 </li>
+                <li class="one-li">
+                    <button style="background-color:rgb(252 184 19)" v-if="status=='不通过'" @click="goshare">再次申请加入</button>
+                </li>
             </ul>
         </div>
     </div>
@@ -71,6 +74,13 @@ export default {
             This.position=data.positionName,
             This.imgs=data.imgs
         })
+    },
+    methods: {
+        goshare(){
+            wx.navigateTo({
+                url:'/pages/register/main'
+            })
+        }
     },
     components: {
         goBackNav

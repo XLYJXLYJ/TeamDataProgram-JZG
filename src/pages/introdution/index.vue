@@ -5,7 +5,7 @@
             <selfAlert
                 v-bind:changeModel="ischangeModel"
                 v-bind:isModel="ifMode"
-                v-bind:val="0"
+                v-bind:val="alertType"
                 @func="controlAlert"
             ></selfAlert>
         </div>
@@ -99,6 +99,7 @@ import fly from "@/services/WxApi";
 export default {
     data() {
         return {
+            alertType:'1',
             phone:'查看联系方式',
             organizationName:'', // 公司名称
             ContractorProjectType:'', // 标签
@@ -247,15 +248,33 @@ export default {
         seePhone() {
             let This = this
             // This.$emit("alertframe", true);
-            This.isAlert = true
-            This.ifMode = true
-            This.ischangeModel = true
+
             let data = {
                 contractorId:This.contractorId || wx.getStorageSync('contractorId')
             }
             fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
                 console.log(res)
+                This.alertType = res.response
                 This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
+                This.isAlert = true
+                This.ifMode = true
+                This.ischangeModel = true
+            })
+        },
+        getUserInfo (e) {
+            let userInfo = JSON.parse(e.mp.detail.rawData)
+            let data = {
+                nickName:userInfo.nickName,
+                headImg:userInfo.avatarUrl,
+                gender:userInfo.gender,
+                areaName:[userInfo.country,userInfo.province,userInfo.city]
+            }
+            fly.post('/contractor/weChatAuth',data).then(function (res) {
+                wx.setStorageSync('token', res.response.authorization) 
+                wx.setStorageSync('gender', res.response.gender) 
+                wx.setStorageSync('mobile', res.response.mobile) 
+                wx.setStorageSync('nickName', res.response.nickName) 
+                wx.setStorageSync('username', res.response.username) 
             })
         }
     },
@@ -428,6 +447,7 @@ export default {
             color: black;
             font-family: "PingFangSC-Regular";
             margin-left: 16rpx;
+            margin-top: -6rpx;
         }
     }
 }

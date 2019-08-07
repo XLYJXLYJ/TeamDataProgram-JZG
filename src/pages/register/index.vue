@@ -96,6 +96,16 @@ export default {
             imgMessage:[]
         };
     },
+    mounted() {
+        let This = this
+        fly.post('/contractor/getMySharingPlan').then(function (res) {
+            let data = res.response
+            This.phone=data.mobile,
+            This.name=data.username,
+            This.company=data.companyName,
+            This.position=data.positionName
+        })
+    },
     methods: {
         GetClassCode() {
             if (!this.phone) {
