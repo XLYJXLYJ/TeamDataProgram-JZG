@@ -6,12 +6,14 @@
                     v-for="(item, index) in navList"
                     @click="selectNavItem(index,item.pagePath)"
                     :key="index">
-                    <p class="item-images">
-                        <img :src="selectNavIndex === index ? item.selectedIconPath : item.iconPath" alt="iconPath"/>
-                    </p>
-                    <p :class="selectNavIndex === index ? 'item-text item-text-active' : 'item-text' ">
-                        {{item.text}}
-                    </p>
+                    <!-- <button open-type="getUserInfo" @getuserinfo="getUserInfo" style="border:none;"> -->
+                        <p class="item-images">
+                            <img :src="selectNavIndex === index ? item.selectedIconPath : item.iconPath" alt="iconPath"/>
+                        </p>
+                        <p :class="selectNavIndex === index ? 'item-text item-text-active' : 'item-text' ">
+                            {{item.text}}
+                        </p>
+                    <!-- </button> -->
                 </li>
             </ul>
         </article>
