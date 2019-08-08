@@ -176,7 +176,7 @@ export default {
         margin: 0 auto;
         margin-top: 40rpx;
         .get-block {
-            border-bottom: 1px solid rgb(204, 204, 204);
+            border-bottom: 1rpx solid rgb(204, 204, 204);
             margin-bottom: 48rpx;
             .get-code {
                 display: flex;
@@ -201,6 +201,9 @@ export default {
             margin-bottom: 24rpx;
             font-size: 34rpx;
             font-family: "PingFangSC-Medium";
+            border:none;
+            height: 96rpx;
+            width: 670rpx;
         }
     }
 }

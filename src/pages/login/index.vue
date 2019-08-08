@@ -13,7 +13,7 @@
             <form>
                 <div class="get-block">
                     <p class="title">手机号码</p>
-                    <input type="text" v-model="phone" placeholder="请输入您的手机号" autocomplete="off" />
+                    <input type="text" v-model="phone" placeholder="请输入手机号码" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
@@ -22,10 +22,11 @@
                         <input
                             type="text"
                             v-model="phone_code"
-                            placeholder="请输入您的手机验证码"
+                            placeholder="请输入验证码"
                             autocomplete="off"
                         />
-                        <p @click="GetCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p>
+                        <!-- <p @click="GetCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p> -->
+                        <p @click="GetCode" class="getCodeDisabled">{{btnTxt}}</p>
                     </div>
                 </div>
 
@@ -58,7 +59,7 @@ export default {
             name: "",
             company: "",
             position: "",
-            btnTxt: "点击获取验证码",
+            btnTxt: "获取验证码",
             disabled: false,
             time: 0, // 验证码时间初始化
             btn: true
@@ -145,7 +146,7 @@ export default {
         margin: 0 auto;
         margin-top: 40rpx;
         .get-block {
-            border-bottom: 1px solid rgb(204, 204, 204);
+            border-bottom: 1rpx solid rgb(204, 204, 204);
             margin-bottom: 48rpx;
             .get-code {
                 display: flex;
@@ -158,7 +159,7 @@ export default {
         }
         .title {
             font-size: 28rpx;
-            color: block;
+            color: black;
             font-family: "PingFangSC-Regular";
             margin-bottom: 16rpx;
         }
@@ -170,6 +171,12 @@ export default {
             margin-bottom: 24rpx;
             font-size: 34rpx;
             font-family: "PingFangSC-Medium";
+            font-weight: 550;
+            border-radius: 8rpx;
+            margin-top: 96rpx;
+            border:none;
+            height: 96rpx;
+            width: 670rpx;
         }
     }
 }

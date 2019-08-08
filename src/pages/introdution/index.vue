@@ -17,8 +17,9 @@
             <div class="title">{{organizationName}}</div>
             <div class="tag">
                 <ul class="text-ul">
-                    <li class="text-li" v-for="(item,index) in ContractorProjectType" :key="index">{{item.projectTypeName}} * {{item.medalNum}}</li>
+                    <li class="text-li" v-for="(item,index) in ContractorProjectType" :key="index">{{item.projectTypeName}}  &nbsp;<img style="width:16rpx;height:16rpx" src="/static/images/star.png" alt="">&nbsp; {{item.medalNum}}</li>
                 </ul>
+               
             </div>
             <!-- <div class="detail">
                 <p class="one">"该班组技术好，态度好，做事负责"</p>
@@ -31,7 +32,7 @@
 
         <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
             <div class="gene active">概况</div>
-            <div class="achi" @click="goachi">业绩</div>
+            <div v-if="projectPerformanceCount" class="achi" @click="goachi" style="border-bottom:1rpx solid #ccc;">业绩<span class="num">{{projectPerformanceCount}}</span></div>
         </div>
 
 
@@ -122,6 +123,7 @@ export default {
             imgList:'',
             contractorId:'',
             teamPersonCount:'',
+            projectPerformanceCount:'',
             testImg:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg']
         };
     },
@@ -178,6 +180,7 @@ export default {
             This.eqList = resData.eqList
             This.imgList = resData.imgList
             This.teamPersonCount = resData.teamPersonCount
+            This.projectPerformanceCount = resData.projectPerformanceCount
         })
     },
     onShow() {
@@ -296,6 +299,7 @@ export default {
     img {
         width: 240rpx;
         height: 240rpx;
+        border-radius: 4rpx;
     }
 }
 .title {
@@ -324,6 +328,7 @@ export default {
             margin-right: 10rpx;
             padding: 0rpx 10rpx 0 10rpx;
             margin: 6rpx;
+            border-radius: 8rpx;
         }
     }
 }
@@ -373,6 +378,9 @@ export default {
     justify-content: center;
     align-items: center;
     margin-top: 96rpx;
+    border:none;
+    font-weight: 550;
+    border-radius: 4rpx;
 }
 .tab {
     display: flex;
@@ -389,6 +397,17 @@ export default {
         text-align: center;
         padding-bottom: 24rpx;
         font-family: "PingFang-SC-Semibold";
+        .num{
+            width: 32rpx;
+            height: 32rpx;
+            background: #efeff4;
+            padding-left: 10rpx;
+            padding-right: 10rpx;
+            border-radius: 30rpx;
+            font-size: 24rpx;
+            margin-left: 10rpx;
+            color: #a7a7a8;
+        }
     }
     .active {
         border-bottom: 6rpx solid rgb(252, 184, 19);
@@ -420,6 +439,11 @@ export default {
         font-family: "PingFang-SC-Semibold";
         position: absolute;
         right: 0rpx;
+        .num{
+            width: 32rpx;
+            height: 32rpx;
+            background: red;
+        }
     }
     .active {
         border-bottom: 6rpx solid rgb(252, 184, 19);

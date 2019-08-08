@@ -14,7 +14,7 @@
                 <!-- 第一个表单 -->
                 <div class="get-block">
                     <p class="title">手机号码</p>
-                    <input type="text" v-model="phone" placeholder="请输入您的手机号" autocomplete="off" />
+                    <input type="text" v-model="phone" placeholder="请输入手机号码" placeholder-style="rgb(204, 204, 204)" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
@@ -23,26 +23,27 @@
                         <input
                             type="text"
                             v-model="phone_code"
-                            placeholder="请输入您的手机验证码"
+                            placeholder="请输入验证码"
                             autocomplete="off"
                         />
-                        <p @click="GetClassCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p>
+                        <!-- <p @click="GetClassCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p> -->
+                       <p @click="GetClassCode" class="getCodeDisabled">{{btnTxt}}</p>
                     </div>
                 </div>
 
                 <div class="get-block">
                     <p class="title">姓名</p>
-                    <input type="text" v-model="name" placeholder="请输入姓名" autocomplete="off" />
+                    <input type="text" v-model="name" placeholder="请输入姓名" placeholder-style="rgb(204, 204, 204)" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
                     <p class="title">所在公司</p>
-                    <input type="text" v-model="company" placeholder="请输入现在的公司" autocomplete="off" />
+                    <input type="text" v-model="company" placeholder="请输入现在的公司" placeholder-style="rgb(204, 204, 204)" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
                     <p class="title">职位</p>
-                    <input type="text" v-model="position" placeholder="请输入职位" autocomplete="off" />
+                    <input type="text" v-model="position" placeholder="请输入职位" placeholder-style="rgb(204, 204, 204)" autocomplete="off" />
                 </div>
 
                 <div class="img-block">
@@ -89,7 +90,7 @@ export default {
             name: "",
             company: "",
             position: "",
-            btnTxt: "点击获取验证码",
+            btnTxt: "获取验证码",
             disabled: false,
             time: 0, // 验证码时间初始化
             btn: true,
@@ -266,7 +267,7 @@ export default {
         margin: 0 auto;
         margin-top: 40rpx;
         .get-block {
-            border-bottom: 1px solid rgb(204, 204, 204);
+            border-bottom: 1rpx solid #ccc;
             margin-bottom: 48rpx;
             .get-code {
                 display: flex;
@@ -279,18 +280,23 @@ export default {
         }
         .title {
             font-size: 28rpx;
-            color: block;
+            color: black;
             font-family: "PingFangSC-Regular";
             margin-bottom: 16rpx;
         }
         input {
             padding-bottom: 16rpx;
         }
+
         .confirm {
             background: #fcb813;
             margin-bottom: 24rpx;
             font-size: 34rpx;
             font-family: "PingFangSC-Medium";
+            border:none;
+            font-weight: 550;
+            height: 96rpx;
+            width: 670rpx;
         }
     }
 }
@@ -300,4 +306,5 @@ export default {
 .getCodeDisabled {
     color: rgb(204, 204, 204);
 }
+
 </style>

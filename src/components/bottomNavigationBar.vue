@@ -6,18 +6,18 @@
                     v-for="(item, index) in navList"
                     @click="selectNavItem(index,item.pagePath)"
                     :key="index">
-                    <!-- <button open-type="getUserInfo" @getuserinfo="getUserInfo" style="border:none;"> -->
+                    <button open-type="getUserInfo" @getuserinfo="getUserInfo" style="border:none;">
                         <p class="item-images">
                             <img :src="selectNavIndex === index ? item.selectedIconPath : item.iconPath" alt="iconPath"/>
                         </p>
                         <p :class="selectNavIndex === index ? 'item-text item-text-active' : 'item-text' ">
                             {{item.text}}
                         </p>
-                    <!-- </button> -->
+                    </button>
                 </li>
             </ul>
         </article>
-        <button open-type="getUserInfo" @getuserinfo="getUserInfo"> <img class="buttom-img" src="/static/images/button.png"></button>
+        <button style="border:none;" open-type="getUserInfo" @getuserinfo="getUserInfo"> <img class="buttom-img" src="/static/images/button.png"></button>
     </section>
 </template>
 <script>
@@ -31,7 +31,7 @@ export default {
                     selectedIconPath: "/static/tabs/home-active.png",
                     iconPath: "/static/tabs/home.png",
                     pagePath: "/pages/index/main",
-                    text: "维保"
+                    text: "维组库"
                 },
                 {
                     selectedIconPath: "/static/tabs/orders-active.png",
@@ -81,10 +81,6 @@ export default {
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
-
-                wx.navigateTo({
-                    url:'/pages/point/main'
-                })
             })
         }
     }
@@ -96,7 +92,7 @@ export default {
     bottom: 0;
     width: 100%;
     height: 50px;
-    border-top: 1px solid #eee;
+    border-top: 1rpx solid #ccc;
     background-color: #f8f8f8;
 }
 
@@ -112,9 +108,11 @@ export default {
         color: #666;
         font-size: 20rpx;
         transition: 0.24s linear;
+        margin-top: -8rpx;
     }
     .item-text-active {
         color: rgb(252, 184, 19);
+        margin-top: -8rpx;
     }
     .item-images {
         width: 40rpx;
@@ -127,6 +125,10 @@ export default {
             display: inline;
         }
     }
+}
+button::after{
+    outline: none;
+    border: none;
 }
 .buttom-img{
     position: fixed;

@@ -106,6 +106,7 @@ export default {
         color: black;
         font-weight: 550;
         border: none;
+        border-radius: 8rpx;
     }
     .content {
         ul {
@@ -116,7 +117,7 @@ export default {
                 width: 670rpx;
                 margin: 0 auto;
                 padding: 24rpx 0 24rpx 0;
-                border-bottom: 1px solid rgb(204, 204, 204);
+                border-bottom: 1rpx solid rgb(204, 204, 204);
                 .company-name {
                     font-size: 34rpx;
                     color: black;

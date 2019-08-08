@@ -144,6 +144,7 @@ export default {
         justify-content: center;
         align-items: center;
         background: rgb(252, 184, 19);
+        border: none;
     }
 }
 </style>

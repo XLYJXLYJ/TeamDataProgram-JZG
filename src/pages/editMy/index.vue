@@ -18,7 +18,7 @@
 
                 <div class="get-block" style="border:none">
                     <p class="title">手机号</p>
-                    <input type="text" v-model="phone" disabled autocomplete="off" />
+                    <input type="text" v-model="phone" disabled style="color:#5f5f5f" autocomplete="off" />
                 </div> 
 
                 <div class="get-block">
@@ -28,7 +28,7 @@
 
                 <div class="get-block" style="border:none">
                     <p class="title">微信昵称</p>
-                    <input type="text" v-model="wx" disabled autocomplete="off" />
+                    <input type="text" v-model="wx" style="color:#5f5f5f" disabled autocomplete="off" />
                 </div>
 
 
@@ -73,6 +73,7 @@ export default {
     mounted() {
         let This = this   
         This.gender = wx.getStorageSync('gender') 
+        This.gender = This.gender=1?'男':'女'
         This.phone = wx.getStorageSync('mobile') 
         This.wx = wx.getStorageSync('nickName') 
         This.name = wx.getStorageSync('username') 
@@ -101,7 +102,7 @@ export default {
         margin: 0 auto;
         margin-top: 40rpx;
         .get-block {
-            border-bottom: 1px solid rgb(204, 204, 204);
+            border-bottom: 1rpx solid rgb(204, 204, 204);
             margin-bottom: 48rpx;
             .get-code {
                 display: flex;
@@ -128,7 +129,9 @@ export default {
             font-family: "PingFangSC-Medium";
             position: fixed;
             width: 670rpx;
+            height: 96rpx;
             bottom: 40rpx;
+            border:none;
         }
     }
 }

@@ -25,10 +25,10 @@
                 <p class="three">深圳市新丰建筑工程有限公司</p>
             </div> -->
             <div class="brief">{{contractorDesc}}</div>
-            <button class="phone" @click="seePhone">{{phone}}</button>
+            <button style="border:none;" class="phone" @click="seePhone">{{phone}}</button>
         </div>
          <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
-            <div class="gene" @click="gointro">概况</div>
+            <div class="gene" @click="gointro" style="border-bottom:1rpx solid #ccc;">概况</div>
             <div class="achi active">业绩</div>
         </div>
         <div class="equip">

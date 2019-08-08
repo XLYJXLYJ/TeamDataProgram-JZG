@@ -31,12 +31,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="one-li"></li>
                 <li class="one-li">
-                    <p style="color:rgb(252,184,19)">建筑业优质班组共建共享计划规则</p>
+                    <p style="color:rgb(252,184,19);margin-top:48rpx">建筑业优质班组共建共享计划规则</p>
                 </li>
                 <li class="one-li">
-                    <button style="background-color:rgb(252 184 19)" v-if="status=='不通过'" @click="goshare">再次申请加入</button>
+                    <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='不通过'" @click="goshare">再次申请加入</button>
                 </li>
             </ul>
         </div>
@@ -66,13 +65,13 @@ export default {
             }else if(data.reviewStatus==2){
                 This.status='不通过'
             }else{
-                This.status='审核中...'
+                This.status='审核中'
             }
             This.phone=data.mobile,
             This.name=data.username,
             This.company=data.companyName,
-            This.position=data.positionName,
-            This.imgs=data.imgs
+            This.position=data.positionName || '',
+            This.imgs=data.imgs || ''
         })
     },
     methods: {
@@ -96,7 +95,7 @@ export default {
         .one-li {
             width: 670rpx;
             margin: 0 auto;
-            height: 120rpx;
+            height: 168rpx;
             .one {
                 font-size: 28rpx;
                 color: black;
@@ -106,6 +105,7 @@ export default {
                 font-size: 34rpx;
                 color: #6c6962;
                 font-family: "PingFangSC-Regular";
+                margin-top: 18rpx;
             }
             .two-ul {
                 .two-li {

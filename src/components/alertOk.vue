@@ -105,6 +105,7 @@ export default {
         align-items: center;
         background: #fff;
         border-bottom: none;
+
     }
 }
 </style>

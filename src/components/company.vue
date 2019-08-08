@@ -15,7 +15,7 @@
             <p class="three">深圳市新丰建筑工程有限公司</p>
         </div> -->
         <div class="brief">{{contractorDesc}}</div>
-        <button class="phone" @click="seePhone">{{phone}}</button>
+        <button style="border:none;height:96rpx;" class="phone" @click="seePhone">{{phone}}</button>
     </div>
 </template>
 <script>

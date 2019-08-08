@@ -154,7 +154,7 @@ export default {
             .line {
                 display: block;
                 height: 30rpx;
-                width: 1px;
+                width: 1rpx;
                 background-color: gray;
             }
             .opt-home {
@@ -165,7 +165,7 @@ export default {
             }
             }
             .bar-title {
-                width: 420rpx;
+                width: auto;
                 height: 52rpx;
                 font-size: 37rpx;
                 font-family: 'PingFangSC-Medium';

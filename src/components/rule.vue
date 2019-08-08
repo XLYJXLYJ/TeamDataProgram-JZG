@@ -3,7 +3,7 @@
         <goBackNav :title='title'></goBackNav>
         <p class="about">{{message}}</p>
         <p class="rule">{{rules}}</p>
-        <button class="confirm" @click="goSharing">{{buttonContent}}</button>
+        <button style="border:none;" class="confirm" @click="goSharing">{{buttonContent}}</button>
     </div>
 </template>
 
@@ -38,6 +38,7 @@ export default {
   }
     .confirm{
       width: 670rpx;
+      height: 96rpx;
       background:#FCB813;
       margin-bottom:24rpx;
       font-size:34rpx;

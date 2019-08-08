@@ -154,7 +154,7 @@ export default {
             .line {
                 display: block;
                 height: 30rpx;
-                width: 1px;
+                width: 1rpx;
                 background-color: gray;
             }
             .opt-home {
