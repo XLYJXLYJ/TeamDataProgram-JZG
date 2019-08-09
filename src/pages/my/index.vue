@@ -6,7 +6,7 @@
         <section class="maintenance">
             <img  @click="goMy" src="/static/images/user.png">
             <p v-if="mobile">{{name}}</p>
-            <p v-if="!mobile" style="font-weight:100;" @click="goLogin" open-type="getUserInfo" @getuserinfo="getUserInfo">点击登陆</p>
+            <p v-if="!mobile" style="font-weight:100;" @click="goLogin">点击登陆</p>
         </section>
         <section>
             <ul>
@@ -89,36 +89,6 @@ export default {
             wx.navigateTo({
                 url:"/pages/aboutUs/main"
             }); 
-        },
-        getUserInfo (e) {
-            console.log(e)
-            let userInfo = JSON.parse(e.mp.detail.rawData)
-            console.log(userInfo)
-            let data = {
-                nickName:userInfo.nickName,
-                headImg:userInfo.avatarUrl,
-                gender:userInfo.gender,
-                areaName:[userInfo.country,userInfo.province,userInfo.city]
-            }
-            fly.post('/contractor/weChatAuth',data).then(function (res) {
-                console.log(res)
-
-                if(res.response.mobile){
-                    wx.setStorageSync('token', res.response.authorization) 
-                    wx.setStorageSync('gender', res.response.gender) 
-                    wx.setStorageSync('mobile', res.response.mobile) 
-                    wx.setStorageSync('nickName', res.response.nickName) 
-                    wx.setStorageSync('username', res.response.username) 
-                    wx.navigateTo({
-                        url:'/pages/my/main'
-                    })
-                }else{
-                    wx.navigateTo({
-                        url:'/pages/point/main'
-                    })
-                }
-
-            })
         }
     }
 };

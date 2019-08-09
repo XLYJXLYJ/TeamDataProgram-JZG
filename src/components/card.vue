@@ -1,5 +1,6 @@
 <template>
     <div class="card-contain">
+        <alertOk :changeModel='changeModel' :isModel='isModel' :path='path'></alertOk>
         <div :class="{'fixedSelectCity':isTop,'selectCity':!isTop}" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
             <div>
                 <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
@@ -22,7 +23,7 @@
             </div>
         </div>
 
-        <!-- <ul class="card-ul">
+        <ul class="card-ul">
             <div class="img-contain" v-if="!list">
                 <img src="/static/images/none.png">
             </div>
@@ -48,9 +49,9 @@
                     </div>
                 </li>
             </div>
-        </ul> -->
+        </ul>
 
-        <ul class="card-ul">
+        <!-- <ul class="card-ul">
             <div class="img-contain" v-if="!list">
                 <img src="/static/images/none.png">
             </div>
@@ -72,22 +73,27 @@
                     </button>
                 </li>
             </div>
-        </ul>
+        </ul> -->
 
 
-         <button class="shareButton" @click="goPoint" v-show="showButton" open-type="getUserInfo" @getuserinfo="getUserInfo">加入共建共享计划，查看更多班组</button>
+         <button class="shareButton" @click="goPoint" v-show="showButton">加入共建共享计划，查看更多班组</button>
     </div>
 </template>
 
 <script>
 import mpPicker from 'mpvue-weui/src/picker';
 import fly from "@/services/WxApi";
+import alertOk from "@/components/alertOk.vue";
 export default {
     components: {
         mpPicker,
+        alertOk
     },
     data() {
         return {
+            changeModel:false,
+            isModel:false,
+            path:'',
             mode: 'multiLinkageSelector',
             isTop:false,
             statusBarHeight: "", // 状态栏高度
@@ -161,6 +167,7 @@ export default {
     },
     mounted() {
         let This = this
+
         fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
             // let oneRowArray = []
             // let oneColumnArray = []
@@ -222,9 +229,20 @@ export default {
     },
     methods: {
         goIntro(index){
-            wx.navigateTo({
-                url:'/pages/introdution/main?contractorId=' + index
-            })
+            let This = this
+            if(!wx.getStorageSync('mobile')){
+                console.log('666')
+                This.changeModel = true
+                This.isModel = true
+
+                This.path = '/pages/introdution/main?contractorId=' + index
+                console.log(This.path)
+            }else{
+                console.log('9999')
+                wx.navigateTo({
+                    url:'/pages/introdution/main?contractorId=' + index
+                })
+            }
         },
         bindMultiPickerChange: function (e) {
             console.log('picker发送选择改变，携带值为', e)
@@ -313,9 +331,19 @@ export default {
             }
         },
         goPoint(){
-            wx.navigateTo({
-                url:'/pages/point/main'
-            })
+            let This = this
+            if(!wx.getStorageSync('mobile')){
+                console.log('666')
+                This.changeModel = true
+                This.isModel = true
+                This.path = '/pages/register/main'
+            }else{
+                console.log('9999')
+                wx.navigateTo({
+                    url:'/pages/register/main'
+                })
+            }
+
         },
         show(){
             this.$refs.mpPicker.show();
@@ -413,7 +441,99 @@ export default {
         z-index: 999;
     }
 
-    .card-ul{
+    // .card-ul{
+    //     width: 670rpx;
+    //     height: auto;
+    //     margin: 0 auto;
+    //     .img-contain{
+    //         width: 100%;
+    //         height: 660rpx;
+    //         display: flex;
+    //         align-items: center;
+    //         justify-content: center;
+    //         img{
+    //             width: 128rpx;
+    //             height: 134rpx;
+    //         }
+    //     }
+    //    .card-li{
+    //         height: 190rpx;
+    //         width: 670rpx;
+    //         position: relative;
+    //         border-bottom: 1px solid #ccc;
+    //         button::after{
+    //             border: none;
+    //         }
+    //         button{
+    //             height: 190rpx;
+    //             width: 670rpx;
+    //             background: #fff;
+    //             z-index: 0;
+    //             position: relative;
+
+    //             img{
+    //                 width: 128rpx;
+    //                 height: 134rpx;
+    //                 position: absolute;
+    //                 left: 0rpx;
+    //                 top: 28rpx;
+    //             }
+    //             .company{
+    //                 font-family: 'PingFangSC-Regular';
+    //                 font-size: 34rpx;
+    //                 color: black;
+    //                 font-weight: 550;
+    //                 display: flex;
+    //                 justify-content: flex-start;
+    //                 position: absolute;
+    //                 left: 146rpx;
+    //                 top: 0rpx;
+    //             }
+
+                
+    //             .text-ul{
+    //                 list-style: none;
+    //                 position: absolute;
+    //                 left: 146rpx;
+    //                 top: 74rpx;
+    //                 .text-li{
+    //                     float: left;
+    //                     height: 40rpx;
+    //                     width: auto;
+    //                     background-color: rgba(252, 184, 19,.2);
+    //                     font-family: 'PingFangSC-Regular';
+    //                     font-size: 24rpx;
+    //                     color: rgb(202, 146, 9);
+    //                     display: flex;
+    //                     align-items: center;
+    //                     justify-content: space-around;
+    //                     margin-right: 10rpx;
+    //                     padding: 0rpx 10rpx 0 10rpx;
+    //                     .img-star{
+    //                         background-image: url('/static/images/star.png') no-repeat;
+    //                         background-size: 16rpx 16rpx;
+    //                     }
+    //                 }
+    //             }
+    //             .achievement{
+    //                 font-family: 'PingFangSC-PingFangSC-Light';
+    //                 font-size: 28rpx;
+    //                 position: absolute;
+    //                 left: 146rpx;
+    //                 top: 104rpx;
+    //             }
+    //             .right{
+    //                 width: 16rpx;
+    //                 height: 25.2rpx;
+    //                 position: absolute;
+    //                 left: 626rpx;
+    //                 top: 90rpx;
+    //             }
+    //         }
+    //     }
+    // }
+
+.card-ul{
         width: 670rpx;
         height: auto;
         margin: 0 auto;
@@ -428,167 +548,76 @@ export default {
                 height: 134rpx;
             }
         }
-       .card-li{
+        .card-li{
             height: 190rpx;
             width: 670rpx;
-            position: relative;
-            border-bottom: 1px solid #ccc;
-            button::after{
-                border: none;
-            }
-            button{
-                height: 190rpx;
-                width: 670rpx;
-                background: #fff;
-                z-index: 0;
-                position: relative;
-
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgb(204, 204, 204);
+            .left{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                margin-top: 2rpx;
                 img{
-                    width: 128rpx;
-                    height: 134rpx;
-                    position: absolute;
-                    left: 0rpx;
-                    top: 28rpx;
+                    width: 126rpx;
+                    height: 126rpx;
+                    border-radius: 4rpx;
                 }
-                .company{
+                .text-detail{
                     font-family: 'PingFangSC-Regular';
                     font-size: 34rpx;
-                    color: black;
-                    font-weight: 550;
+                    margin-left:20rpx;
+                    height: 126rpx;
                     display: flex;
                     justify-content: flex-start;
-                    position: absolute;
-                    left: 146rpx;
-                    top: 0rpx;
-                }
-
-                
-                .text-ul{
-                    list-style: none;
-                    position: absolute;
-                    left: 146rpx;
-                    top: 74rpx;
-                    .text-li{
-                        float: left;
-                        height: 40rpx;
-                        width: auto;
-                        background-color: rgba(252, 184, 19,.2);
+                    flex-direction: column;
+                    .company{
                         font-family: 'PingFangSC-Regular';
-                        font-size: 24rpx;
-                        color: rgb(202, 146, 9);
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-around;
-                        margin-right: 10rpx;
-                        padding: 0rpx 10rpx 0 10rpx;
-                        .img-star{
-                            background-image: url('/static/images/star.png') no-repeat;
-                            background-size: 16rpx 16rpx;
+                        font-size: 34rpx;
+                        color: black;
+                        margin-top: -16rpx;
+                        font-weight: 550;
+                    }
+                    .text-ul{
+                        list-style: none;
+                        margin-top: -6rpx;
+                        .text-li{
+                            float: left;
+                            height: 40rpx;
+                            width: auto;
+                            background-color: rgba(252, 184, 19,.2);
+                            font-family: 'PingFangSC-Regular';
+                            font-size: 24rpx;
+                            color: rgb(202, 146, 9);
+                            display: flex;
+                            align-items: center;
+                            margin-right: 10rpx;
+                            padding: 0rpx 10rpx 0 10rpx;
+                            margin: 6rpx;
                         }
                     }
+                    .achievement{
+                        font-family: 'PingFangSC-PingFangSC-Light';
+                        font-size: 28rpx;
+                        margin-top: -6rpx;
+                    }
                 }
-                .achievement{
-                    font-family: 'PingFangSC-PingFangSC-Light';
-                    font-size: 28rpx;
-                    position: absolute;
-                    left: 146rpx;
-                    top: 104rpx;
-                }
-                .right{
+            }
+            .right{
+                width: 16rpx;
+                height: 25rpx;
+                margin-top: 1.6rpx;
+                img{
                     width: 16rpx;
                     height: 25.2rpx;
-                    position: absolute;
-                    left: 626rpx;
-                    top: 90rpx;
                 }
             }
         }
     }
-
-// .card-ul{
-//         width: 670rpx;
-//         height: auto;
-//         margin: 0 auto;
-//         .img-contain{
-//             width: 100%;
-//             height: 660rpx;
-//             display: flex;
-//             align-items: center;
-//             justify-content: center;
-//             img{
-//                 width: 128rpx;
-//                 height: 134rpx;
-//             }
-//         }
-//         .card-li{
-//             height: 190rpx;
-//             width: 670rpx;
-//             display: flex;
-//             flex-direction: row;
-//             justify-content: space-between;
-//             align-items: center;
-//             border-bottom: 1px solid rgb(204, 204, 204);
-//             .left{
-//                 display: flex;
-//                 flex-direction: row;
-//                 justify-content: flex-start;
-//                 align-items: center;
-//                 margin-top: 2rpx;
-//                 img{
-//                     width: 126rpx;
-//                     height: 126rpx;
-//                 }
-//                 .text-detail{
-//                     font-family: 'PingFangSC-Regular';
-//                     font-size: 34rpx;
-//                     margin-left:20rpx;
-//                     height: 126rpx;
-//                     display: flex;
-//                     justify-content: flex-start;
-//                     flex-direction: column;
-//                     .company{
-//                         font-family: 'PingFangSC-Regular';
-//                         font-size: 34rpx;
-//                         color: black;
-//                         margin-top: -16rpx;
-//                         font-weight: 550;
-//                     }
-//                     .text-ul{
-//                         list-style: none;
-//                         margin-top: -6rpx;
-//                         .text-li{
-//                             float: left;
-//                             height: 40rpx;
-//                             width: auto;
-//                             background-color: rgba(252, 184, 19,.2);
-//                             font-family: 'PingFangSC-Regular';
-//                             font-size: 24rpx;
-//                             color: rgb(202, 146, 9);
-//                             display: flex;
-//                             align-items: center;
-//                             margin-right: 10rpx;
-//                             padding: 0rpx 10rpx 0 10rpx;
-//                             margin: 6rpx;
-//                         }
-//                     }
-//                     .achievement{
-//                         font-family: 'PingFangSC-PingFangSC-Light';
-//                         font-size: 28rpx;
-//                         margin-top: -6rpx;
-//                     }
-//                 }
-//             }
-//             .right{
-//                 width: 16rpx;
-//                 height: 25rpx;
-//                 margin-top: 1.6rpx;
-//                 img{
-//                     width: 16rpx;
-//                     height: 25.2rpx;
-//                 }
-//             }
-//         }
-//     }
     
     .shareButton{
         width: 670rpx;

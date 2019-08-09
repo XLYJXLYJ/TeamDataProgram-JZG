@@ -20,7 +20,22 @@ export default {
         console.log(this.isModel)
     },
     methods: {
-
+        //  弹框取消
+        tapCancel() {
+            console.log("取消");
+            this.changeModel = !this.changeModel;
+            this.isModel = !this.isModel;
+        },
+        //  确认
+        confirmSend() {
+            console.log("确认");
+            this.changeModel = !this.changeModel;
+            this.isModel = !this.isModel;
+        },
+        show_pro(val) {
+            this.changeModel = !this.changeModel;
+            this.isModel = !this.isModel;
+        },
         hidePanel: function(event) {
             //这句是说如果我们点击到了id为myPanel以外的区域
             this.$emit("func", false);

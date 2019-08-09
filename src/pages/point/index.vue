@@ -3,17 +3,17 @@
         <section class="sec-nav">
             <navigationBar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigationBar>
         </section>
-        <alertOk changeModel='true' isModel='true' val=''></alertOk>
+        <!-- <alertOk changeModel='true' isModel='true' val=''></alertOk> -->
 
     </div>
 </template>
 
 <script>
-import alertOk from "@/components/alertOk.vue";
+// import alertOk from "@/components/alertOk.vue";
 import navigationBar from "@/components/navigationBar.vue";
 export default {
     components: {
-        alertOk,
+        // alertOk,
         navigationBar
     },
     data() {
