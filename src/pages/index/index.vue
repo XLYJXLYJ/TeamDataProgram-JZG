@@ -1,16 +1,23 @@
 <template>
     <div class="container">
-        <section class="sec-nav">
-            <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
-        </section>
-        <section class="img-contain">
-            <swiper1></swiper1>
-        </section>
-        <section class="maintenance">
-            <card></card>
-        </section>
+        <div class="index" v-if="bottomId">
+            <section class="sec-nav">
+                <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
+            </section>
+            <section class="img-contain">
+                <swiper1></swiper1>
+            </section>
+            <section class="maintenance">
+                <card></card>
+            </section>
+        </div>
+
+        <div class="my" v-if="!bottomId">
+            <my></my>
+        </div>
+
         <section class="add">
-            <bottomNavigationBar :selectNavIndex="selectNavIndex"></bottomNavigationBar>
+            <bottomNavigationBar :selectNavIndex="selectNavIndex" @indexId='indexFuc'></bottomNavigationBar>
         </section>
     </div>
 </template>
@@ -22,17 +29,19 @@ import swiper1 from "@/components/swipe1.vue";
 import card from "@/components/card.vue";
 import add from "@/components/add.vue";
 import fly from "@/services/WxApi";
+import my from "@/pages/my";
 export default {
     components: {
         bottomNavigationBar,
         navigationBar,
         card,
         add,
-        swiper1
+        swiper1,
+        my
     },
     data() {
         return {
-            imgUrls: [
+            imgUrls: [ 
                 {
                     id: 0,
                     url: "https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640"
@@ -46,15 +55,24 @@ export default {
                     url: "https://images.unsplash.com/photo-1551446591-142875a901a1?w=640"
                 }
             ],
-            selectNavIndex:0
+            selectNavIndex:0,
+            bottomId:true 
         };
     },
-    mounted() {
-        // fly.post('',{key: '6758fab29abe7d27e2a91d7b0d76c7dc'}).then(function (response) {
-        //     console.log(response);
-        // })
+    onLoad() {
+        // wx.clearStorage()
     },
     methods:{
+        indexFuc(data){
+            let This = this
+            console.log(data)
+            This.selectNavIndex = data
+            if(data==0){
+                This.bottomId = true
+            }else{
+                This.bottomId = false
+            }
+        }
     }
 };
 </script>

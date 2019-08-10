@@ -1,6 +1,17 @@
 <template>
     <div class="card-contain">
-        <alertOk :changeModel='changeModel' :isModel='isModel' :path='path'></alertOk>
+        <div>
+            <!--弹窗的页面-->
+            <div class="modalMask" v-show="isModel" @click="hidePanel"></div>
+            <div class="modalDialog" v-show="changeModel">
+                <div class="modalContent">
+                    <p class="contentTip">优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
+                    <button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button>
+                </div>
+            </div>
+        </div>
+
+
         <div :class="{'fixedSelectCity':isTop,'selectCity':!isTop}" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
             <div>
                 <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
@@ -149,7 +160,7 @@ export default {
                 self.system = system.system;
                 let platformReg = /ios/i;
                 if (platformReg.test(system.platform)) {
-                    self.titleBarHeight = 39;
+                    self.titleBarHeight = 38;
                 } else {
                     self.titleBarHeight = 43;
                 }
@@ -253,7 +264,7 @@ export default {
             This.projectType = this.Array[one].childList[two].projectType
             This.family = this.Array[one].name
             This.sort = this.Array[one].childList[two].name
-            this.getClass()
+            This.getClass()
         },
         getClass(){
             let This = this
@@ -265,6 +276,11 @@ export default {
             }
             fly.post('/contractor/getHQContractorList',data).then(function (res) {
                 console.log(res)
+                if(res.message == '您的登录已失效,请重新登录'){
+                    wx.clearStorage()
+                    This.getClass()
+                    return;
+                }
                 if(This.page == 1){
                    This.list = res.response.list
                    This.showButton = res.response.list.length ==0?true:false
@@ -307,9 +323,9 @@ export default {
             This.citySelectIndex = e.mp.detail.value
             let one = This.citySelectIndex[0]
             let two = This.citySelectIndex[1]
-            This.cityId = this.cityArray[one].childList[two].id
-            This.city = this.cityArray[one].childList[two].name
-            this.getClass()
+            This.cityId = This.cityArray[one].childList[two].id
+            This.city = This.cityArray[one].childList[two].name
+            This.getClass()
         },
         cityMultiPickerColumnChange: function (e) {
             let oneColumnArray = [];
@@ -346,6 +362,7 @@ export default {
 
         },
         show(){
+            let This = this
             this.$refs.mpPicker.show();
         },
         onConfirm(e) {
@@ -354,7 +371,7 @@ export default {
             This.projectType = e.value[1]
             This.sort = e.label
             This.getClass()
-            console.log(this.projectType)
+            console.log(This.projectType)
         },
         onChange(e) {
             console.log(e);
@@ -364,7 +381,8 @@ export default {
         },
 
         showCity(){
-            this.$refs.cityPicker.show();
+            let This = this
+            This.$refs.cityPicker.show();
         },
         onCityConfirm(e) {
             console.log(e);
@@ -372,7 +390,7 @@ export default {
             This.cityId = e.value[1]
             This.city = '深圳市'
             This.page = 1
-            console.log(this.projectType)
+            console.log(This.projectType)
         },
         onCityChange(e) {
             console.log(e);
@@ -380,9 +398,15 @@ export default {
         onCityCancel(e) {
             console.log(e);
         },
+        hidePanel: function(event) {
+            //这句是说如果我们点击到了id为myPanel以外的区域
+            let This = this
+            This.$emit("func", false);
+        },
         getUserInfo (e) {
             console.log('66666')
             console.log(e)
+            let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
             console.log(userInfo)
             let data = {
@@ -398,10 +422,11 @@ export default {
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
-
-                wx.navigateTo({
-                    url:'/pages/point/main'
-                })
+                This.changeModel = false
+                This.isModel = false
+                // wx.navigateTo({
+                //     url:'/pages/point/main'
+                // })
             })
         }
     },
@@ -410,6 +435,68 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modalMask {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.5;
+    overflow: hidden;
+    z-index: 9000;
+    color: #fff;
+}
+.modalDialog {
+    box-sizing: border-box;
+    width: 590rpx;
+    height: 332rpx;
+    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    z-index: 9999;
+    background: #fff;
+    margin: -180rpx 95rpx;
+    border-radius: 8rpx;
+}
+.modalContent {
+    box-sizing: border-box;
+    display: flex;
+    font-size: 32rpx;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    img {
+        width: 590rpx;
+        height: 340rpx;
+        margin-bottom: 40rpx;
+    }
+    .contentTip {
+        font-size: 34rpx;
+        color: black;
+        font-family: "PingFangSC-Regular";
+        display: flex;
+        justify-content: center;
+        width: 514rpx;
+        padding-top: 42rpx;
+    }
+    button {
+        width: 100%;
+        height: 96rpx;
+        margin-top: 40rpx;
+        font-size: 34rpx;
+        color: rgb(252, 184, 19);
+        font-family: "PingFangSC-Medium";
+        font-weight: 550;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        border-bottom: none;
+
+    }
+}
 .card-contain {
     width: 100%;
     height: 100%;

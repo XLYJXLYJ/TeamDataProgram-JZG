@@ -16,9 +16,9 @@
                 <!-- <li v-for="(item,index) in list" :key="index" @click="goUrl(item.url)"><span>{{item.name}}</span><span><img src="/static/images/right.png"></span></li> -->
             </ul>
         </section>
-        <section class="add">
+        <!-- <section class="add">
             <bottomNavigationBar :selectNavIndex="selectNavIndex"></bottomNavigationBar>
-        </section>
+        </section> -->
     </div>
 </template>
 

@@ -5,7 +5,7 @@
             <selfAlert
                 v-bind:changeModel="ischangeModel"
                 v-bind:isModel="ifMode"
-                v-bind:val="0"
+                v-bind:val="alertType"
                 @func="controlAlert"
             ></selfAlert>
         </div>
@@ -38,7 +38,7 @@
                     <p class="machine">{{item.areaFullName}}</p>
                     <div class="img-contain">
                         <ul class="three-ul">
-                            <div v-for="(threeItem,threeIndex) in imgList" :key="threeIndex">
+                            <div v-for="(threeItem,threeIndex) in item.imgList" :key="threeIndex">
                                 <li class="three-li" v-if="threeIndex<3"><img @click="previewImage(threeItem,imgList)" :src='threeItem' /></li>
                             </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
@@ -85,6 +85,7 @@ import fly from "@/services/WxApi";
 export default {
     data() {
         return {
+            alertType:'',
             phone:'查看联系方式',
             organizationName:'', // 公司名称
             ContractorProjectType:'', // 标签
@@ -223,7 +224,9 @@ export default {
             }
             fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
                 console.log(res)
+                This.alertType = res.response
                 This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
+
             })
         }
     },

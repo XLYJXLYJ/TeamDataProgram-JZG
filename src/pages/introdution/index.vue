@@ -442,7 +442,13 @@ export default {
         .num{
             width: 32rpx;
             height: 32rpx;
-            background: red;
+            background: #efeff4;
+            padding-left: 10rpx;
+            padding-right: 10rpx;
+            border-radius: 30rpx;
+            font-size: 24rpx;
+            margin-left: 10rpx;
+            color: #a7a7a8;
         }
     }
     .active {

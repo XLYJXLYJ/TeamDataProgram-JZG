@@ -51,7 +51,7 @@ export default {
                 {
                     selectedIconPath: "/static/tabs/orders-active.png",
                     iconPath: "/static/tabs/orders.png",
-                    pagePath: "/pages/my/main",
+                    pagePath: "/pages/index/main",
                     text: "我"
                 }
             ]
@@ -63,12 +63,14 @@ export default {
     onhide(){
         let This = this
         This.changeModel = false
-        This.isModel = false
+        This.isModel = false 
     },
     methods: {
         selectNavItem(index, pagePath) {
             console.log(index)
+
             let This = this
+            This.$emit('indexId',index)
             if (index === this.selectNavIndex) {
                 return false;
             }
@@ -82,13 +84,13 @@ export default {
                     This.path = pagePath
                 }else{
                     console.log('9999')
-                    This.bindViewTap(pagePath);
+                    // This.bindViewTap(pagePath);
                 }
             }else{
                 console.log('56565')
                 This.changeModel = false
                 This.isModel = false
-                This.bindViewTap(pagePath);
+                // This.bindViewTap(pagePath);
             }
             // if (index == 0 && this.selectNavIndex == -1) {
             // this.$emit("fetchIndex",index);

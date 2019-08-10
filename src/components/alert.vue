@@ -7,7 +7,7 @@
             <div class="modalContent">
                 <img src="/static/images/share.png" />
                 <p class="contentTip">{{title}}</p>
-                <p class="detail"></p>
+                <p class="detail">{{content}}</p>
                 <button @click="goWhere">{{text}}</button>
             </div>
         </div>
