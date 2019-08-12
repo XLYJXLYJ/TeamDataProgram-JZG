@@ -1,31 +1,16 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/register/main",
     "pages/introdution/main",
     "pages/login/main",
     "pages/sharing/main",
-    "pages/register/main",
-
-
-
     "pages/editMy/main",
-
     "pages/aboutUs/main",
     "pages/RecommendedTeams/main",
     "pages/registerClass/main",
-
-
-
-
-
     "pages/my/main",
-
-
-
-
     "pages/achievement/main",
-
-
     "pages/welcome/main",
     "pages/userAgreement/main",
     "pages/logs/main"

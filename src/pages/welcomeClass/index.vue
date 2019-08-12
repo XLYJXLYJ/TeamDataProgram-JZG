@@ -1,26 +1,14 @@
 <template>
     <div class="welcome">
-        <goBackNav :title='title'></goBackNav>
-        <p class="about">{{message}}</p>
-        <p class="rule">{{rules}}</p>
-        <button style="border:none;" class="confirm" @click="goSharing">{{buttonContent}}</button>
+        <rule title="" message='欢迎推荐优质班组，与众多行业资深管理者联合打造实名、专业、优质的班组资源数据库，推动行业进步！' rules='《建筑业优质班组共建共享计划规则》' buttonContent='立即推荐班组' url='/pages/registerClass/main'></rule>
     </div>
 </template>
 
 <script>
-import goBackNav from "@/components/goBackNav.vue";
+import rule from "@/components/rule.vue";
 export default {
-    props:['title','message','rules','buttonContent','url'],
     components: {
-        goBackNav
-    },
-    methods: {
-        goSharing(){
-            let This = this
-            wx.navigateTo({
-                url:This.url
-            });
-        }
+        rule
     },
 }
 </script>
@@ -39,7 +27,6 @@ export default {
   }
     .confirm{
       width: 670rpx;
-      height: 96rpx;
       background:#FCB813;
       margin-bottom:24rpx;
       font-size:34rpx;
@@ -52,7 +39,7 @@ export default {
     .rule{
         color:#FCB813;
         width: 670rpx;
-        margin-left: 40rpx;
+        margin-left: 20rpx;
         margin-top: 48rpx;
 
     }

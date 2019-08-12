@@ -58,7 +58,7 @@
                 </div>
                 <p class="title">
                     成功推荐新班组，可获得更多权限与资源，详见
-                    <span style="color:rgb(252 184 19)">《建筑业优质班组共建共享计划规则》</span>
+                    <span style="color:rgb(252 184 19)" @click="make">《建筑业优质班组共建共享计划规则》</span>
                 </p>
             </form>
         </div>
@@ -119,6 +119,11 @@ export default {
         });
     },
     methods: {
+        make(){
+            wx.navigateTo({
+                url:'/pages/commonMake/main'
+            });
+        },
         bindMultiPickerChange: function (e) {
             let This = this
             This.selectIndex = e.mp.detail.value

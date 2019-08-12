@@ -32,7 +32,7 @@
                     </ul>
                 </li>
                 <li class="one-li">
-                    <p style="color:rgb(252,184,19);margin-top:48rpx">建筑业优质班组共建共享计划规则</p>
+                    <p style="color:rgb(252,184,19);margin-top:48rpx" @click="make">《建筑业优质班组共建共享计划规则》</p>
                 </li>
                 <li class="one-li">
                     <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='不通过'" @click="goshare">再次申请加入</button>
@@ -79,6 +79,11 @@ export default {
             wx.navigateTo({
                 url:'/pages/register/main'
             })
+        },
+        make(){
+            wx.navigateTo({
+                url:'/pages/commonMake/main'
+            });
         }
     },
     components: {

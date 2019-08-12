@@ -72,11 +72,11 @@ export default {
                 This.isModel = !This.isModel;
             }else if(This.text == '立即加入共建共享计划'){
                 wx.navigateTo({
-                    url:'/pages/sharing/main'
+                    url:'/pages/welcome/main'
                 })
             }else{
                 wx.navigateTo({
-                    url:'/pages/registerClass/main'
+                    url:'/pages/welcomeClass/main'
                 })
             }
         }

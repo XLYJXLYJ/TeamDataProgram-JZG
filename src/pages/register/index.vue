@@ -66,7 +66,7 @@
                 </div>
                 <p class="title">
                     建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
-                    <span style="color:rgb(252 184 19)">《建造工用户协议》</span>
+                    <span style="color:rgb(252 184 19)" @click="agree">《建造工用户协议》</span>
                 </p>
             </form>
         </div>
@@ -184,6 +184,11 @@ export default {
             This.imgMessage.splice(index,1)
             console.log(This.imgMessage)          
 
+        },
+        agree(){
+            wx.navigateTo({
+                url:'/pages/userAgreement/main'
+            });
         },
         applicationSharing(){
             let This = this
