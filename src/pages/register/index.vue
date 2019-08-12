@@ -27,7 +27,7 @@
                             autocomplete="off"
                         />
                         <!-- <p @click="GetClassCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p> -->
-                       <p @click="GetClassCode" class="getCodeDisabled">{{btnTxt}}</p>
+                       <p @click="GetClassCode" :disabled='btn'>{{btnTxt}}</p>
                     </div>
                 </div>
 
@@ -162,14 +162,17 @@ export default {
                 encoding: 'base64', //编码格式
                 success:(res) =>{
                     // let img = 'data:image/png;base64,' + res.data
+                    console.log('图片信息')
+                    console.log(res)
                     let img = res.data
-                    let data = {
+                    let dataImg = {
                         imgs:img
                     }
-                    fly.post('/uploadImg',data).then(function (res) {
+                    fly.post('/uploadImg',dataImg).then(function (res) {
+                        console.log('是否上传成功')
                         console.log(res)
                         This.imgMessage.push(res.response)
-                        console.log(This.imgMessage)    
+                        console.log(This.imgMessage) 
                     })
                 }
             })
@@ -232,7 +235,7 @@ export default {
                 });
                 return;
             }
-            if(!This.imgMessage){
+            if(This.imgMessage.length==0){
                 wx.showToast({
                     title: "请上传在职证明",
                     icon: "none",
@@ -250,6 +253,11 @@ export default {
             }
             fly.post('/contractor/applyJoinSharingPlan',data).then(function (res) {
                 console.log(res)
+                wx.setStorageSync('token', res.response.authorization) 
+                wx.setStorageSync('gender', res.response.gender) 
+                wx.setStorageSync('mobile', res.response.mobile) 
+                wx.setStorageSync('nickName', res.response.nickName) 
+                wx.setStorageSync('username', res.response.username) 
                 wx.showToast({
                     title: "申请加入成功",
                     icon: "none",

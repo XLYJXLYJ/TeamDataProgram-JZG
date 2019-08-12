@@ -38,9 +38,12 @@
                         />
                     </picker> -->
 
-                <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+                <div class="select picker" type="default"><p class="title" @click="show">{{sort}}</p></div>
+                <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+
+                <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default"><p class="title">{{family}}{{sort}}</p></div>
-                </picker>
+                </picker> -->
 
 
 
@@ -79,13 +82,14 @@ export default {
         return {
             phone: "", // 手机号
             name: "", // 班组负责人名字
-            family: "班组", // 班组分类
-            sort:'分类', // 班组分类
+            sort:'请选择班组类别', // 班组分类
             multiArray:[], // 班组数据
             multiIndex: [0,0], // 班组index
             Array:'', // 接受到的选择器总数据
             selectIndex:'', // 选中的班组位置；数组
-            projectType:'' // 选中的班组ID
+            projectType:'', // 选中的班组ID
+            mode: 'multiLinkageSelector',
+            pickerValueArray:[]
         };
     },
     mounted() {
@@ -93,17 +97,26 @@ export default {
         let oneRowArray = []
         let oneColumnArray = []
         fly.get('/contractor/getContractorType').then(function (data) {
-            This.Array = data.response
-            console.log(This.Array)
-            data.response[0].childList.map(
-                (items,index) => oneColumnArray.push(items.name)
-            )
-            data.response.map(
-                (items,index) => oneRowArray.push(items.name)
-            )
-            This.multiArray[0] = oneRowArray
-            This.multiArray[1] = oneColumnArray
-            This.$set(This.multiArray,This.multiArray)
+            // This.Array = data.response
+            // console.log(This.Array)
+            // data.response[0].childList.map(
+            //     (items,index) => oneColumnArray.push(items.name)
+            // )
+            // data.response.map(
+            //     (items,index) => oneRowArray.push(items.name)
+            // )
+            // This.multiArray[0] = oneRowArray
+            // This.multiArray[1] = oneColumnArray
+            // This.$set(This.multiArray,This.multiArray)
+
+            let arr = []
+            data.response.map((value,index,arry)=>{
+                arr.push({ 'label': value.name, 'value': value.id,'getchildren': value.childList,'children': [] })
+                arr[index].getchildren.map((value1,index1,arry1) => {
+                    arr[index].children.push({ 'label': value1.name, 'value': value1.id })
+                })
+            })
+            This.pickerValueArray = arr
         })
 
         wx.login({    
@@ -119,6 +132,16 @@ export default {
         });
     },
     methods: {
+        show(){
+            let This = this
+            this.$refs.mpPicker.show();
+        },
+        onConfirm(e) {
+            console.log(e);
+            let This = this
+            This.projectType = e.value[1]
+            This.sort = e.label
+        },
         make(){
             wx.navigateTo({
                 url:'/pages/commonMake/main'
@@ -181,12 +204,15 @@ export default {
         margin: 0 auto;
         margin-top: 40rpx;
         .get-block {
-            border-bottom: 1rpx solid rgb(204, 204, 204);
+            border-bottom: 1rpx solid #e5e5e5;
             margin-bottom: 48rpx;
             .get-code {
                 display: flex;
                 justify-content: space-between;
             }
+
+
+
         }
         .img-block {
             width: 100%;
@@ -194,7 +220,7 @@ export default {
         }
         .title {
             font-size: 28rpx;
-            color: block;
+            color: #ccc;
             font-family: "PingFangSC-Regular";
             margin-bottom: 16rpx;
         }
@@ -218,4 +244,5 @@ export default {
 .getCodeDisabled {
     color: rgb(204, 204, 204);
 }
+
 </style>

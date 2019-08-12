@@ -1,6 +1,10 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/commonMake/main",
+
+    "pages/registerClass/main",
+
     "pages/register/main",
     "pages/introdution/main",
     "pages/login/main",
@@ -8,7 +12,7 @@
     "pages/editMy/main",
     "pages/aboutUs/main",
     "pages/RecommendedTeams/main",
-    "pages/registerClass/main",
+
     "pages/my/main",
     "pages/achievement/main",
     "pages/welcome/main",

@@ -30,82 +30,132 @@
             <button class="phone" @click="seePhone">{{phone}}</button>
         </div>
 
-        <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}">
-            <div class="gene active">概况</div>
-            <div v-if="projectPerformanceCount" class="achi" @click="goachi" style="border-bottom:1rpx solid #ccc;">业绩<span class="num">{{projectPerformanceCount}}</span></div>
+        <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}" ref="title">
+            <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
+            <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
         </div>
 
-
-        <div class="basic">
-            <div class="basic-sigle">
-                <span class="one">服务地区:</span>
-                <span class="two">{{areaName}}</span>
+        <div v-if="isTab">
+            <div class="basic">
+                <div class="basic-sigle">
+                    <span class="one">服务地区:</span>
+                    <span class="two">{{areaName}}</span>
+                </div>
+                <div class="basic-sigle">
+                    <span class="one">主营业务:</span>
+                    <span class="two">{{projectTypeName}}</span>
+                </div>
+                <div class="basic-sigle">
+                    <span class="one">人员规模:</span>
+                    <span class="two">{{teamPersonCount}}人</span>
+                </div>
+                <div class="basic-sigle">
+                    <span class="one">联系人:</span>
+                    <span class="two">{{linkMan}}</span>
+                </div>
             </div>
-            <div class="basic-sigle">
-                <span class="one">主营业务:</span>
-                <span class="two">{{projectTypeName}}</span>
+            <div class="work">
+                <ul>
+                    <title>施工报价 <span v-if="qtotal">({{qtotal}} 项)</span> </title>
+                    <li v-for="(item,index) in subModels" :key="index">
+                        <p>{{item.name}}</p>
+                        <ul class="two-ul">
+                            <li class="two-li" v-for="(twoItem,twoIndex) in item.quotationDetailList" :key="twoIndex">
+                                <img src='/static/images/point.png' alt="">
+                                <span class="one">{{twoItem.name}}</span>
+                                <span class="two">{{twoItem.price}}元/m2</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-            <div class="basic-sigle">
-                <span class="one">人员规模:</span>
-                <span class="two">{{teamPersonCount}}人</span>
-            </div>
-            <div class="basic-sigle">
-                <span class="one">联系人:</span>
-                <span class="two">{{linkMan}}</span>
+            <div class="equip">
+                <p class="self"><span v-if="quantity">自有设备( {{quantity}} 种)</span></p>
+                <ul class="one-ul">
+                    <li class="one-li" v-for="(item,index) in eqList" :key="index">
+                        <p class="machine">{{item.remark}}</p>
+                        <div class="img-contain">
+                            <ul class="two-ul">
+                                <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
+                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,testImg)" :src='twoItem' /></li>
+                                </div>
+                                <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
+                            </ul>
+                            <div class="corner">
+                                <div class="img-corner"><img src="/static/images/more.png"> </div>
+                                <span class="number">{{item.imgs}}</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="work">
-            <ul>
-                <title>施工报价(9项)</title>
-                <li v-for="(item,index) in subModels" :key="index">
-                    <p>{{item.name}}</p>
+
+        <div v-if="!isTab" class="equip-two">
+            <ul class="one-ul">
+                <li class="one-li" v-for="(item,index) in list" :key="index">
+                    <p class="self">{{item.projectName}}</p>
+                    <p class="machine">{{item.areaFullName}}</p>
+                    <div class="img-contain">
+                        <ul class="three-ul">
+                            <div v-for="(threeItem,threeIndex) in item.imgList" :key="threeIndex">
+                                <li class="three-li" v-if="threeIndex<3"><img @click="previewImage(threeItem,imgListTwo)" :src='threeItem' /></li>
+                            </div>
+                            <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
+
+                        </ul>
+                        <div class="corner">
+                            <div class="img-corner"><img src="/static/images/more.png"> </div>
+                            <span class="number">{{imgListTwo.length}}</span>
+                        </div>
+                    </div>
                     <ul class="two-ul">
-                        <li class="two-li" v-for="(twoItem,twoIndex) in item.quotationDetailList" :key="twoIndex">
-                            <img src='/static/images/point.png' alt="">
-                            <span class="one">{{twoItem.name}}</span>
-                            <span class="two">{{twoItem.price}}元/m2</span>
+                        <li>
+                            <div class="one"><img src="/static/images/1.png"></div>
+                            <div class="two">{{item.projectName || ''}}</div>
+                        </li>
+                        <li>
+                            <div class="one"><img src="/static/images/2.png"></div>
+                            <div class="two">{{item.startTime}}</div>
+                        </li>
+                        <li>
+                            <div class="one"><img src="/static/images/3.png"></div>
+                            <div class="two">{{item.prizeList || ''}}</div>
+                        </li>
+                        <li>
+                            <div class="one"><img src="/static/images/4.png"></div>
+                            <div class="two">{{item.employers || ''}}</div>
+                        </li>
+                        <li>
+                            <div class="one"><img src="/static/images/5.png"></div>
+                            <div class="two">{{item.remarks || ''}}</div>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
-        <div class="equip">
-            <p class="self">自有设备(2种)</p>
-            <ul class="one-ul">
-                <li class="one-li" v-for="(item,index) in eqList" :key="index">
-                    <p class="machine">{{item.remark}}</p>
-                    <div class="img-contain">
-                        <ul class="two-ul">
-                            <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
-                                <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,testImg)" :src='twoItem' /></li>
-                            </div>
-                            <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
-                        </ul>
-                        <div class="corner">
-                            <div class="img-corner"><img src="/static/images/more.png"> </div>
-                            <span class="number">{{item.imgs}}</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
+
     </div>
 </template>
 
 <script>
 import goBackNav from "@/components/goBackNav.vue";
 import selfAlert from "@/components/alert.vue";
-import company from "@/components/company.vue";
 import fly from "@/services/WxApi";
 export default {
     data() {
         return {
-            alertType:'1',
+            isTab:'',
+            qtotal:'',
+            quantity:'',
+            alertType:'',
             phone:'查看联系方式',
             organizationName:'', // 公司名称
             ContractorProjectType:'', // 标签
             contractorDesc:'',
             headimg:'',
+            isTab:true,
+
             ifMode: false,
             ischangeModel: false,
             isAlert: false,
@@ -113,14 +163,17 @@ export default {
             statusBarHeight: "", // 状态栏高度
             titleBarHeight: "", // 标题栏高度
             navBarHeight: "", // 导航栏总高度
+
             areaName:'',
             projectTypeName:'',
             teamPersonCountName:'',
             linkMan:'',
             subModels:'',
             eqList:'',
+            list:'',
             imgLength:'',
             imgList:'',
+            imgListTwo:'',
             contractorId:'',
             teamPersonCount:'',
             projectPerformanceCount:'',
@@ -129,7 +182,8 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 450) {
+        console.log(This.$ref)
+        if (res.scrollTop > 550) {
             This.isTop = true
         } else {
             This.isTop = false
@@ -163,6 +217,11 @@ export default {
     },
     mounted() {
         let This = this
+        This.isAlert = false
+        This.ifMode = false
+        This.ischangeModel = false
+
+
         let data = {
             page:1,
             pageSize:5,
@@ -177,11 +236,25 @@ export default {
             This.teamPersonCountName = resData.teamPersonCountName
             This.linkMan = resData.linkMan
             This.subModels = resData.quotationBillModels.subModels
+            This.qtotal = resData.quotationBillModels.total
             This.eqList = resData.eqList
+            This.quantity = resData.eqList.quantity
             This.imgList = resData.imgList
             This.teamPersonCount = resData.teamPersonCount
             This.projectPerformanceCount = resData.projectPerformanceCount
         })
+
+        let dataTwo = {
+            contractorId:This.contractorId || wx.getStorageSync('contractorId')
+        }
+        fly.post('/contractor/getProjectPerformanceList',dataTwo).then(function (res) {
+            let resData = res.response
+            console.log(222)
+            console.log(resData)
+            This.list = resData.list
+        })
+
+
     },
     onShow() {
         let This = this
@@ -221,13 +294,42 @@ export default {
             //     urls:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg'] // 需要预览的图片http链接列表
             // });
         },
+
+        // formatDate(date, fmt) {
+        //     let This = this
+        //     if (/(y+)/.test(fmt)) {
+        //         fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+        //     }
+        //     let o = {
+        //         'M+': date.getMonth() + 1,
+        //         'd+': date.getDate(),
+        //         'h+': date.getHours(),
+        //         'm+': date.getMinutes(),
+        //         's+': date.getSeconds()
+        //     };
+        //     for (let k in o) {
+        //         if (new RegExp(`(${k})`).test(fmt)) {
+        //         let str = o[k] + '';
+        //         fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : This.padLeftZero(str));
+        //         }
+        //     }
+        //     return fmt;
+        // },
+        // padLeftZero(str) {
+        //     return ('00' + str).substr(str.length);
+        // },
+
+
         controlAlert(data) {
             this.isAlert = data;
         },
+        goOne(){
+            let This = this
+            This.isTab = true
+        },
         goachi(){
-            wx.navigateTo({
-                url:'/pages/achievement/main'
-            })
+            let This = this
+            This.isTab = false
         },
         seePhone() {
             (this.ifMode = true), (this.ischangeModel = true);
@@ -283,8 +385,7 @@ export default {
     },
     components: {
         goBackNav,
-        selfAlert,
-        company
+        selfAlert
     }
 };
 </script>
@@ -391,12 +492,14 @@ export default {
         text-align: center;
         padding-bottom: 24rpx;
         font-family: "PingFang-SC-Semibold";
+        border-bottom:1rpx solid #e5e5e5;
     }
     .achi {
         width: 50%;
         text-align: center;
         padding-bottom: 24rpx;
         font-family: "PingFang-SC-Semibold";
+        border-bottom:1rpx solid #e5e5e5;
         .num{
             width: 32rpx;
             height: 32rpx;
@@ -431,6 +534,7 @@ export default {
         font-family: "PingFang-SC-Semibold";
         position: absolute;
         left: 0rpx;
+        border-bottom:1rpx solid #e5e5e5;
     }
     .achi {
         width: 50%;
@@ -439,6 +543,7 @@ export default {
         font-family: "PingFang-SC-Semibold";
         position: absolute;
         right: 0rpx;
+        border-bottom:1rpx solid #e5e5e5;
         .num{
             width: 32rpx;
             height: 32rpx;
@@ -584,7 +689,92 @@ export default {
                         margin-bottom: 6rpx;
                         margin-left: 6rpx;
                         position: relative;
-                        top: -2rpx;
+                        top: -4rpx;
+                        left: 6rpx;
+                    }
+                }
+            }
+        }
+    }
+}
+.equip-two {
+    width: 670rpx;
+    height: auto;
+    margin: 0 auto;
+    margin-top: 96rpx;
+    .self {
+        font-family: "PingFang-SC-Semibold";
+        font-size: 36rpx;
+        font-weight: 550;
+        margin-bottom: 18rpx;
+    }
+    .one-ul {
+        .one-li {
+            .machine {
+                font-size: 30rpx;
+                color: rgb(252, 184, 19);
+                font-family: "PingFangSC-Regular";
+                margin-bottom: 24rpx;
+                z-index: 0;
+            }
+            .img-contain {
+                position: relative;
+                .three-ul{
+                    display: flex;
+                    justify-content: space-around;
+                    img {
+                        width: 220rpx;
+                        height: 222rpx;
+                        border-right: 3rpx solid #fff;
+                    }
+                }
+                .corner {
+                    position: absolute;
+                    right: 6rpx;
+                    bottom: 12rpx;
+                    background: rgba(0, 0, 0, 0.4);
+                    padding: 0rpx 10rpx 0rpx 10rpx;
+                    .img-corner {
+                        display: inline-block;
+                        width: 36rpx;
+                        height: 28rpx;
+                        img{
+                            width: 36rpx;
+                            height: 28rpx;
+                        }
+                    }
+                    .number {
+                        font-size: 30rpx;
+                        color: white;
+                        font-family: "PingFangSC-Regular";
+                        position: relative;
+                        top: -4rpx;
+                        left: 6rpx;
+                    }
+                }
+            }
+            .two-ul {
+                margin-bottom: 40rpx;
+                li {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    .one {
+                        width: 32rpx;
+                        height: 32rpx;
+                        display: inline-block;
+                        margin-top: 6rpx;
+                        img{
+                            width: 32rpx;
+                            height: 32rpx;
+                        }
+                    }
+                    .two {
+                        width: 618rpx;
+                        display: inline-block;
+                        font-size: 30rpx;
+                        color: black;
+                        font-family: "PingFangSC-Regular";
                     }
                 }
             }

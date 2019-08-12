@@ -241,7 +241,7 @@ export default {
     methods: {
         goIntro(index){
             let This = this
-            if(!wx.getStorageSync('mobile')){
+            if(!wx.getStorageSync('token')){
                 console.log('666')
                 This.changeModel = true
                 This.isModel = true
@@ -268,6 +268,9 @@ export default {
         },
         getClass(){
             let This = this
+                wx.showLoading({
+                    title:'加载中'
+                })
             let data = {
                 page:This.page,
                 pageSize:10,
@@ -276,6 +279,7 @@ export default {
             }
             fly.post('/contractor/getHQContractorList',data).then(function (res) {
                 console.log(res)
+                wx.hideLoading();
                 if(res.message == '您的登录已失效,请重新登录'){
                     wx.clearStorage()
                     This.getClass()
@@ -288,6 +292,11 @@ export default {
                 }else{
                 //    This.list.push(JSON.parse(JSON.stringify([res.response.list])))
                    This.showButton = res.response.list.length ==0?true:false
+                   if(res.response.list){
+                       This.showButton = true
+                   }else{
+                        This.showButton = false
+                   }
                    console.log(This.showButton)
                    console.log(res.response.list)
                 //    This.list = This.list.concat(res.response.list)
@@ -348,7 +357,7 @@ export default {
         },
         goPoint(){
             let This = this
-            if(!wx.getStorageSync('mobile')){
+            if(!wx.getStorageSync('token')){
                 console.log('666')
                 This.changeModel = true
                 This.isModel = true
@@ -508,7 +517,7 @@ export default {
         justify-content: space-around;
         height: 66rpx;
         padding-top:60rpx;
-        border-bottom: 1rpx solid rgb(204, 204, 204);
+        border-bottom: 1rpx solid #e5e5e5;
         font-weight: 550;
     }
     .fixedSelectCity{
@@ -523,7 +532,7 @@ export default {
         align-items: center;
         height: 66rpx;
         background: white;
-        border-bottom: 1rpx solid rgb(204, 204, 204);
+        border-bottom: 1rpx solid #e5e5e5;
         font-weight: 550;
         z-index: 999;
     }
@@ -642,7 +651,7 @@ export default {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgb(204, 204, 204);
+            border-bottom: 1px solid #e5e5e5;
             .left{
                 display: flex;
                 flex-direction: row;

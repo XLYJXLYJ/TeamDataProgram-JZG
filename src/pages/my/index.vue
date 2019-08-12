@@ -56,7 +56,7 @@ export default {
     },
     mounted() {
         let This = this
-        This.mobile = wx.getStorageSync('mobile') 
+        This.mobile = wx.getStorageSync('mobile')
         This.name = wx.getStorageSync('username')
     },
     methods:{
@@ -66,9 +66,16 @@ export default {
             });
         },
         goMy(){
-            wx.navigateTo({
-                url:"/pages/editMy/main"
-            });
+            if(wx.getStorageSync('mobile')){
+                wx.navigateTo({
+                    url:"/pages/editMy/main"
+                });
+            }else{
+                wx.navigateTo({
+                    url:"/pages/login/main"
+                });
+            }
+
         },
         goLogin(){
             wx.navigateTo({
@@ -81,9 +88,16 @@ export default {
             }); 
         },
         goS(){
-            wx.navigateTo({
-                url:"/pages/sharing/main"
-            }); 
+            if(wx.getStorageSync('mobile')){
+                wx.navigateTo({
+                    url:"/pages/welcome/main"
+                }); 
+            }else{
+                wx.navigateTo({
+                    url:"/pages/sharing/main"
+                }); 
+            }
+
         },
         goW(){
             wx.navigateTo({
@@ -137,7 +151,7 @@ export default {
             display:flex;
             justify-content:space-between;
             align-items: center;
-            border-bottom: 1rpx solid rgb(204, 204, 204);
+            border-bottom: 1rpx solid #e5e5e5;
             font-family: 'PingFangSC-Regular';
             img{
                 height: 25.2rpx;

@@ -77,7 +77,7 @@ export default {
             if(index==1){
                 console.log('进来了')
 
-                if(!wx.getStorageSync('mobile')){
+                if(!wx.getStorageSync('token')){
                     console.log('666')
                     This.changeModel = true
                     This.isModel = true
@@ -133,7 +133,7 @@ export default {
         },
         isOk(){
             let This = this
-            if(!wx.getStorageSync('mobile')){
+            if(!wx.getStorageSync('token')){
                 console.log('wht')
                 This.changeModel = true
                 This.isModel = true
@@ -216,8 +216,8 @@ export default {
     bottom: 0;
     width: 100%;
     height: 50px;
-    border-top: 1rpx solid #ccc;
-    background-color: #f8f8f8;
+    border-top: 1rpx solid #fbfbfb;
+    background-color: #fff;
 }
 
 .tabBar-nav {

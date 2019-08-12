@@ -99,7 +99,7 @@ export default {
 .modalDialog {
     box-sizing: border-box;
     width: 590rpx;
-    height: 776rpx;
+    height: auto;
     overflow: hidden;
     position: fixed;
     top: 30%;
@@ -145,6 +145,7 @@ export default {
         align-items: center;
         background: rgb(252, 184, 19);
         border: none;
+        margin-bottom: 40rpx;
     }
 }
 </style>

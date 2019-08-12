@@ -31,22 +31,22 @@
             <div class="gene" @click="gointro" style="border-bottom:1rpx solid #ccc;">概况</div>
             <div class="achi active">业绩</div>
         </div>
-        <div class="equip">
+        <div class="equip-two">
             <ul class="one-ul">
                 <li class="one-li" v-for="(item,index) in list" :key="index">
                     <p class="self">{{item.projectName}}</p>
                     <p class="machine">{{item.areaFullName}}</p>
                     <div class="img-contain">
                         <ul class="three-ul">
-                            <div v-for="(threeItem,threeIndex) in item.imgList" :key="threeIndex">
-                                <li class="three-li" v-if="threeIndex<3"><img @click="previewImage(threeItem,imgList)" :src='threeItem' /></li>
+                            <div v-for="(threeItem,threeIndex) in item.imgListTwo" :key="threeIndex">
+                                <li class="three-li" v-if="threeIndex<3"><img @click="previewImage(threeItem,imgListTwo)" :src='threeItem' /></li>
                             </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
                         </ul>
                         <div class="corner">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
-                            <span class="number">{{imgList.length}}</span>
+                            <span class="number">{{imgListTwo.length}}</span>
                         </div>
                     </div>
                     <ul class="two-ul">
@@ -101,12 +101,12 @@ export default {
             navBarHeight: "", // 导航栏总高度
             list:'',
             contractorId:'',
-            imgList:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg']
+            imgListTwo:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg']
         };
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 450) {
+        if (res.scrollTop > 550) {
             This.isTop = true
         } else {
             This.isTop = false
@@ -223,10 +223,10 @@ export default {
                 contractorId:This.contractorId || wx.getStorageSync('contractorId')
             }
             fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
+                console.log('获取电话方式')
                 console.log(res)
                 This.alertType = res.response
                 This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
-
             })
         }
     },
@@ -453,7 +453,7 @@ export default {
         border-bottom: 6rpx solid rgb(252, 184, 19);
     }
 }
-.equip {
+.equip-two {
     width: 670rpx;
     height: auto;
     margin: 0 auto;
