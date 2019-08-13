@@ -30,9 +30,14 @@
             <button class="phone" @click="seePhone">{{phone}}</button>
         </div>
 
-        <div :class="{'fixedTab':isTop,'tab':!isTop}" :style="{top: navBarHeight + 'px'}" ref="title">
+        <div class="fixedTab" v-if="isTop" :style="{top: navBarHeight + 'px'}">
             <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
             <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
+        </div>
+
+        <div class="tab" :style="{top: navBarHeight + 'px'}">
+            <div v-if="!isTop" class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
+            <div v-if="projectPerformanceCount&&!isTop" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
         </div>
 
         <div v-if="isTab">
@@ -182,8 +187,7 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        console.log(This.$ref)
-        if (res.scrollTop > 550) {
+        if (res.scrollTop > 600) {
             This.isTop = true
         } else {
             This.isTop = false
@@ -353,18 +357,23 @@ export default {
         seePhone() {
             let This = this
             // This.$emit("alertframe", true);
-
-            let data = {
-                contractorId:This.contractorId || wx.getStorageSync('contractorId')
+            if(This.phone!='查看联系方式'){
+                wx.makePhoneCall({
+                    phoneNumber: This.phone
+                })
+            }else{
+                let data = {
+                    contractorId:This.contractorId || wx.getStorageSync('contractorId')
+                }
+                fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
+                    console.log(res)
+                    This.alertType = res.response
+                    This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
+                    This.isAlert = true
+                    This.ifMode = true
+                    This.ischangeModel = true
+                })
             }
-            fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
-                console.log(res)
-                This.alertType = res.response
-                This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
-                This.isAlert = true
-                This.ifMode = true
-                This.ischangeModel = true
-            })
         },
         getUserInfo (e) {
             let userInfo = JSON.parse(e.mp.detail.rawData)
@@ -570,6 +579,7 @@ export default {
     .basic-sigle {
         display: flex;
         justify-content: space-between;
+        margin-bottom: 16rpx;
         .one {
             width: 140rpx;
             font-size: 28rpx;

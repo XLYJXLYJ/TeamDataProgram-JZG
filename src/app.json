@@ -1,9 +1,11 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/registerClass/main",
+
     "pages/commonMake/main",
 
-    "pages/registerClass/main",
+  
 
     "pages/register/main",
     "pages/introdution/main",

@@ -2,7 +2,7 @@
     <div class="welcome">
         <goBackNav :title='title'></goBackNav>
         <p class="about">{{message}}</p>
-        <p class="rule">{{rules}}</p>
+        <p class="rule" @click="goRule">{{rules}}</p>
         <button style="border:none;" class="confirm" @click="goSharing">{{buttonContent}}</button>
     </div>
 </template>
@@ -19,6 +19,11 @@ export default {
             let This = this
             wx.navigateTo({
                 url:This.url
+            });
+        },
+        goRule(){
+            wx.navigateTo({
+                url:'/pages/commonMake/main'
             });
         }
     },

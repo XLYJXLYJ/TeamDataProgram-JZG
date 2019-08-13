@@ -12,7 +12,8 @@
         </div>
 
 
-        <div :class="{'fixedSelectCity':isTop,'selectCity':!isTop}" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
+
+        <div class="fixedSelectCity" v-if="isTop" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
             <div>
                 <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
                     <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
@@ -24,6 +25,29 @@
             </div>
             <span style="color:rgb(204,204,204)">|</span>
             <div>
+                <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+                    <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                </picker>  -->
+
+                <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+
+            </div>
+        </div>
+
+
+        <div class="selectCity" :style="{top: navBarHeight + 'px'}">
+            <div v-if="!isTop">
+                <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
+                    <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
+                </picker>  -->
+
+                <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
+                <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
+            
+            </div>
+            <span v-if="!isTop" style="color:rgb(204,204,204)">|</span>
+            <div v-if="!isTop">
                 <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
                 </picker>  -->
@@ -134,7 +158,8 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 170) {
+        console.log(res.scrollTop)
+        if (res.scrollTop > 140) {
             This.isTop = true
         } else {
             This.isTop = false
@@ -412,30 +437,47 @@ export default {
             let This = this
             This.$emit("func", false);
         },
+
+
+
+
         getUserInfo (e) {
             console.log('66666')
             console.log(e)
             let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
             console.log(userInfo)
-            let data = {
-                nickName:userInfo.nickName,
-                headImg:userInfo.avatarUrl,
-                gender:userInfo.gender,
-                areaName:[userInfo.country,userInfo.province,userInfo.city]
-            }
-            fly.post('/contractor/weChatAuth',data).then(function (res) {
-                console.log(res)
-                wx.setStorageSync('token', res.response.authorization) 
-                wx.setStorageSync('gender', res.response.gender) 
-                wx.setStorageSync('mobile', res.response.mobile) 
-                wx.setStorageSync('nickName', res.response.nickName) 
-                wx.setStorageSync('username', res.response.username) 
-                This.changeModel = false
-                This.isModel = false
-                // wx.navigateTo({
-                //     url:'/pages/point/main'
-                // })
+            wx.login({
+                success (res) {
+                    if (res.code) {
+                    //发起网络请求
+                    console.log('code...。')
+                        console.log(res.code)
+                        let data = {
+                            nickName:userInfo.nickName,
+                            code:res.code,
+                            headImg:userInfo.avatarUrl,
+                            gender:userInfo.gender,
+                            areaName:[userInfo.country,userInfo.province,userInfo.city]
+                        }
+                        fly.post('/contractor/weChatAuth',data).then(function (res) {
+                            console.log(res)
+                            wx.setStorageSync('img',res.response.headImg)
+                            wx.setStorageSync('token', res.response.authorization) 
+                            wx.setStorageSync('gender', res.response.gender) 
+                            wx.setStorageSync('mobile', res.response.mobile) 
+                            wx.setStorageSync('nickName', res.response.nickName) 
+                            wx.setStorageSync('username', res.response.username) 
+                            // wx.navigateTo({
+                            //     url:This.path
+                            // });
+                            This.changeModel = false
+                            This.isModel = false
+                        })
+                    } else {
+                    console.log('登录失败！' + res.errMsg)
+                    }
+                }
             })
         }
     },
@@ -516,7 +558,6 @@ export default {
         flex-direction: row;
         justify-content: space-around;
         height: 66rpx;
-        padding-top:60rpx;
         border-bottom: 1rpx solid #e5e5e5;
         font-weight: 550;
     }

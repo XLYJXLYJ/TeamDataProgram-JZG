@@ -14,17 +14,17 @@
                 <!-- 第一个表单 -->
 
                 <div class="get-block">
-                    <p class="title">班组负责人</p>
-                    <input type="text" v-model="name" placeholder="请输入姓名" autocomplete="off" />
+                    <p class="title" style="color:black">班组负责人</p>
+                    <input type="text" v-model="name" placeholder="请输入姓名" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
-                    <p class="title">手机号码</p>
-                    <input type="text" v-model="phone" placeholder="请输入您的手机号" autocomplete="off" />
+                    <p class="title" style="color:black">手机号码</p>
+                    <input type="text" v-model="phone" placeholder="请输入您的手机号"  placeholder-style="color:#ccc" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
-                    <p class="title">班组类别</p>
+                    <p class="title" style="color:black">班组类别</p>
 
 
                     <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
@@ -59,7 +59,7 @@
                     <button class="confirm" @click="reClass">提交</button>
                     <!-- <button class="confirm" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取电话号码权限</button> -->
                 </div>
-                <p class="title">
+                <p class="title" style="color:black">
                     成功推荐新班组，可获得更多权限与资源，详见
                     <span style="color:rgb(252 184 19)" @click="make">《建筑业优质班组共建共享计划规则》</span>
                 </p>
@@ -168,9 +168,11 @@ export default {
             }
             fly.post('/contractor/recommendContractor',data).then(function (data) {
                 console.log(data)
-                wx.navigateTo({
-                    url:'/pages/index/main'
-                });
+                if(data.message == '成功'){
+                    wx.navigateTo({
+                        url:'/pages/index/main'
+                    });
+                }
             })
         },
         bindMultiPickerColumnChange: function (e) {

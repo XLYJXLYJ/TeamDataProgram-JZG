@@ -18,6 +18,17 @@ fly.interceptors.response.use(res => {
   if (res.status == 200) {
     console.log('成功提示')
     console.log(res)
+    if(res.data.status!=200){
+      if(res.data.message == '您的登录已失效,请重新登录'){
+        
+      }else{
+        wx.showModal({
+          title: '提示',
+          content: res.data.message,
+        })
+        return;
+      }
+    }
     return res.data
   }else{
     console.log('错误提示')

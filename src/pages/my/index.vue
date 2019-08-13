@@ -4,9 +4,9 @@
             <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
         </section>
         <section class="maintenance">
-            <img  @click="goMy" src="/static/images/user.png">
+            <img  @click="goMy" :src="aImg">
             <p v-if="mobile">{{name}}</p>
-            <p v-if="!mobile" style="font-weight:100;" @click="goLogin">点击登陆</p>
+            <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登陆</p>
         </section>
         <section>
             <ul>
@@ -34,6 +34,7 @@ export default {
         return {
             mobile:'',
             name:'',
+            aImg:'',
             list: [
                 {
                     id: 0,
@@ -58,6 +59,11 @@ export default {
         let This = this
         This.mobile = wx.getStorageSync('mobile')
         This.name = wx.getStorageSync('username')
+        This.aImg = wx.getStorageSync('img')
+
+        )
+        console.log('图片地址')
+        console.log(This.aImg)
     },
     methods:{
         goUrl(url){
@@ -88,7 +94,7 @@ export default {
             }); 
         },
         goS(){
-            if(wx.getStorageSync('mobile')){
+            if(!wx.getStorageSync('mobile')){
                 wx.navigateTo({
                     url:"/pages/welcome/main"
                 }); 

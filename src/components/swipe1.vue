@@ -1,7 +1,7 @@
 <template>
         <div>
             <swiper
-                :indicator-dots="true"
+                :indicator-dots="false"
                 autoplay
                 :interval="3000"
                 :duration="1000"
@@ -12,8 +12,8 @@
                 <block v-for="item in imgUrls" :key="item.id">
                     <swiper-item>
                         <image :src="item.img" class="slide-image" />
-                        <!-- <text class="text1">{{item.text1}}</text>
-                        <text class="text2">{{item.text2}}</text> -->
+                        <text class="text1">深圳市{{item.desc}}</text>
+                        <text class="text2">查看详情</text>
                     </swiper-item>
                 </block>
             </swiper>
@@ -31,7 +31,7 @@ export default {
     },
     mounted() {
         let This = this
-        fly.post('/contractor/getBanner',{bannerType: 6}).then(function (data) {
+        fly.post('/contractor/getBanner',{bannerType: 200}).then(function (data) {
             This.imgUrls = data.response
         })
     },

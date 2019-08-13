@@ -70,7 +70,7 @@ export default {
             console.log(index)
 
             let This = this
-            This.$emit('indexId',index)
+
             if (index === this.selectNavIndex) {
                 return false;
             }
@@ -79,6 +79,7 @@ export default {
 
                 if(!wx.getStorageSync('token')){
                     console.log('666')
+                    console.log(This.path)
                     This.changeModel = true
                     This.isModel = true
                     This.path = pagePath
@@ -92,6 +93,7 @@ export default {
                 This.isModel = false
                 // This.bindViewTap(pagePath);
             }
+            This.$emit('indexId',index)
             // if (index == 0 && this.selectNavIndex == -1) {
             // this.$emit("fetchIndex",index);
             // }
@@ -111,24 +113,51 @@ export default {
             let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
             console.log(userInfo)
-            let data = {
-                nickName:userInfo.nickName,
-                headImg:userInfo.avatarUrl,
-                gender:userInfo.gender,
-                areaName:[userInfo.country,userInfo.province,userInfo.city]
-            }
-            fly.post('/contractor/weChatAuth',data).then(function (res) {
-                console.log(res)
-                wx.setStorageSync('token', res.response.authorization) 
-                wx.setStorageSync('gender', res.response.gender) 
-                wx.setStorageSync('mobile', res.response.mobile) 
-                wx.setStorageSync('nickName', res.response.nickName) 
-                wx.setStorageSync('username', res.response.username) 
-                wx.navigateTo({
-                    url:This.path
-                });
-                This.changeModel = false
-                This.isModel = false
+
+            wx.login({
+                success (res) {
+                    if (res.code) {
+                    //发起网络请求
+                    console.log('code...。')
+                        console.log(res.code)
+                        let data = {
+                            nickName:userInfo.nickName,
+                            code:res.code,
+                            headImg:userInfo.avatarUrl,
+                            gender:userInfo.gender,
+                            areaName:[userInfo.country,userInfo.province,userInfo.city]
+                        }
+                        fly.post('/contractor/weChatAuth',data).then(function (res) {
+                            console.log(res)
+                            wx.setStorageSync('img',res.response.headImg)
+                            wx.setStorageSync('token', res.response.authorization) 
+                            wx.setStorageSync('gender', res.response.gender) 
+                            wx.setStorageSync('mobile', res.response.mobile) 
+                            wx.setStorageSync('nickName', res.response.nickName) 
+                            wx.setStorageSync('username', res.response.username) 
+                            if(This.path == '/pages/register/main'){
+                                if(res.response.joinSharePlanStatus==0){
+                                    wx.navigateTo({
+                                        url:'/pages/register/main'
+                                    });
+                                }else{
+                                    wx.navigateTo({
+                                        url:'/pages/sharing/main'
+                                    });
+                                }
+                            }else{
+                                // wx.navigateTo({
+                                //     url:This.path
+                                // });
+                            }
+
+                            This.changeModel = false
+                            This.isModel = false
+                        })
+                    } else {
+                    console.log('登录失败！' + res.errMsg)
+                    }
+                }
             })
         },
         isOk(){

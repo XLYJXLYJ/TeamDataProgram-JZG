@@ -13,7 +13,7 @@
             <form>
                 <div class="get-block">
                     <p class="title">手机号码</p>
-                    <input type="text" v-model="phone" placeholder="请输入手机号码" autocomplete="off" />
+                    <input type="text" v-model="phone" placeholder="请输入手机号码" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
@@ -24,6 +24,7 @@
                             v-model="phone_code"
                             placeholder="请输入验证码"
                             autocomplete="off"
+                            placeholder-style="color:#ccc;"
                         />
                         <!-- <p @click="GetCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p> -->
                         <p @click="GetCode" class="getCodeDisabled">{{btnTxt}}</p>
@@ -146,7 +147,7 @@ export default {
         margin: 0 auto;
         margin-top: 40rpx;
         .get-block {
-            border-bottom: 1rpx solid rgb(204, 204, 204);
+            border-bottom: 1rpx solid #e5e5e5;
             margin-bottom: 48rpx;
             .get-code {
                 display: flex;

@@ -14,7 +14,7 @@
                 <!-- 第一个表单 -->
                 <div class="get-block">
                     <p class="title">手机号码</p>
-                    <input type="text" v-model="phone" placeholder="请输入手机号码" placeholder-style="rgb(204, 204, 204)" autocomplete="off" />
+                    <input type="text" v-model="phone" placeholder="请输入手机号码" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
@@ -25,25 +25,26 @@
                             v-model="phone_code"
                             placeholder="请输入验证码"
                             autocomplete="off"
+                            placeholder-style="color:#ccc;"
                         />
                         <!-- <p @click="GetClassCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p> -->
-                       <p @click="GetClassCode" :disabled='btn'>{{btnTxt}}</p>
+                       <p @click="GetClassCode" :disabled='btn' style="color:#ccc;">{{btnTxt}}</p>
                     </div>
                 </div>
 
                 <div class="get-block">
                     <p class="title">姓名</p>
-                    <input type="text" v-model="name" placeholder="请输入姓名" placeholder-style="rgb(204, 204, 204)" autocomplete="off" />
+                    <input type="text" v-model="name" placeholder="请输入姓名" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
                     <p class="title">所在公司</p>
-                    <input type="text" v-model="company" placeholder="请输入现在的公司" placeholder-style="rgb(204, 204, 204)" autocomplete="off" />
+                    <input type="text" v-model="company" placeholder="请输入现在的公司" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
 
                 <div class="get-block">
                     <p class="title">职位</p>
-                    <input type="text" v-model="position" placeholder="请输入职位" placeholder-style="rgb(204, 204, 204)" autocomplete="off" />
+                    <input type="text" v-model="position" placeholder="请输入职位" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
 
                 <div class="img-block">
@@ -94,7 +95,8 @@ export default {
             disabled: false,
             time: 0, // 验证码时间初始化
             btn: true,
-            imgMessage:[]
+            imgMessage:[],
+            dataImg:''
         };
     },
     mounted() {
@@ -164,19 +166,26 @@ export default {
                     // let img = 'data:image/png;base64,' + res.data
                     console.log('图片信息')
                     console.log(res)
-                    let img = res.data
-                    let dataImg = {
-                        imgs:img
+                    console.log(res.data)
+                    let img1 = res.data
+                    This.dataImg = {
+                        imgs:img1
                     }
-                    fly.post('/uploadImg',dataImg).then(function (res) {
-                        console.log('是否上传成功')
-                        console.log(res)
-                        This.imgMessage.push(res.response)
-                        console.log(This.imgMessage) 
-                    })
+                    This.uploadImg()
                 }
             })
         },
+        uploadImg(){
+            let This = this
+            console.log('上传图片咯')
+            fly.post('/uploadImg',This.dataImg).then(function (res) {
+                console.log('是否上传成功')
+                console.log(res)
+                This.imgMessage.push(res.response)
+                console.log(This.imgMessage) 
+            })
+        },
+
         upLoadFail(errMsg){
             console.log(errMsg)
         },
@@ -280,7 +289,7 @@ export default {
         margin: 0 auto;
         margin-top: 40rpx;
         .get-block {
-            border-bottom: 1rpx solid #ccc;
+            border-bottom: 1rpx solid #e5e5e5;
             margin-bottom: 48rpx;
             .get-code {
                 display: flex;

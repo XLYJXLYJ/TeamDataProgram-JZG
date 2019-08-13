@@ -5,7 +5,7 @@
         <div class="modalMask" v-show="isModel" @click="hidePanel"></div>
         <div class="modalDialog" v-show="changeModel">
             <div class="modalContent">
-                <p class="contentTip">优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
+                <p class="contentTip">。。。。优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
                 <button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button>
             </div>
         </div>
@@ -18,6 +18,17 @@ export default {
     mounted() {
         console.log(this.changeModel)
         console.log(this.isModel)
+        wx.login({    
+            success: function (res) {    
+                if (res.code) {    
+                    //发起网络请求    
+                     console.log('获取用户登录态成功！')    
+                    console.log(res.code)    
+                } else {    
+                    console.log('获取用户登录态失败！' + res.errMsg)    
+                }    
+            }    
+        });
     },
     methods: {
 
@@ -26,29 +37,43 @@ export default {
             this.$emit("func", false);
         },
         getUserInfo (e) {
-            console.log(e)
+            console.log('wechat认证')
             let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
             console.log(userInfo)
-            let data = {
-                nickName:userInfo.nickName,
-                headImg:userInfo.avatarUrl,
-                gender:userInfo.gender,
-                areaName:[userInfo.country,userInfo.province,userInfo.city]
-            }
-            fly.post('/contractor/weChatAuth',data).then(function (res) {
-                console.log(res)
-                wx.setStorageSync('token', res.response.authorization) 
-                wx.setStorageSync('gender', res.response.gender) 
-                wx.setStorageSync('mobile', res.response.mobile) 
-                wx.setStorageSync('nickName', res.response.nickName) 
-                wx.setStorageSync('username', res.response.username) 
-                wx.navigateTo({
-                    url:This.path
-                });
-                This.changeModel = false
-                This.isModel = false
+            wx.login({
+                success (res) {
+                    if (res.code) {
+                    //发起网络请求
+                    console.log('code...。')
+                        console.log(res.code)
+                        let data = {
+                            nickName:userInfo.nickName,
+                            code:res.code,
+                            headImg:userInfo.avatarUrl,
+                            gender:userInfo.gender,
+                            areaName:[userInfo.country,userInfo.province,userInfo.city]
+                        }
+                        fly.post('/contractor/weChatAuth',data).then(function (res) {
+                            console.log(res)
+                            wx.setStorageSync('img',res.response.headImg)
+                            wx.setStorageSync('token', res.response.authorization) 
+                            wx.setStorageSync('gender', res.response.gender) 
+                            wx.setStorageSync('mobile', res.response.mobile) 
+                            wx.setStorageSync('nickName', res.response.nickName) 
+                            wx.setStorageSync('username', res.response.username) 
+                            wx.navigateTo({
+                                url:This.path
+                            });
+                            This.changeModel = false
+                            This.isModel = false
+                        })
+                    } else {
+                    console.log('登录失败！' + res.errMsg)
+                    }
+                }
             })
+
         }
     }
 };
