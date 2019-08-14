@@ -35,7 +35,7 @@ export default {
         //标题文字
         title: {
             required: false,
-            default: "我推荐的班组"
+            default: " "
         },
         // 是否显示后退按钮
         backVisible: {
@@ -75,7 +75,6 @@ export default {
                 } else {
                     self.titleBarHeight = 43;
                 }
-
                 self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
             }
         });
@@ -84,11 +83,9 @@ export default {
     },
     methods: {
         backClick() {
-            
             wx.navigateBack({ 
                 delta: 2, 
             });
-
             // wx.redirectTo({
             //     url: '/pages/index/main'
             // });
@@ -111,7 +108,6 @@ export default {
         top: 0;
         width: 100%;
         z-index: 999;
-
         .nav-titlebar {
             // border: 1px solid green;
             width: 100%;
@@ -137,9 +133,8 @@ export default {
             background: #fff;
             border-radius: 27px;
             padding-right: 5rpx;
-
             .opt {
-                width: 50rpx;
+                width: 100rpx;
                 height: 50rpx;
                 display: flex;
                 justify-content: center;
@@ -152,7 +147,7 @@ export default {
                 }
             }
             .line {
-                display: block;
+                display: black;
                 height: 30rpx;
                 width: 1rpx;
                 background-color: gray;

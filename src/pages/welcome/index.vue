@@ -17,15 +17,15 @@ export default {
         }
     },
     mounted() {
-     let This = this
-    fly.post('/contractor/getMySharingPlan').then(function (res) {
-        let data = res.response
-        if(data.reviewStatus==null){
-            This.url='/pages/register/main'
-        }else{
-            This.url='/pages/sharing/main'
-        }
-    })
+        let This = this
+        fly.post('/contractor/getMySharingPlan').then(function (res) {
+            let data = res.response
+            if(data.reviewStatus==null){
+                This.url='/pages/register/main'
+            }else{
+                This.url='/pages/sharing/main'
+            }
+        })
     },
     methods: {
 
@@ -38,30 +38,29 @@ export default {
     width: 100%;
     height: 100%;
     .about{
-    width: 670rpx;
-    margin: 0 auto;
-    font-size: 48rpx;
-    color:block;
-    font-family: 'PingFangSC-Regular';
-    margin-top: 96rpx;
-  }
+        width: 670rpx;
+        margin: 0 auto;
+        font-size: 48rpx;
+        color:black;
+        font-family: 'PingFangSC-Regular';
+        margin-top: 96rpx;
+    }
     .confirm{
-      width: 670rpx;
-      background:#FCB813;
-      margin-bottom:24rpx;
-      font-size:34rpx;
-      font-family:'PingFangSC-Medium';
-      position: absolute;
-      bottom: 40rpx;
-      left: 40rpx;
-      font-weight: 550;
+        width: 670rpx;
+        background:#FCB813;
+        margin-bottom:24rpx;
+        font-size:34rpx;
+        font-family:'PingFangSC-Medium';
+        position: absolute;
+        bottom: 40rpx;
+        left: 40rpx;
+        font-weight: 550;
     }
     .rule{
         color:#FCB813;
         width: 670rpx;
         margin-left: 20rpx;
         margin-top: 48rpx;
-
     }
 }
 </style>

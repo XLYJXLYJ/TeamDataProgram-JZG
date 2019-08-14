@@ -11,50 +11,39 @@
             </div>
         </div>
 
-
-
         <div class="fixedSelectCity" v-if="isTop" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
             <div>
                 <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
                     <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
                 </picker>  -->
-
-                <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
+                <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;margin-top:-16rpx;" src="/static/images/bottom.png" alt=""></div>
                 <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
-            
             </div>
             <span style="color:rgb(204,204,204)">|</span>
             <div>
                 <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
                 </picker>  -->
-
-                <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;margin-top:-16rpx;" src="/static/images/bottom.png" alt=""></div>
                 <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
-
             </div>
         </div>
-
 
         <div class="selectCity" :style="{top: navBarHeight + 'px'}">
             <div v-if="!isTop">
                 <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
                     <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
                 </picker>  -->
-
-                <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
+                <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;margin-top:-16rpx" src="/static/images/bottom.png" alt=""></div>
                 <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
-            
             </div>
             <span v-if="!isTop" style="color:rgb(204,204,204)">|</span>
             <div v-if="!isTop">
                 <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
                 </picker>  -->
-
-                <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;margin-top:-16rpx" src="/static/images/bottom.png" alt=""></div>
                 <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
-
             </div>
         </div>
 
@@ -67,16 +56,26 @@
                     <div class="left">
                         <div class="img">
                             <img :src="item.compressUrl" alt="" v-if="item.compressUrl">
-                            <img src="/static/images/user.png" alt="" v-if="!item.compressUrl">
+                            <img src="/static/images/user1.png" alt="" v-if="!item.compressUrl">
                         </div>
                         <div class="text-detail">
                             <div class="company">{{item.organizationName}}</div>
                             <div>
                                 <ul class="text-ul">
-                                    <li class="text-li" v-for="(twoItem,twoIndex) in item.contractorProjectTypes" :key="twoIndex">{{twoItem.projectTypeName}} * {{twoItem.medalNum}}</li>
+                                    <li v-for="(twoItem,twoIndex) in item.contractorProjectTypes" :key="twoIndex">
+                                        <div v-if="twoItem.medalNum" class="text-li">
+                                            {{twoItem.projectTypeName}} 
+                                            <img src="/static/images/star.png" alt="">
+                                            {{twoItem.medalNum}}
+                                        </div>
+                                        <div v-if="!twoItem.medalNum" style="font-size:28rpx;margin-top:4rpx;margin-bottom:4rpx;">
+                                            {{twoItem.projectTypeName}} 
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
-                            <div class="achievement">{{item.projectPerformanceCount}} 项工程业绩</div>
+                            <div class="achievement" v-if='!item.projectPerformanceCount'>暂未上传工程业绩</div>
+                            <div class="achievement" v-if='item.projectPerformanceCount'>{{item.projectPerformanceCount}} 项工程业绩</div>
                         </div>
                     </div>
                     <div class="right">
@@ -85,7 +84,6 @@
                 </li>
             </div>
         </ul>
-
         <!-- <ul class="card-ul">
             <div class="img-contain" v-if="!list">
                 <img src="/static/images/none.png">
@@ -109,9 +107,7 @@
                 </li>
             </div>
         </ul> -->
-
-
-         <button class="shareButton" @click="goPoint" v-show="showButton">加入共建共享计划，查看更多班组</button>
+         <button class="shareButton" @click="goPoint" v-if="showButton">加入共建共享计划，查看更多班组</button>
     </div>
 </template>
 
@@ -140,7 +136,7 @@ export default {
             selectIndex:'', // 选中的班组index位置
             family: "班组", // 班组分类
             sort:'班组分类', // 班组分类
-            projectType:89, // 班组id
+            projectType:'', // 班组id
             page:1,
             cityMultiArray:[],
             cityMultiIndex: [0,0],
@@ -148,17 +144,15 @@ export default {
             citySelectIndex:'', // 选中的班组index位置
             city: "深圳市", // 班组分类
             cityId:1971, // 城市id
-
             pickerValueArray:[],
             pickerCityValueArray:[],
-
             showButton:false,
-            list:[]
+            list:[],
+            isNull:'1'
         };
     },
     onPageScroll: function(res) {
         let This = this
-        console.log(res.scrollTop)
         if (res.scrollTop > 140) {
             This.isTop = true
         } else {
@@ -169,7 +163,6 @@ export default {
         console.log("刷新"); 
     },
     onReachBottom () {
-        console.log('数据加载完了')
         let This = this
         This.page = This.page + 1
         This.getClass()
@@ -203,13 +196,10 @@ export default {
     },
     mounted() {
         let This = this
-
         fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
             // let oneRowArray = []
             // let oneColumnArray = []
             // This.cityArray = data.response
-            // console.log('66666')
-            // console.log(data.response)
             // data.response[0].childList.map(
             //     (items,index) => oneColumnArray.push(items.name)
             // )
@@ -219,7 +209,6 @@ export default {
             // This.cityMultiArray[0] = oneRowArray
             // This.cityMultiArray[1] = oneColumnArray
             // This.$set(This.cityMultiArray,This.cityMultiArray)
-
             let arr = []
             data.response.map((value,index,arry)=>{
                 arr.push({ 'label': value.name, 'value': value.id,'getchildren': value.childList,'children': [] })
@@ -228,9 +217,6 @@ export default {
                 })
             })
             This.pickerCityValueArray = arr
-
-
-
         })
         fly.get('/contractor/getContractorType').then(function (data) {
             // 用于原声小程序picker
@@ -256,7 +242,6 @@ export default {
             This.pickerValueArray = arr
             // arr.map((value,index,arry)=>{
             //     arr.children.map((value,index,arry)=>{
-            //         console.log(value)
             //         // arr[index].children.push({ 'label': value.name, 'value': value.id})
             //     })
             // })
@@ -267,21 +252,16 @@ export default {
         goIntro(index){
             let This = this
             if(!wx.getStorageSync('token')){
-                console.log('666')
                 This.changeModel = true
                 This.isModel = true
-
                 This.path = '/pages/introdution/main?contractorId=' + index
-                console.log(This.path)
             }else{
-                console.log('9999')
                 wx.navigateTo({
                     url:'/pages/introdution/main?contractorId=' + index
                 })
             }
         },
         bindMultiPickerChange: function (e) {
-            console.log('picker发送选择改变，携带值为', e)
             let This = this
             This.selectIndex = e.mp.detail.value
             let one = This.selectIndex[0]
@@ -293,9 +273,16 @@ export default {
         },
         getClass(){
             let This = this
+            if(This.isNull == null || This.isNull.length == 0){
+                wx.showLoading({
+                    title:'数据已加载完'
+                })
+            }else{
                 wx.showLoading({
                     title:'加载中'
                 })
+            }
+
             let data = {
                 page:This.page,
                 pageSize:10,
@@ -303,8 +290,8 @@ export default {
                 area:This.cityId || ''
             }
             fly.post('/contractor/getHQContractorList',data).then(function (res) {
-                console.log(res)
                 wx.hideLoading();
+                console.log(res)
                 if(res.message == '您的登录已失效,请重新登录'){
                     wx.clearStorage()
                     This.getClass()
@@ -312,23 +299,22 @@ export default {
                 }
                 if(This.page == 1){
                    This.list = res.response.list
-                   This.showButton = res.response.list.length ==0?true:false
-                   console.log(This.list)
-                }else{
-                //    This.list.push(JSON.parse(JSON.stringify([res.response.list])))
-                   This.showButton = res.response.list.length ==0?true:false
-                   if(res.response.list){
-                       This.showButton = true
+                    if(res.response.list == null || res.response.list.length<5){
+                        This.showButton = true
                    }else{
                         This.showButton = false
                    }
-                   console.log(This.showButton)
-                   console.log(res.response.list)
+                }else{
+                    console.log(res.response.list)
+                //    This.list.push(JSON.parse(JSON.stringify([res.response.list])))
+                   if(res.response.list == null || res.response.list.length == 0){
+                        This.showButton = true
+                   }else{
+                        This.showButton = false
+                   }
+                   This.isNull = res.response.list
                 //    This.list = This.list.concat(res.response.list)
-
                   This.list.push(...res.response.list)
-
-                   console.log(This.list)
                 }   
             })
         },
@@ -352,7 +338,6 @@ export default {
             }
         },
         cityMultiPickerChange: function (e) {
-            console.log('picker发送选择改变，携带值为', e)
             let This = this
             This.citySelectIndex = e.mp.detail.value
             let one = This.citySelectIndex[0]
@@ -383,14 +368,12 @@ export default {
         goPoint(){
             let This = this
             if(!wx.getStorageSync('token')){
-                console.log('666')
                 This.changeModel = true
                 This.isModel = true
                 This.path = '/pages/register/main'
             }else{
-                console.log('9999')
                 wx.navigateTo({
-                    url:'/pages/register/main'
+                    url:'/pages/sharing/main'
                 })
             }
 
@@ -400,12 +383,13 @@ export default {
             this.$refs.mpPicker.show();
         },
         onConfirm(e) {
-            console.log(e);
+            console.log(e)
             let This = this
             This.projectType = e.value[1]
-            This.sort = e.label
+            let arr = e.label.split('-')
+            console.log(arr)
+            This.sort = arr[1]
             This.getClass()
-            console.log(This.projectType)
         },
         onChange(e) {
             console.log(e);
@@ -424,7 +408,6 @@ export default {
             This.cityId = e.value[1]
             This.city = '深圳市'
             This.page = 1
-            console.log(This.projectType)
         },
         onCityChange(e) {
             console.log(e);
@@ -437,22 +420,13 @@ export default {
             let This = this
             This.$emit("func", false);
         },
-
-
-
-
         getUserInfo (e) {
-            console.log('66666')
-            console.log(e)
             let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
-            console.log(userInfo)
             wx.login({
                 success (res) {
                     if (res.code) {
                     //发起网络请求
-                    console.log('code...。')
-                        console.log(res.code)
                         let data = {
                             nickName:userInfo.nickName,
                             code:res.code,
@@ -461,7 +435,6 @@ export default {
                             areaName:[userInfo.country,userInfo.province,userInfo.city]
                         }
                         fly.post('/contractor/weChatAuth',data).then(function (res) {
-                            console.log(res)
                             wx.setStorageSync('img',res.response.headImg)
                             wx.setStorageSync('token', res.response.authorization) 
                             wx.setStorageSync('gender', res.response.gender) 
@@ -475,7 +448,7 @@ export default {
                             This.isModel = false
                         })
                     } else {
-                    console.log('登录失败！' + res.errMsg)
+                        console.log('登录失败！' + res.errMsg)
                     }
                 }
             })
@@ -562,10 +535,10 @@ export default {
         font-weight: 550;
     }
     .fixedSelectCity{
-        width: 672rpx;
+        width: 100%;
         position: fixed;
         top: 100rpx;
-        left: 40rpx;
+        left: 0rpx;
         margin: 0 auto;
         display: flex;
         flex-direction: row;
@@ -577,7 +550,6 @@ export default {
         font-weight: 550;
         z-index: 999;
     }
-
     // .card-ul{
     //     width: 670rpx;
     //     height: auto;
@@ -607,7 +579,6 @@ export default {
     //             background: #fff;
     //             z-index: 0;
     //             position: relative;
-
     //             img{
     //                 width: 128rpx;
     //                 height: 134rpx;
@@ -625,9 +596,7 @@ export default {
     //                 position: absolute;
     //                 left: 146rpx;
     //                 top: 0rpx;
-    //             }
-
-                
+    //             }    
     //             .text-ul{
     //                 list-style: none;
     //                 position: absolute;
@@ -669,7 +638,6 @@ export default {
     //         }
     //     }
     // }
-
 .card-ul{
         width: 670rpx;
         height: auto;
@@ -702,7 +670,7 @@ export default {
                 img{
                     width: 126rpx;
                     height: 126rpx;
-                    border-radius: 4rpx;
+                    border-radius: 8rpx;
                 }
                 .text-detail{
                     font-family: 'PingFangSC-Regular';
@@ -712,16 +680,15 @@ export default {
                     display: flex;
                     justify-content: flex-start;
                     flex-direction: column;
+                    margin-top: -32rpx;
                     .company{
                         font-family: 'PingFangSC-Regular';
                         font-size: 34rpx;
                         color: black;
-                        margin-top: -16rpx;
                         font-weight: 550;
                     }
                     .text-ul{
                         list-style: none;
-                        margin-top: -6rpx;
                         .text-li{
                             float: left;
                             height: 40rpx;
@@ -734,20 +701,23 @@ export default {
                             align-items: center;
                             margin-right: 10rpx;
                             padding: 0rpx 10rpx 0 10rpx;
-                            margin: 6rpx;
+                            img{
+                                width: 16rpx;
+                                height: 16rpx;
+                                margin-left: 4rpx;
+                                margin-right: 4rpx;
+                            }
                         }
                     }
                     .achievement{
                         font-family: 'PingFangSC-PingFangSC-Light';
                         font-size: 28rpx;
-                        margin-top: -6rpx;
                     }
                 }
             }
             .right{
                 width: 16rpx;
                 height: 25rpx;
-                margin-top: 1.6rpx;
                 img{
                     width: 16rpx;
                     height: 25.2rpx;
@@ -755,7 +725,6 @@ export default {
             }
         }
     }
-    
     .shareButton{
         width: 670rpx;
         height: 96rpx;

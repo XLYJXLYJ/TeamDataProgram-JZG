@@ -13,26 +13,20 @@
             <form>
                 <div class="get-block">
                     <p class="title">姓名</p>
-                    <input type="text" v-model="name" placeholder="请输入您的姓名" autocomplete="off" />
+                    <input type="text" v-model="name" style="color:#5f5f5f" placeholder="请输入您的姓名" autocomplete="off" />
                 </div>
-
                 <div class="get-block" style="border:none">
                     <p class="title">手机号</p>
                     <input type="text" v-model="phone" disabled style="color:#5f5f5f" autocomplete="off" />
                 </div> 
-
                 <div class="get-block">
                     <p class="title">性别</p>
-                    <input type="text" v-model="gender" placeholder="请输入您的性别" autocomplete="off" />
+                    <input type="text" v-model="gender" style="color:#5f5f5f" placeholder="请输入您的性别" autocomplete="off" />
                 </div>
-
                 <div class="get-block" style="border:none">
                     <p class="title">微信昵称</p>
                     <input type="text" v-model="wx" style="color:#5f5f5f" disabled autocomplete="off" />
                 </div>
-
-
-
                 <div>
                     <button class="confirm" @click="selfSave">保存</button>
                 </div>
@@ -54,7 +48,6 @@ export default {
         goBackNav,
         mpUploader
     },
-
     data() {
         return {
             phone: "",
@@ -86,8 +79,21 @@ export default {
                 gender:This.gender='男'?1:0
             }
             fly.post('/contractor/saveMyInfo',data).then(function (res) {
-                wx.setStorageSync('gender', This.name)
-                wx.setStorageSync('username', This.gender)
+                wx.setStorageSync('username', This.name)
+                if(This.gender==1){
+                    This.gender='男'
+                }else{
+                    This.gender='女'
+                }
+                wx.setStorageSync('gender', This.gender)
+                wx.showToast({
+                    title: '修改成功',
+                    icon: "none",
+                    duration: 2000
+                })
+                wx.navigateTo({
+                    url:'/pages/index/main?name=' + This.name + '&gender=' + This.gender
+                });
             })
         }
     }
@@ -115,7 +121,7 @@ export default {
         }
         .title {
             font-size: 28rpx;
-            color: block;
+            color: black;
             font-family: "PingFangSC-Regular";
             margin-bottom: 16rpx;
         }
@@ -132,6 +138,10 @@ export default {
             height: 96rpx;
             bottom: 40rpx;
             border:none;
+            font-weight:550;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }

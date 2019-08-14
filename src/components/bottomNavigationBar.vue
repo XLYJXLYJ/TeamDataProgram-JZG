@@ -12,10 +12,7 @@
         </div>
         <article class="tabBar-box">
             <ul class="tabBar-nav" v-if="navList.length > 0">
-                <li class="item"
-                    v-for="(item, index) in navList"
-                    @click="selectNavItem(index,item.pagePath)"
-                    :key="index">
+                <li class="item" v-for="(item, index) in navList" @click="selectNavItem(index,item.pagePath)" :key="index">
                         <p class="item-images">
                             <img :src="selectNavIndex === index ? item.selectedIconPath : item.iconPath" alt="iconPath"/>
                         </p>
@@ -67,28 +64,19 @@ export default {
     },
     methods: {
         selectNavItem(index, pagePath) {
-            console.log(index)
-
             let This = this
-
             if (index === this.selectNavIndex) {
                 return false;
             }
             if(index==1){
-                console.log('进来了')
-
                 if(!wx.getStorageSync('token')){
-                    console.log('666')
-                    console.log(This.path)
                     This.changeModel = true
                     This.isModel = true
                     This.path = pagePath
                 }else{
-                    console.log('9999')
                     // This.bindViewTap(pagePath);
                 }
             }else{
-                console.log('56565')
                 This.changeModel = false
                 This.isModel = false
                 // This.bindViewTap(pagePath);
@@ -109,17 +97,12 @@ export default {
             this.$emit("func", false);
         },
         getUserInfo (e) {
-            console.log(e)
             let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
-            console.log(userInfo)
-
             wx.login({
                 success (res) {
                     if (res.code) {
                     //发起网络请求
-                    console.log('code...。')
-                        console.log(res.code)
                         let data = {
                             nickName:userInfo.nickName,
                             code:res.code,
@@ -128,8 +111,8 @@ export default {
                             areaName:[userInfo.country,userInfo.province,userInfo.city]
                         }
                         fly.post('/contractor/weChatAuth',data).then(function (res) {
-                            console.log(res)
                             wx.setStorageSync('img',res.response.headImg)
+                            wx.setStorageSync('joinSharePlanStatus',res.response.joinSharePlanStatus)
                             wx.setStorageSync('token', res.response.authorization) 
                             wx.setStorageSync('gender', res.response.gender) 
                             wx.setStorageSync('mobile', res.response.mobile) 
@@ -146,16 +129,19 @@ export default {
                                     });
                                 }
                             }else{
-                                // wx.navigateTo({
-                                //     url:This.path
-                                // });
+                                wx.navigateTo({
+                                    url:This.path
+                                });
                             }
-
+                            // wx.navigateTo({
+                            //     url:'/pages/registerClass/main'
+                            // })
                             This.changeModel = false
                             This.isModel = false
+                            This.$emit('info',res.response)
                         })
                     } else {
-                    console.log('登录失败！' + res.errMsg)
+                        console.log('登录失败！' + res.errMsg)
                     }
                 }
             })
@@ -163,14 +149,12 @@ export default {
         isOk(){
             let This = this
             if(!wx.getStorageSync('token')){
-                console.log('wht')
                 This.changeModel = true
                 This.isModel = true
-                This.path = '/pages/register/main'
+                This.path = '/pages/registerClass/main'
             }else{
-                 console.log('hehehe')
                 wx.navigateTo({
-                    url:'/pages/register/main'
+                    url:'/pages/registerClass/main'
                 })
             }
         }
@@ -248,7 +232,6 @@ export default {
     border-top: 1rpx solid #fbfbfb;
     background-color: #fff;
 }
-
 .tabBar-nav {
     width: 100%;
     display: flex;

@@ -15,7 +15,6 @@
                     <p class="title">手机号码</p>
                     <input type="text" v-model="phone" placeholder="请输入手机号码" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
-
                 <div class="get-block">
                     <p class="title">验证码</p>
                     <div class="get-code">
@@ -30,7 +29,6 @@
                         <p @click="GetCode" class="getCodeDisabled">{{btnTxt}}</p>
                     </div>
                 </div>
-
                 <div>
                     <button class="confirm" @click="login">提交</button>
                 </div>
@@ -52,7 +50,6 @@ export default {
         goBackNav,
         mpUploader
     },
-
     data() {
         return {
             phone: "",
@@ -84,7 +81,6 @@ export default {
                 if (this.time == 0) {
                     this.time = 60;
                     this.Timer();
-                    console.log("发送请求");
                     this.send()
                 } else {
                     console.log("不能重复发送验证码");
@@ -107,7 +103,6 @@ export default {
                 vaCode:This.phone_code
             }
             fly.post('/contractor/login',data).then(function (res) {
-                console.log(res)
                 // wx.showToast({
                 //     title: "申请加入成功",
                 //     icon: "none",

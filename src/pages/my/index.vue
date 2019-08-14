@@ -4,13 +4,20 @@
             <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
         </section>
         <section class="maintenance">
-            <img  @click="goMy" :src="aImg">
-            <p v-if="mobile">{{name}}</p>
-            <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登陆</p>
+            <div v-if="!getInfo">
+                <img  @click="goMy" :src="aImg">
+                <p v-if="mobile">{{name}}</p>
+                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登陆</p>
+            </div>
+            <div v-if="getInfo">
+                <img @click="goMy" :src="getInfo.headImg">
+                <p v-if="getInfo.mobile">{{getInfo.username}}</p>
+                <p v-if="!getInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登陆</p>
+            </div>
         </section>
         <section>
             <ul>
-                <li @click="goC" v-if="mobile"><span>我推荐的班组</span><span><img src="/static/images/right.png"></span></li>
+                <li @click="goC" v-if="joinSharePlanStatus==1 || getInfo.joinSharePlanStatus==1"><span>我推荐的班组</span><span><img src="/static/images/right.png"></span></li>
                 <li @click="goS"><span>共建共享计划</span><span><img src="/static/images/right.png"></span></li>
                 <li @click="goW"><span>关于我们</span><span><img src="/static/images/right.png"></span></li>
                 <!-- <li v-for="(item,index) in list" :key="index" @click="goUrl(item.url)"><span>{{item.name}}</span><span><img src="/static/images/right.png"></span></li> -->
@@ -30,11 +37,13 @@ export default {
         bottomNavigationBar,
         navigationBar,
     },
+    props: ["getInfo"],
     data() {
         return {
             mobile:'',
             name:'',
             aImg:'',
+            joinSharePlanStatus:'',
             list: [
                 {
                     id: 0,
@@ -59,11 +68,12 @@ export default {
         let This = this
         This.mobile = wx.getStorageSync('mobile')
         This.name = wx.getStorageSync('username')
-        This.aImg = wx.getStorageSync('img')
-
-        )
-        console.log('图片地址')
-        console.log(This.aImg)
+        This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
+        if(wx.getStorageSync('img')){
+            This.aImg = '/static/images/user.png'
+        }else{
+            This.aImg = wx.getStorageSync('img')
+        }
     },
     methods:{
         goUrl(url){
@@ -144,6 +154,7 @@ export default {
             font-size: 34rpx;
             font-weight: bold;
             color: rgb(51, 51, 51);
+            text-align: center;
         }
     }
     ul{

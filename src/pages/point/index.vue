@@ -4,7 +4,6 @@
             <navigationBar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigationBar>
         </section>
         <!-- <alertOk changeModel='true' isModel='true' val=''></alertOk> -->
-
     </div>
 </template>
 

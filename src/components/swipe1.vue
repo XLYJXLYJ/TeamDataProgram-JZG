@@ -39,26 +39,26 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-        image {
-            width: 670rpx;
-            height: 290rpx;
-            border-radius: 8rpx;
-        }
-        .text1{
-            width: auto;
-            position: absolute;
-            top:25%;
-            left: 16%;
-            font-family: 'PingFang-SC-Heavy';
-            font-size: 44rpx;
-            font-weight: 550;
-        }
-        .text2{
-            width: auto;
-            position: absolute;
-            top:55%;
-            left: 42%;
-            font-family: 'PingFangSC-Regular';
-            font-size: 24rpx;
-        }
+image {
+    width: 100%;
+    height: 310rpx;
+    border-radius: 8rpx;
+}
+.text1{
+    width: auto;
+    position: absolute;
+    top:25%;
+    left: 16%;
+    font-family: 'PingFang-SC-Heavy';
+    font-size: 44rpx;
+    font-weight: 650;
+}
+.text2{
+    width: auto;
+    position: absolute;
+    top:65%;
+    left: 42%;
+    font-family: 'PingFangSC-Regular';
+    font-size: 24rpx;
+}
 </style>

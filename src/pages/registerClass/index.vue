@@ -12,21 +12,16 @@
         <div class="contain">
             <form>
                 <!-- 第一个表单 -->
-
                 <div class="get-block">
                     <p class="title" style="color:black">班组负责人</p>
                     <input type="text" v-model="name" placeholder="请输入姓名" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
-
                 <div class="get-block">
                     <p class="title" style="color:black">手机号码</p>
                     <input type="text" v-model="phone" placeholder="请输入您的手机号"  placeholder-style="color:#ccc" autocomplete="off" />
                 </div>
-
                 <div class="get-block">
                     <p class="title" style="color:black">班组类别</p>
-
-
                     <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                         <input
                             class="picker"
@@ -37,20 +32,12 @@
                             @focus="showMulLinkageTwoPicker"
                         />
                     </picker> -->
-
-                <div class="select picker" type="default"><p class="title" @click="show">{{sort}}</p></div>
+                <div class="select picker" type="default"><p class="title" @click="show" :class="{'isblack':isblack}" style="font-size: 34rpx;">{{sort}}</p></div>
                 <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
-
                 <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default"><p class="title">{{family}}{{sort}}</p></div>
                 </picker> -->
-
-
-
                 </div>
-
-
-
                 <!-- <div class="img-block">
                 <p class="title" style="margin-bottom:20rpx;">在职证明（请提交三种资料之一：1.公司出具的证明函、2.工作证、3.名片）</p>
                 <mp-uploader @upLoadSuccess="upLoadSuccess" @upLoadFail="upLoadFail" @uploadDelete="uploadDelete" :showTip=false :count=1></mp-uploader>
@@ -77,7 +64,6 @@ export default {
         goBackNav,
         mpPicker
     },
-
     data() {
         return {
             phone: "", // 手机号
@@ -89,7 +75,8 @@ export default {
             selectIndex:'', // 选中的班组位置；数组
             projectType:'', // 选中的班组ID
             mode: 'multiLinkageSelector',
-            pickerValueArray:[]
+            pickerValueArray:[],
+            isblack:false
         };
     },
     mounted() {
@@ -98,7 +85,6 @@ export default {
         let oneColumnArray = []
         fly.get('/contractor/getContractorType').then(function (data) {
             // This.Array = data.response
-            // console.log(This.Array)
             // data.response[0].childList.map(
             //     (items,index) => oneColumnArray.push(items.name)
             // )
@@ -108,7 +94,6 @@ export default {
             // This.multiArray[0] = oneRowArray
             // This.multiArray[1] = oneColumnArray
             // This.$set(This.multiArray,This.multiArray)
-
             let arr = []
             data.response.map((value,index,arry)=>{
                 arr.push({ 'label': value.name, 'value': value.id,'getchildren': value.childList,'children': [] })
@@ -118,13 +103,10 @@ export default {
             })
             This.pickerValueArray = arr
         })
-
         wx.login({    
             success: function (res) {    
                 if (res.code) {    
-                    //发起网络请求    
-                     console.log('获取用户登录态成功！')    
-                    console.log(res.code)    
+                    //发起网络请求     
                 } else {    
                     console.log('获取用户登录态失败！' + res.errMsg)    
                 }    
@@ -137,10 +119,10 @@ export default {
             this.$refs.mpPicker.show();
         },
         onConfirm(e) {
-            console.log(e);
             let This = this
             This.projectType = e.value[1]
             This.sort = e.label
+            This.isblack = true
         },
         make(){
             wx.navigateTo({
@@ -161,16 +143,45 @@ export default {
         },
         reClass(index){
             let This = this
+            if (!This.name) {
+                wx.showToast({
+                    title: "请输入班组名称",
+                    icon: "none",
+                    duration: 2000
+                })
+                return;
+            } 
+            if (!this.phone) {
+                wx.showToast({
+                    title: "请输入手机号",
+                    icon: "none",
+                    duration: 2000
+                })
+                return;
+            } 
+            if (!This.projectType) {
+                wx.showToast({
+                    title: "请选择班组类别",
+                    icon: "none",
+                    duration: 2000
+                })
+                return;
+            } 
+
             let data = {
                 username:This.name,
                 mobile:This.phone,
                 projectType:This.projectType,
             }
-            fly.post('/contractor/recommendContractor',data).then(function (data) {
-                console.log(data)
-                if(data.message == '成功'){
+            fly.post('/contractor/recommendContractor',data).then(function (res) {
+                wx.showToast({
+                    title: res.message,
+                    icon: "none",
+                    duration: 2000
+                })
+                if(res.message == '成功'){
                     wx.navigateTo({
-                        url:'/pages/index/main'
+                        url:'/pages/RecommendedTeams/main'
                     });
                 }
             })
@@ -212,9 +223,6 @@ export default {
                 display: flex;
                 justify-content: space-between;
             }
-
-
-
         }
         .img-block {
             width: 100%;
@@ -245,6 +253,9 @@ export default {
 }
 .getCodeDisabled {
     color: rgb(204, 204, 204);
+}
+.isblack{
+    color: black!important;
 }
 
 </style>

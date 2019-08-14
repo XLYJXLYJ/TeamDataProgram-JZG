@@ -7,11 +7,13 @@
         <div class="content" v-if="list.length">
             <ul>
                 <li class="card-li" v-for="(item,index) in list" :key="index" @click="goClass(item.contractorId)">
-                    <p class="company-name">{{item.organizationName}}</p>
+                    <p class="company-name" v-if="item.organizationName">{{item.organizationName}}</p>
+                    <p class="company-name" v-if="!item.organizationName"> </p>
                     <span class="status" v-if='item.reviewStatus==3'>审核中</span>
                     <span class="status" v-if='item.reviewStatus==2'>不通过</span>
                     <span class="status" v-if='item.reviewStatus==1'>通过</span>
-                    <span class="time">    {{item.recommendTime}}</span>
+                    <span class="status" v-if='item.reviewStatus==0'>未注册</span>
+                    <span class="time">  {{item.recommendTimeStr}}推荐</span>
                     <p class="cause" v-if='item.remark'>原因：{{remark}}</p>
                 </li>
                 <!-- <li @click="goClass(10462)">
@@ -58,7 +60,6 @@ export default {
             let This = this
             fly.post('/contractor/getMyRecommendContractor').then(function (res) {
                 This.list = res.response
-                console.log(res)
             }) 
         },
         goReClass(){
@@ -117,7 +118,7 @@ export default {
                 width: 670rpx;
                 margin: 0 auto;
                 padding: 24rpx 0 24rpx 0;
-                border-bottom: 1rpx solid rgb(204, 204, 204);
+                border-bottom: 1rpx solid #e5e5e5;
                 .company-name {
                     font-size: 34rpx;
                     color: black;

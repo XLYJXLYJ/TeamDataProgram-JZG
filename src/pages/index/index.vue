@@ -11,13 +11,11 @@
                 <card></card>
             </section>
         </div>
-
         <div class="my" v-if="!bottomId">
-            <my></my>
+            <my :getInfo='getInfo'></my>
         </div>
-
         <section class="add">
-            <bottomNavigationBar :selectNavIndex="selectNavIndex" @indexId='indexFuc'></bottomNavigationBar>
+            <bottomNavigationBar :selectNavIndex="selectNavIndex" @indexId='indexFuc' @info='info'></bottomNavigationBar>
         </section>
     </div>
 </template>
@@ -56,22 +54,29 @@ export default {
                 }
             ],
             selectNavIndex:0,
-            bottomId:true 
+            bottomId:true,
+            getInfo:'',
+            boy:''
         };
     },
-    onLoad() {
-        // wx.clearStorage()
+    onLoad: function(option){ 
+        console.log(option)
+        // let This = this
+        // This.getInfo = option
     },
     methods:{
         indexFuc(data){
             let This = this
-            console.log(data)
             This.selectNavIndex = data
             if(data==0){
                 This.bottomId = true
             }else{
                 This.bottomId = false
             }
+        },
+        info(data){
+            let This = this
+            This.getInfo = data
         }
     }
 };
@@ -91,11 +96,13 @@ export default {
     }
     .img-contain {
         display: block;
-        width: 670rpx;
-        height: 290rpx;
+        width: 100%;
+        height: 310rpx;
         margin: 0 auto;
         border-radius: 8rpx;
-        margin-top: 40rpx;
+        padding-top: 40rpx;
+        background: #f9f9f9;
+        margin-bottom: 32rpx;
     }
 }
 </style>

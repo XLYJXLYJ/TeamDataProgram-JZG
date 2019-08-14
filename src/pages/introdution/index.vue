@@ -1,6 +1,6 @@
 <template>
     <div>
-        <goBackNav></goBackNav>
+        <goBackNav :title='title'></goBackNav>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -9,7 +9,6 @@
                 @func="controlAlert"
             ></selfAlert>
         </div>
-
         <div>
             <div class="img-head">
                 <img @click="headPreviewImage" :src="headimg" />
@@ -17,9 +16,10 @@
             <div class="title">{{organizationName}}</div>
             <div class="tag">
                 <ul class="text-ul">
-                    <li class="text-li" v-for="(item,index) in ContractorProjectType" :key="index">{{item.projectTypeName}}  &nbsp;<img style="width:16rpx;height:16rpx" src="/static/images/star.png" alt="">&nbsp; {{item.medalNum}}</li>
+                    <li v-for="(item,index) in ContractorProjectType" :key="index">
+                        <span v-if="item.medalNum" class="text-li"> {{item.projectTypeName}}  &nbsp;<img style="width:16rpx;height:16rpx" src="/static/images/star.png" alt="">&nbsp; {{item.medalNum}}</span>
+                    </li>
                 </ul>
-               
             </div>
             <!-- <div class="detail">
                 <p class="one">"该班组技术好，态度好，做事负责"</p>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="basic-sigle">
                     <span class="one">人员规模:</span>
-                    <span class="two">{{teamPersonCount}}人</span>
+                    <span class="two">{{teamPersonCountName}}</span>
                 </div>
                 <div class="basic-sigle">
                     <span class="one">联系人:</span>
@@ -74,11 +74,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="equip">
-                <p class="self"><span v-if="quantity">自有设备( {{quantity}} 种)</span></p>
+            <div class="equip" v-if="equipmentCount">
+                <p class="self"><span>自有设备( {{equipmentCount}} 种)</span></p>
                 <ul class="one-ul">
                     <li class="one-li" v-for="(item,index) in eqList" :key="index">
-                        <p class="machine">{{item.remark}}</p>
+                        <p class="machine">{{item.remark}}<span>{{item.quantity}}</span></p> 
                         <div class="img-contain">
                             <ul class="two-ul">
                                 <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
@@ -86,7 +86,7 @@
                                 </div>
                                 <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
                             </ul>
-                            <div class="corner">
+                            <div class="corner" v-if="item.imgs">
                                 <div class="img-corner"><img src="/static/images/more.png"> </div>
                                 <span class="number">{{item.imgs}}</span>
                             </div>
@@ -103,37 +103,37 @@
                     <p class="machine">{{item.areaFullName}}</p>
                     <div class="img-contain">
                         <ul class="three-ul">
-                            <div v-for="(threeItem,threeIndex) in item.imgList" :key="threeIndex">
-                                <li class="three-li" v-if="threeIndex<3"><img @click="previewImage(threeItem,imgListTwo)" :src='threeItem' /></li>
+                            <div v-for="(threeItem,threeIndex) in item.nearImgList" :key="threeIndex">
+                                <li class="three-li" v-if="threeIndex<6"><img @click="previewImage(threeItem,item.nearImgList)" :src='threeItem' /></li>
                             </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
                         </ul>
-                        <div class="corner">
+                        <div class="corner" v-if="item.nearImgList.length">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
-                            <span class="number">{{imgListTwo.length}}</span>
+                            <span class="number">{{item.nearImgList.length}}</span>
                         </div>
                     </div>
                     <ul class="two-ul">
-                        <li>
+                        <li v-if="item.projectTypeName">
                             <div class="one"><img src="/static/images/1.png"></div>
-                            <div class="two">{{item.projectName || ''}}</div>
+                            <div class="two">{{item.projectTypeName}}</div>
                         </li>
-                        <li>
+                        <li v-if="item.startTimeStr">
                             <div class="one"><img src="/static/images/2.png"></div>
-                            <div class="two">{{item.startTime}}</div>
+                            <div class="two">{{item.startTimeStr}} 至 {{item.endTimeStr}}</div>
                         </li>
-                        <li>
+                        <li v-if="item.prizeList">
                             <div class="one"><img src="/static/images/3.png"></div>
-                            <div class="two">{{item.prizeList || ''}}</div>
+                            <div class="two">{{item.prizeList}}</div>
                         </li>
-                        <li>
+                        <li  v-if="item.employers">
                             <div class="one"><img src="/static/images/4.png"></div>
-                            <div class="two">{{item.employers || ''}}</div>
+                            <div class="two">{{item.employers}}</div>
                         </li>
-                        <li>
+                        <li v-if="item.remarks">
                             <div class="one"><img src="/static/images/5.png"></div>
-                            <div class="two">{{item.remarks || ''}}</div>
+                            <div class="two">{{item.remarks}}</div>
                         </li>
                     </ul>
                 </li>
@@ -150,6 +150,8 @@ import fly from "@/services/WxApi";
 export default {
     data() {
         return {
+            equipmentCount:'',
+            title:'',
             isTab:'',
             qtotal:'',
             quantity:'',
@@ -160,7 +162,6 @@ export default {
             contractorDesc:'',
             headimg:'',
             isTab:true,
-
             ifMode: false,
             ischangeModel: false,
             isAlert: false,
@@ -168,7 +169,6 @@ export default {
             statusBarHeight: "", // 状态栏高度
             titleBarHeight: "", // 标题栏高度
             navBarHeight: "", // 导航栏总高度
-
             areaName:'',
             projectTypeName:'',
             teamPersonCountName:'',
@@ -187,8 +187,9 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 600) {
+        if (res.scrollTop > 500) {
             This.isTop = true
+            This.title = This.organizationName
         } else {
             This.isTop = false
         }
@@ -196,9 +197,7 @@ export default {
     onLoad(options){
         let This = this
         This.contractorId = options.contractorId || wx.getStorageSync('contractorId')
-        console.log('options信息')
         wx.setStorageSync('contractorId', This.contractorId) 
-        console.log(options)
     },
     beforeMount() {
         const self = this;
@@ -224,8 +223,6 @@ export default {
         This.isAlert = false
         This.ifMode = false
         This.ischangeModel = false
-
-
         let data = {
             page:1,
             pageSize:5,
@@ -246,19 +243,15 @@ export default {
             This.imgList = resData.imgList
             This.teamPersonCount = resData.teamPersonCount
             This.projectPerformanceCount = resData.projectPerformanceCount
+            This.equipmentCount = resData.equipmentCount
         })
-
         let dataTwo = {
             contractorId:This.contractorId || wx.getStorageSync('contractorId')
         }
         fly.post('/contractor/getProjectPerformanceList',dataTwo).then(function (res) {
             let resData = res.response
-            console.log(222)
-            console.log(resData)
             This.list = resData.list
         })
-
-
     },
     onShow() {
         let This = this
@@ -272,18 +265,18 @@ export default {
             contractorId:This.contractorId || wx.getStorageSync('contractorId')
         }
         fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
-            console.log('获取工程业绩')
-            console.log(res.response)
             let resData = res.response.list[0]
             This.organizationName = resData.organizationName
         })
         fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
-            console.log('获取优质班组详细信息')
             let resData = res.response
-            console.log(resData)
             This.ContractorProjectType = resData.contractorProjectTypes
             This.contractorDesc = resData.contractorDesc
-            This.headimg = resData.headimg
+            if(resData.headimg == null){
+                This.headimg = '/static/images/user1'
+            }else{
+                This.headimg = resData.headimg
+            }
         })
     },
 
@@ -298,7 +291,6 @@ export default {
             //     urls:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg'] // 需要预览的图片http链接列表
             // });
         },
-
         // formatDate(date, fmt) {
         //     let This = this
         //     if (/(y+)/.test(fmt)) {
@@ -322,8 +314,6 @@ export default {
         // padLeftZero(str) {
         //     return ('00' + str).substr(str.length);
         // },
-
-
         controlAlert(data) {
             this.isAlert = data;
         },
@@ -399,7 +389,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
 .img-head {
     height: 400rpx;
     width: 100%;
@@ -409,7 +398,7 @@ export default {
     img {
         width: 240rpx;
         height: 240rpx;
-        border-radius: 4rpx;
+        border-radius: 8rpx;
     }
 }
 .title {
@@ -476,6 +465,7 @@ export default {
     font-family: "PingFangSC-Regular";
     margin: 0 auto;
     display: flex;
+    justify-content: center;
     text-align: center;
     margin-top: 48rpx;
 }
@@ -490,12 +480,13 @@ export default {
     margin-top: 96rpx;
     border:none;
     font-weight: 550;
-    border-radius: 4rpx;
+    border-radius: 8rpx;
 }
 .tab {
     display: flex;
     justify-content: space-around;
     margin-top: 96rpx;
+    border-bottom:1rpx solid #e5e5e5;
     .gene {
         width: 50%;
         text-align: center;
@@ -535,6 +526,7 @@ export default {
     height: 100rpx;
     // padding-top: 40rpx;
     background: #fff;
+    border-bottom:1rpx solid #e5e5e5;
     z-index: 999;
     .gene {
         width: 50%;
@@ -635,12 +627,11 @@ export default {
                 background: #fff;
             }
             img{
-                width: 100%;
+                width: 80%;
                 height: 8rpx;
                 position: relative;
                 top: -6rpx;
                 z-index: 0;
-
             }
         }
     }
@@ -726,6 +717,17 @@ export default {
                 font-family: "PingFangSC-Regular";
                 margin-bottom: 24rpx;
                 z-index: 0;
+                span{
+                    width: 32rpx;
+                    height: 32rpx;
+                    background: #efeff4;
+                    padding-left: 10rpx;
+                    padding-right: 10rpx;
+                    border-radius: 30rpx;
+                    font-size: 24rpx;
+                    margin-left: 10rpx;
+                    color: #a7a7a8;
+                }
             }
             .img-contain {
                 position: relative;

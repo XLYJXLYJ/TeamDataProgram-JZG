@@ -68,14 +68,12 @@ export default {
                 self.model = system.model;
                 self.brand = system.brand;
                 self.system = system.system;
-
                 let platformReg = /ios/i;
                 if (platformReg.test(system.platform)) {
                     self.titleBarHeight = 39;
                 } else {
                     self.titleBarHeight = 43;
                 }
-
                 self.navBarHeight = self.statusBarHeight + self.titleBarHeight;
             }
         });
@@ -152,7 +150,7 @@ export default {
                 }
             }
             .line {
-                display: block;
+                display: black;
                 height: 30rpx;
                 width: 1rpx;
                 background-color: gray;

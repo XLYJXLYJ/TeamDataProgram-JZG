@@ -16,7 +16,6 @@
                     <p class="title">手机号码</p>
                     <input type="text" v-model="phone" placeholder="请输入手机号码" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
-
                 <div class="get-block">
                     <p class="title">验证码</p>
                     <div class="get-code">
@@ -31,27 +30,20 @@
                        <p @click="GetClassCode" :disabled='btn' style="color:#ccc;">{{btnTxt}}</p>
                     </div>
                 </div>
-
                 <div class="get-block">
                     <p class="title">姓名</p>
                     <input type="text" v-model="name" placeholder="请输入姓名" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
-
                 <div class="get-block">
                     <p class="title">所在公司</p>
                     <input type="text" v-model="company" placeholder="请输入现在的公司" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
-
                 <div class="get-block">
                     <p class="title">职位</p>
                     <input type="text" v-model="position" placeholder="请输入职位" placeholder-style="color:#ccc;" autocomplete="off" />
                 </div>
-
                 <div class="img-block">
-                    <p
-                        class="title"
-                        style="margin-bottom:20rpx;"
-                    >在职证明（请提交三种资料之一：1.公司出具的证明函、2.工作证、3.名片）</p>
+                    <p class="title" style="margin-bottom:20rpx;">在职证明（请提交三种资料之一：1.公司出具的证明函、2.工作证、3.名片）</p>
                     <mp-uploader
                         @upLoadSuccess="upLoadSuccess"
                         @upLoadFail="upLoadFail"
@@ -83,7 +75,6 @@ export default {
         goBackNav,
         mpUploader
     },
-
     data() {
         return {
             phone: "",
@@ -127,7 +118,6 @@ export default {
                 if (this.time == 0) {
                     this.time = 60;
                     this.Timer();
-                    console.log("发送请求");
                     this.sendClass()
                 } else {
                     console.log("不能重复发送验证码");
@@ -158,15 +148,15 @@ export default {
         },
         upLoadSuccess(successRes){
             let This = this
-            console.log(successRes)
+            wx.showLoading({
+                title:'上传图片中'
+            })
             wx.getFileSystemManager().readFile({
                 filePath: successRes.tempFilePaths[0], //选择图片返回的相对路径
                 encoding: 'base64', //编码格式
                 success:(res) =>{
                     // let img = 'data:image/png;base64,' + res.data
-                    console.log('图片信息')
-                    console.log(res)
-                    console.log(res.data)
+                    wx.hideLoading();
                     let img1 = res.data
                     This.dataImg = {
                         imgs:img1
@@ -179,10 +169,7 @@ export default {
             let This = this
             console.log('上传图片咯')
             fly.post('/uploadImg',This.dataImg).then(function (res) {
-                console.log('是否上传成功')
-                console.log(res)
                 This.imgMessage.push(res.response)
-                console.log(This.imgMessage) 
             })
         },
 
@@ -190,12 +177,9 @@ export default {
             console.log(errMsg)
         },
         uploadDelete(DeleteRes){
-            console.log(DeleteRes)
             let This = this
             let index = DeleteRes.index
-            This.imgMessage.splice(index,1)
-            console.log(This.imgMessage)          
-
+            This.imgMessage.splice(index,1)       
         },
         agree(){
             wx.navigateTo({
@@ -261,7 +245,6 @@ export default {
                 imgs:This.imgMessage.join(",")
             }
             fly.post('/contractor/applyJoinSharingPlan',data).then(function (res) {
-                console.log(res)
                 wx.setStorageSync('token', res.response.authorization) 
                 wx.setStorageSync('gender', res.response.gender) 
                 wx.setStorageSync('mobile', res.response.mobile) 
@@ -309,7 +292,6 @@ export default {
         input {
             padding-bottom: 16rpx;
         }
-
         .confirm {
             background: #fcb813;
             margin-bottom: 24rpx;

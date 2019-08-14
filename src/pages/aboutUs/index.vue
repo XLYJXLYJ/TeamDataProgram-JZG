@@ -2,9 +2,7 @@
     <div class="aboutUs">
         <goBackNav title></goBackNav>
         <img class="logo" src="/static/images/logo.png" alt />
-        <p
-            class="about"
-        >深圳市建造工科技有限公司是一家专注于服务建筑劳务领域的移动互联网公司。“建造工”为本公司倾力打造研发运营的建筑劳务互联网平台，致力于用互联网的方式解决行业痛点，提供专业优质的服务。建造工由顶级互联网研发团队以及资深的建筑工程团队组成，现已获得专业投资公司与多家实力雄厚的建筑公司的巨额投资及强力支持，助力传统建筑行业升级，打造建筑劳务领域专业的互联网入口。</p>
+        <p class="about">深圳市建造工科技有限公司是一家专注于服务建筑劳务领域的移动互联网公司。“建造工”为本公司倾力打造研发运营的建筑劳务互联网平台，致力于用互联网的方式解决行业痛点，提供专业优质的服务。建造工由顶级互联网研发团队以及资深的建筑工程团队组成，现已获得专业投资公司与多家实力雄厚的建筑公司的巨额投资及强力支持，助力传统建筑行业升级，打造建筑劳务领域专业的互联网入口。</p>
         <div class="share">
             <ul class="one-ul">
                 <li class="one-li">
@@ -53,7 +51,7 @@ export default {
         width: 670rpx;
         margin: 0 auto;
         font-size: 28rpx;
-        color: block;
+        color: black;
         font-family: "PingFangSC-Regular";
     }
     .one-ul {

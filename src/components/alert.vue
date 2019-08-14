@@ -27,8 +27,6 @@ export default {
     },
     mounted() {
         let This = this
-        console.log('设置弹框内容')
-        console.log(This.val)
         if(This.val.alertType==1){
             This.title = '查看联系方式'
             This.content = '您已查看'+This.val.viewCount+'个班组的联系方式，您剩余'+This.val.remainCount+'次班组联系方式查看机会。'

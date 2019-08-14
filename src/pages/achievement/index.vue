@@ -91,7 +91,6 @@ export default {
             ContractorProjectType:'', // 标签
             contractorDesc:'',
             headimg:'',
-
             ifMode: false,
             ischangeModel: false,
             isAlert: false,
@@ -118,22 +117,17 @@ export default {
         This.ContractorProjectType = ''
         This.contractorDesc = ''
         This.headimg = ''
-
         let data = {
             page:1,
             pageSize:5,
             contractorId:This.contractorId || wx.getStorageSync('contractorId')
         }
         fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
-            console.log('获取工程业绩')
-            console.log(res.response)
             let resData = res.response.list[0]
             This.organizationName = resData.organizationName
         })
         fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
-            console.log('获取优质班组详细信息')
             let resData = res.response
-            console.log(resData)
             This.ContractorProjectType = resData.contractorProjectTypes
             This.contractorDesc = resData.contractorDesc
             This.headimg = resData.headimg
@@ -165,8 +159,6 @@ export default {
         }
         fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
             let resData = res.response
-            console.log(222)
-            console.log(resData)
             This.list = resData.list
         })
     },
@@ -223,14 +215,11 @@ export default {
                 contractorId:This.contractorId || wx.getStorageSync('contractorId')
             }
             fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
-                console.log('获取电话方式')
-                console.log(res)
                 This.alertType = res.response
                 This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
             })
         }
     },
-
     components: {
         goBackNav,
         selfAlert,

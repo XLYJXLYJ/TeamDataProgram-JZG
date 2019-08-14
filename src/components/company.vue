@@ -32,28 +32,22 @@ export default {
         }
     },
     onShow() {
-
         let This = this
         This.organizationName = ''
         This.ContractorProjectType = ''
         This.contractorDesc = ''
         This.headimg = ''
-
         let data = {
             page:1,
             pageSize:5,
             contractorId:This.contractorId
         }
         fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
-            console.log('获取工程业绩')
-            console.log(res.response)
             let resData = res.response.list[0]
             This.organizationName = resData.organizationName
         })
         fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
-            console.log('获取优质班组详细信息')
             let resData = res.response
-            console.log(resData)
             This.ContractorProjectType = resData.contractorProjectTypes
             This.contractorDesc = resData.contractorDesc
             This.headimg = resData.headimg
