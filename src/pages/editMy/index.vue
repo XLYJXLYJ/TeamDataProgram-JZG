@@ -21,7 +21,9 @@
                 </div> 
                 <div class="get-block">
                     <p class="title">性别</p>
-                    <input type="text" v-model="gender" style="color:#5f5f5f" placeholder="请输入您的性别" autocomplete="off" />
+                    <input type="text" v-model="gender" style="color:#5f5f5f" placeholder="请输入您的性别" autocomplete="off" @focus="showg" />
+                    <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+
                 </div>
                 <div class="get-block" style="border:none">
                     <p class="title">微信昵称</p>
@@ -40,16 +42,19 @@
 </template>
 
 <script>
+import mpPicker from 'mpvue-weui/src/picker';
 import goBackNav from "@/components/goBackNav.vue";
 import mpUploader from "mpvue-weui/src/uploader";
 import fly from "@/services/WxApi";
 export default {
     components: {
         goBackNav,
-        mpUploader
+        mpUploader,
+        mpPicker
     },
     data() {
         return {
+            mode: 'selector',
             phone: "",
             phone_code: "",
             name: "",
@@ -60,7 +65,16 @@ export default {
             btnTxt: "点击获取验证码",
             disabled: false,
             time: 0, // 验证码时间初始化
-            btn: true
+            btn: true,
+            pickerValueArray:[{
+                label: '男',
+                value: 1
+                },
+                {
+                label: '女',
+                value: 2
+            }],
+            pickerValueDefault: [0,0],
         };
     },
     mounted() {
@@ -72,6 +86,21 @@ export default {
         This.name = wx.getStorageSync('username') 
     },
     methods: {
+        showg(){
+            let This = this
+            This.$refs.mpPicker.show();
+        },
+        onConfirm(e) {
+            console.log(e)
+            let This = this
+            This.gender = e.label
+        },
+        onChange(e) {
+            console.log(e);
+        },
+        onCancel(e) {
+            console.log(e);
+        },
         selfSave(){
             let This = this
             let data = {

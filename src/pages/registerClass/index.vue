@@ -46,7 +46,7 @@
                     <button class="confirm" @click="reClass">提交</button>
                     <!-- <button class="confirm" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取电话号码权限</button> -->
                 </div>
-                <p class="title" style="color:black">
+                <p class="title" style="color:black;position:relative;top: 48rpx;">
                     成功推荐新班组，可获得更多权限与资源，详见
                     <span style="color:rgb(252 184 19)" @click="make">《建筑业优质班组共建共享计划规则》</span>
                 </p>
@@ -120,7 +120,9 @@ export default {
         },
         onConfirm(e) {
             let This = this
+            console.log(e)
             This.projectType = e.value[1]
+            console.log(This.projectType)
             This.sort = e.label
             This.isblack = true
         },
@@ -159,6 +161,14 @@ export default {
                 })
                 return;
             } 
+            if (this.phone.length !== 11) {
+                wx.showToast({
+                    title: "请输入正确的手机号格式",
+                    icon: "none",
+                    duration: 2000
+                })
+                return;
+            } 
             if (!This.projectType) {
                 wx.showToast({
                     title: "请选择班组类别",
@@ -171,7 +181,7 @@ export default {
             let data = {
                 username:This.name,
                 mobile:This.phone,
-                projectType:This.projectType,
+                contractorType:This.projectType,
             }
             fly.post('/contractor/recommendContractor',data).then(function (res) {
                 wx.showToast({
@@ -245,6 +255,12 @@ export default {
             border:none;
             height: 96rpx;
             width: 670rpx;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            position: relative;
+            top: 48rpx;
         }
     }
 }

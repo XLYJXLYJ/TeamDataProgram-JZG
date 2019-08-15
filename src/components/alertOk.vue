@@ -6,7 +6,7 @@
         <div class="modalDialog" v-show="changeModel">
             <div class="modalContent">
                 <p class="contentTip">优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
-                <button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button>
+                <button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button>        
             </div>
         </div>
     </div>
@@ -30,6 +30,12 @@ export default {
         hidePanel: function(event) {
             //这句是说如果我们点击到了id为myPanel以外的区域
             this.$emit("func", false);
+        },
+        closeAlert(){
+            let This = this
+            console.log('关闭探矿')
+            This.changeModel = false
+            This.isModel = false
         },
         getUserInfo (e) {
             let This = this
@@ -56,8 +62,6 @@ export default {
                             wx.navigateTo({
                                 url:This.path
                             });
-                            This.changeModel = false
-                            This.isModel = false
                             This.onload()
                         })
                     } else {

@@ -12,7 +12,7 @@
                 <block v-for="item in imgUrls" :key="item.id">
                     <swiper-item>
                         <image :src="item.img" class="slide-image" />
-                        <text class="text1">深圳市{{item.desc}}</text>
+                        <text class="text1">{{cit}}{{item.desc}}</text>
                         <text class="text2">查看详情</text>
                     </swiper-item>
                 </block>
@@ -23,6 +23,7 @@
 <script>
 import fly from "@/services/WxApi";
 export default {
+    props:['cit'],
     data() {
         return {
             imgUrls:'',

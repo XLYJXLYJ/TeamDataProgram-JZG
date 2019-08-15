@@ -68,6 +68,7 @@ export default {
             if(This.text == '好的'){
                 This.changeModel = !This.changeModel;
                 This.isModel = !This.isModel;
+                This.$emit("func", false);
             }else if(This.text == '立即加入共建共享计划'){
                 wx.navigateTo({
                     url:'/pages/welcome/main'

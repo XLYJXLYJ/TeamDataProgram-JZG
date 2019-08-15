@@ -5,10 +5,10 @@
                 <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
             </section>
             <section class="img-contain">
-                <swiper1></swiper1>
+                <swiper1 :cit='cit'></swiper1>
             </section>
             <section class="maintenance">
-                <card></card>
+                <card @city='city'></card>
             </section>
         </div>
         <div class="my" v-if="!bottomId">
@@ -56,7 +56,8 @@ export default {
             selectNavIndex:0,
             bottomId:true,
             getInfo:'',
-            boy:''
+            boy:'',
+            cit:'广东省'
         };
     },
     onLoad: function(option){ 
@@ -77,6 +78,11 @@ export default {
         info(data){
             let This = this
             This.getInfo = data
+        },
+        city(data){
+            console.log(data)
+            let This = this
+            This.cit = data
         }
     }
 };

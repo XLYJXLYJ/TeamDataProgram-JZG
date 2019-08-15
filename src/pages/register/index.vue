@@ -57,7 +57,7 @@
                 <div>
                     <button class="confirm" @click="applicationSharing">提交</button>
                 </div>
-                <p class="title">
+                <p class="title" style="position: relative;top: 48rpx;">
                     建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
                     <span style="color:rgb(252 184 19)" @click="agree">《建造工用户协议》</span>
                 </p>
@@ -92,13 +92,13 @@ export default {
     },
     mounted() {
         let This = this
-        fly.post('/contractor/getMySharingPlan').then(function (res) {
-            let data = res.response
-            This.phone=data.mobile,
-            This.name=data.username,
-            This.company=data.companyName,
-            This.position=data.positionName
-        })
+        // fly.post('/contractor/getMySharingPlan').then(function (res) {
+        //     let data = res.response
+        //     This.phone=data.mobile,
+        //     This.name=data.username,
+        //     This.company=data.companyName,
+        //     This.position=data.positionName
+        // })
     },
     methods: {
         GetClassCode() {
@@ -250,6 +250,7 @@ export default {
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
+                // wx.setStorageSync('username', res.response.username) 
                 wx.showToast({
                     title: "申请加入成功",
                     icon: "none",
@@ -301,6 +302,8 @@ export default {
             font-weight: 550;
             height: 96rpx;
             width: 670rpx;
+            position: relative;
+            top: 48rpx;
         }
     }
 }

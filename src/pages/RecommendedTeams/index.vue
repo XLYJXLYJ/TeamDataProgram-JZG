@@ -6,9 +6,10 @@
         </div>
         <div class="content" v-if="list.length">
             <ul>
-                <li class="card-li" v-for="(item,index) in list" :key="index" @click="goClass(item.contractorId)">
-                    <p class="company-name" v-if="item.organizationName">{{item.organizationName}}</p>
-                    <p class="company-name" v-if="!item.organizationName"> </p>
+                 <!-- <li class="card-li" v-for="(item,index) in list" :key="index" @click="goClass(item.contractorId)"> -->
+                <li class="card-li" v-for="(item,index) in list" :key="index">
+                    <p class="company-name" v-if="item.contractorPrincipal">{{item.contractorPrincipal}}</p>
+                    <p class="company-name" v-if="!item.contractorPrincipal"> </p>
                     <span class="status" v-if='item.reviewStatus==3'>审核中</span>
                     <span class="status" v-if='item.reviewStatus==2'>不通过</span>
                     <span class="status" v-if='item.reviewStatus==1'>通过</span>

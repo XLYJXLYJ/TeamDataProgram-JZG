@@ -7,12 +7,12 @@
             <div v-if="!getInfo">
                 <img  @click="goMy" :src="aImg">
                 <p v-if="mobile">{{name}}</p>
-                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登陆</p>
+                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录</p>
             </div>
             <div v-if="getInfo">
                 <img @click="goMy" :src="getInfo.headImg">
                 <p v-if="getInfo.mobile">{{getInfo.username}}</p>
-                <p v-if="!getInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登陆</p>
+                <p v-if="!getInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录</p>
             </div>
         </section>
         <section>
@@ -72,7 +72,7 @@ export default {
         if(wx.getStorageSync('img')){
             This.aImg = '/static/images/user.png'
         }else{
-            This.aImg = wx.getStorageSync('img')
+            This.aImg = '/static/images/user.png'
         }
     },
     methods:{

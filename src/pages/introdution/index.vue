@@ -68,7 +68,7 @@
                             <li class="two-li" v-for="(twoItem,twoIndex) in item.quotationDetailList" :key="twoIndex">
                                 <img src='/static/images/point.png' alt="">
                                 <span class="one">{{twoItem.name}}</span>
-                                <span class="two">{{twoItem.price}}元/m2</span>
+                                <span class="two">{{twoItem.price}}元/m<sup style='height:6rpx;width:6rpx;font-size:18rpx;float:right'>2</sup></span>
                             </li>
                         </ul>
                     </li>
@@ -78,7 +78,7 @@
                 <p class="self"><span>自有设备( {{equipmentCount}} 种)</span></p>
                 <ul class="one-ul">
                     <li class="one-li" v-for="(item,index) in eqList" :key="index">
-                        <p class="machine">{{item.remark}}<span>{{item.quantity}}</span></p> 
+                        <div class="machine">{{item.remark}}<span class="num1">{{item.quantity}}</span></div> 
                         <div class="img-contain">
                             <ul class="two-ul">
                                 <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
@@ -150,6 +150,7 @@ import fly from "@/services/WxApi";
 export default {
     data() {
         return {
+            joinSharePlanStatus:'',
             equipmentCount:'',
             title:'',
             isTab:'',
@@ -220,9 +221,11 @@ export default {
     },
     mounted() {
         let This = this
+        This.phone = '查看联系方式'
         This.isAlert = false
         This.ifMode = false
         This.ischangeModel = false
+        This.title = ''
         let data = {
             page:1,
             pageSize:5,
@@ -266,15 +269,19 @@ export default {
         }
         fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
             let resData = res.response.list[0]
-            This.organizationName = resData.organizationName
+            
         })
         fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
             let resData = res.response
             This.ContractorProjectType = resData.contractorProjectTypes
             This.contractorDesc = resData.contractorDesc
+            This.organizationName = resData.organizationName
+            console.log(resData.headimg)
             if(resData.headimg == null){
-                This.headimg = '/static/images/user1'
+                console.log('没有图片')
+                This.headimg = '/static/images/user1.png'
             }else{
+                console.log('没有图片')
                 This.headimg = resData.headimg
             }
         })
@@ -315,7 +322,11 @@ export default {
         //     return ('00' + str).substr(str.length);
         // },
         controlAlert(data) {
-            this.isAlert = data;
+            console.log(data)
+            let This = this
+            This.isAlert = data
+            This.ifMode = data 
+            This.ischangeModel = data
         },
         goOne(){
             let This = this
@@ -324,11 +335,12 @@ export default {
         goachi(){
             let This = this
             This.isTab = false
+
         },
-        seePhone() {
-            (this.ifMode = true), (this.ischangeModel = true);
-            this.isAlert = true;
-        },
+        // seePhone() {
+        //     (this.ifMode = true), (this.ischangeModel = true);
+        //     this.isAlert = true;
+        // },
         conAlert(data) {
             if (data) {
                 this.seePhone();
@@ -486,20 +498,20 @@ export default {
     display: flex;
     justify-content: space-around;
     margin-top: 96rpx;
-    border-bottom:1rpx solid #e5e5e5;
+    border-bottom:0.1rpx solid #e5e5e5;
     .gene {
         width: 50%;
         text-align: center;
         padding-bottom: 24rpx;
         font-family: "PingFang-SC-Semibold";
-        border-bottom:1rpx solid #e5e5e5;
+        // border-bottom:1rpx solid #e5e5e5;
     }
     .achi {
         width: 50%;
         text-align: center;
         padding-bottom: 24rpx;
         font-family: "PingFang-SC-Semibold";
-        border-bottom:1rpx solid #e5e5e5;
+        // border-bottom:1rpx solid #e5e5e5;
         .num{
             width: 32rpx;
             height: 32rpx;
@@ -510,6 +522,7 @@ export default {
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
+            margin-top: -2rpx;
         }
     }
     .active {
@@ -523,7 +536,7 @@ export default {
     position: fixed;
     // top: 160rpx;
     width: 100%;
-    height: 100rpx;
+    height: 80rpx;
     // padding-top: 40rpx;
     background: #fff;
     border-bottom:1rpx solid #e5e5e5;
@@ -535,7 +548,7 @@ export default {
         font-family: "PingFang-SC-Semibold";
         position: absolute;
         left: 0rpx;
-        border-bottom:1rpx solid #e5e5e5;
+        // border-bottom:1rpx solid #e5e5e5;
     }
     .achi {
         width: 50%;
@@ -544,7 +557,7 @@ export default {
         font-family: "PingFang-SC-Semibold";
         position: absolute;
         right: 0rpx;
-        border-bottom:1rpx solid #e5e5e5;
+        // border-bottom:1rpx solid #e5e5e5;
         .num{
             width: 32rpx;
             height: 32rpx;
@@ -555,6 +568,7 @@ export default {
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
+            margin-top: -2rpx;
         }
     }
     .active {
@@ -616,7 +630,7 @@ export default {
                 position: absolute;
                 left: 0rpx;
                 z-index: 100;
-                padding-right: 20rpx;
+                padding-right: 10rpx;
                 background: #fff;
             }
             .two{
@@ -655,6 +669,18 @@ export default {
                 font-family: "PingFangSC-Regular";
                 margin-bottom: 24rpx;
                 z-index: 0;
+                .num1{
+                    width: 32rpx;
+                    height: 32rpx;
+                    background: #efeff4;
+                    padding-left: 10rpx;
+                    padding-right: 10rpx;
+                    border-radius: 30rpx;
+                    font-size: 24rpx;
+                    margin-left: 10rpx;
+                    color: #a7a7a8;
+                    margin-top: -2rpx;
+                }
             }
             .img-contain {
                 position: relative;
@@ -667,7 +693,6 @@ export default {
                         border-right: 3rpx solid #fff;
                     }
                 }
-
                 .corner {
                     position: absolute;
                     right: 0rpx;
@@ -707,7 +732,6 @@ export default {
         font-family: "PingFang-SC-Semibold";
         font-size: 36rpx;
         font-weight: 550;
-        margin-bottom: 18rpx;
     }
     .one-ul {
         .one-li {
@@ -717,28 +741,29 @@ export default {
                 font-family: "PingFangSC-Regular";
                 margin-bottom: 24rpx;
                 z-index: 0;
-                span{
-                    width: 32rpx;
-                    height: 32rpx;
-                    background: #efeff4;
-                    padding-left: 10rpx;
-                    padding-right: 10rpx;
-                    border-radius: 30rpx;
-                    font-size: 24rpx;
-                    margin-left: 10rpx;
-                    color: #a7a7a8;
-                }
+
             }
+
             .img-contain {
                 position: relative;
+                height: 458rpx;
                 .three-ul{
-                    display: flex;
-                    justify-content: space-around;
-                    img {
+                    display:inline;
+                    white-space: nowrap;
+                    li{
+                        float:left;
                         width: 220rpx;
                         height: 222rpx;
-                        border-right: 3rpx solid #fff;
+                        display:block;
+                        margin-right: 3rpx;
+                        margin-bottom: 3rpx;
+                        img {
+                            width: 220rpx;
+                            height: 222rpx;
+                            border-right: 3rpx solid #fff;
+                        }
                     }
+ 
                 }
                 .corner {
                     position: absolute;
@@ -767,6 +792,8 @@ export default {
             }
             .two-ul {
                 margin-bottom: 40rpx;
+                margin-top: 13rpx;
+                height: 300rpx;
                 li {
                     display: flex;
                     flex-direction: row;
@@ -775,7 +802,7 @@ export default {
                         width: 32rpx;
                         height: 32rpx;
                         display: inline-block;
-                        margin-top: 6rpx;
+                        margin-top: 3rpx;
                         img{
                             width: 32rpx;
                             height: 32rpx;

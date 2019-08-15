@@ -6,7 +6,7 @@
             <div class="modalDialog" v-show="changeModel">
                 <div class="modalContent">
                     <p class="contentTip">优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
-                    <button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button>
+                    <p @click="closeAlert"><button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button></p> 
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@ export default {
                     selectedIconPath: "/static/tabs/home-active.png",
                     iconPath: "/static/tabs/home.png",
                     pagePath: "/pages/index/main",
-                    text: "维组库"
+                    text: "班组库"
                 },
                 {
                     selectedIconPath: "/static/tabs/orders-active.png",
@@ -63,6 +63,11 @@ export default {
         This.isModel = false 
     },
     methods: {
+        closeAlert(){
+            let This = this
+            This.changeModel = false
+            This.isModel = false 
+        },
         selectNavItem(index, pagePath) {
             let This = this
             if (index === this.selectNavIndex) {
@@ -99,6 +104,8 @@ export default {
         getUserInfo (e) {
             let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
+            This.changeModel = false
+            This.isModel = false
             wx.login({
                 success (res) {
                     if (res.code) {
@@ -136,8 +143,6 @@ export default {
                             // wx.navigateTo({
                             //     url:'/pages/registerClass/main'
                             // })
-                            This.changeModel = false
-                            This.isModel = false
                             This.$emit('info',res.response)
                         })
                     } else {

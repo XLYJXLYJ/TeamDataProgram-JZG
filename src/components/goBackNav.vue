@@ -84,7 +84,7 @@ export default {
     methods: {
         backClick() {
             wx.navigateBack({ 
-                delta: 2, 
+                delta: 1, 
             });
             // wx.redirectTo({
             //     url: '/pages/index/main'
@@ -169,6 +169,7 @@ export default {
                 align-items: center;
                 padding: 10rpx 0 10rpx 0;
                 margin-top: 18rpx;
+                font-weight: 600;
             }
         }
     }

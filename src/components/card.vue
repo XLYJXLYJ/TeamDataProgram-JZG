@@ -6,52 +6,58 @@
             <div class="modalDialog" v-show="changeModel">
                 <div class="modalContent">
                     <p class="contentTip">优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
-                    <button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button>
+                    <p class="alert" @click="closeAlert"><button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button></p> 
                 </div>
             </div>
         </div>
 
-        <div class="fixedSelectCity" v-if="isTop" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
-            <div>
-                <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
-                    <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
-                </picker>  -->
-                <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;margin-top:-16rpx;" src="/static/images/bottom.png" alt=""></div>
-                <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
-            </div>
-            <span style="color:rgb(204,204,204)">|</span>
-            <div>
-                <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
-                    <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
-                </picker>  -->
-                <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;margin-top:-16rpx;" src="/static/images/bottom.png" alt=""></div>
-                <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
-            </div>
-        </div>
 
-        <div class="selectCity" :style="{top: navBarHeight + 'px'}">
-            <div v-if="!isTop">
-                <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
-                    <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
-                </picker>  -->
-                <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;margin-top:-16rpx" src="/static/images/bottom.png" alt=""></div>
-                <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
+
+            <div class="fixedSelectCity" v-if="isTop" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
+                <div>
+                    <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
+                        <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
+                    </picker>  -->
+                    <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;margin-top:-16rpx;" src="/static/images/bottom.png" alt=""></div>
+                    <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
+                </div>
+                <span style="color:rgb(204,204,204)">|</span>
+                <div>
+                    <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+                        <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                    </picker>  -->
+                    <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;margin-top:-16rpx;" src="/static/images/bottom.png" alt=""></div>
+                    <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+                </div>
             </div>
-            <span v-if="!isTop" style="color:rgb(204,204,204)">|</span>
-            <div v-if="!isTop">
-                <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
-                    <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
-                </picker>  -->
-                <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;margin-top:-16rpx" src="/static/images/bottom.png" alt=""></div>
-                <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+
+
+
+            <div style="height:66rpx">
+                <div class="selectCity" v-if="!isTop" :style="{top: navBarHeight + 'px'}">
+                    <div v-if="!isTop">
+                        <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
+                            <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
+                        </picker>  -->
+                        <div class="city"  @click="showCity">{{city}}<img src="/static/images/bottom.png" alt=""></div>
+                        <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
+                    </div>
+                    <span v-if="!isTop" style="color:rgb(204,204,204)">|</span>
+                    <div v-if="!isTop">
+                        <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
+                            <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
+                        </picker>  -->
+                        <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;margin-top:-16rpx!important" src="/static/images/bottom.png" alt=""></div>
+                        <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+                    </div>
+                </div>
             </div>
-        </div>
 
         <ul class="card-ul">
-            <div class="img-contain" v-if="!list">
+            <div class="img-contain" v-if="list.length == 0">
                 <img src="/static/images/none.png">
             </div>
-            <div v-if="list">
+            <div v-if="list.length != 0">
                 <li class="card-li" @click="goIntro(item.id)" v-for="(item,index) in list" :key="index">
                     <div class="left">
                         <div class="img">
@@ -107,7 +113,7 @@
                 </li>
             </div>
         </ul> -->
-         <button class="shareButton" @click="goPoint" v-if="showButton">加入共建共享计划，查看更多班组</button>
+         <button class="shareButton" @click="goPoint" v-if="showButton && joinSharePlanStatus!=1">加入共建共享计划，查看更多班组</button>
     </div>
 </template>
 
@@ -122,6 +128,8 @@ export default {
     },
     data() {
         return {
+
+            joinSharePlanStatus:'',
             changeModel:false,
             isModel:false,
             path:'',
@@ -196,6 +204,7 @@ export default {
     },
     mounted() {
         let This = this
+        This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
         fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
             // let oneRowArray = []
             // let oneColumnArray = []
@@ -249,6 +258,11 @@ export default {
         This.getClass()
     },
     methods: {
+        closeAlert(){
+            let This = this
+            This.changeModel = false
+            This.isModel = false 
+        },
         goIntro(index){
             let This = this
             if(!wx.getStorageSync('token')){
@@ -274,15 +288,17 @@ export default {
         getClass(){
             let This = this
             if(This.isNull == null || This.isNull.length == 0){
-                wx.showLoading({
-                    title:'数据已加载完'
+                wx.showToast({
+                    title: '数据已加载完',
+                    icon: "none",
+                    duration: 2000
                 })
             }else{
                 wx.showLoading({
                     title:'加载中'
                 })
             }
-
+            This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
             let data = {
                 page:This.page,
                 pageSize:10,
@@ -406,7 +422,10 @@ export default {
             console.log(e);
             let This = this
             This.cityId = e.value[1]
-            This.city = '深圳市'
+            This.city = e.label
+            let arr = This.city.split('-')
+            This.city = arr[1] 
+            This.$emit('city',This.city)
             This.page = 1
         },
         onCityChange(e) {
@@ -459,6 +478,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .modalMask {
     width: 100%;
     height: 100%;
@@ -505,10 +525,15 @@ export default {
         width: 514rpx;
         padding-top: 42rpx;
     }
+    .alert{
+        width:100%;
+        height: 96rpx;
+        position: absolute;
+        bottom: 0rpx;
+    }
     button {
         width: 100%;
         height: 96rpx;
-        margin-top: 40rpx;
         font-size: 34rpx;
         color: rgb(252, 184, 19);
         font-family: "PingFangSC-Medium";
@@ -533,6 +558,32 @@ export default {
         height: 66rpx;
         border-bottom: 1rpx solid #e5e5e5;
         font-weight: 550;
+        animation:moveIn1 1s infinite;
+        animation-iteration-count:1;
+        @keyframes moveIn1
+        {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @keyframes moveOut1
+        {
+            100% {
+                opacity: 1;
+            }
+            0% {
+                opacity: 0;
+            }
+        }
+        img{
+            width:20.2rpx;
+            height:16rpx;
+            position: relative;
+            top: -4rpx;
+        }
     }
     .fixedSelectCity{
         width: 100%;
@@ -549,6 +600,26 @@ export default {
         border-bottom: 1rpx solid #e5e5e5;
         font-weight: 550;
         z-index: 999;
+        animation:moveIn 1s infinite;
+        animation-iteration-count:1;
+        @keyframes moveIn
+            {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+        @keyframes moveOut
+            {
+                100% {
+                    opacity: 1;
+                }
+                0% {
+                    opacity: 0;
+                }
+            }
     }
     // .card-ul{
     //     width: 670rpx;
@@ -666,11 +737,11 @@ export default {
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
-                margin-top: 2rpx;
                 img{
                     width: 126rpx;
                     height: 126rpx;
                     border-radius: 8rpx;
+                    margin-top: 8rpx;
                 }
                 .text-detail{
                     font-family: 'PingFangSC-Regular';
@@ -680,7 +751,7 @@ export default {
                     display: flex;
                     justify-content: flex-start;
                     flex-direction: column;
-                    margin-top: -32rpx;
+                    margin-top: -28rpx;
                     .company{
                         font-family: 'PingFangSC-Regular';
                         font-size: 34rpx;
@@ -718,6 +789,7 @@ export default {
             .right{
                 width: 16rpx;
                 height: 25rpx;
+                margin-top: -20rpx;
                 img{
                     width: 16rpx;
                     height: 25.2rpx;
@@ -730,11 +802,12 @@ export default {
         height: 96rpx;
         font-family: 'PingFangSC-Medium';
         font-size: 34rpx;
-        margin-top: 46rpx;
+        margin-top: 64rpx;
         margin-bottom: 206rpx;
         text-align: center;
         display: flex;
         justify-content: center;
+        align-items: center;
         background:rgb(252, 184, 19);
         color: black;
         font-weight: 550;
