@@ -63,5 +63,8 @@ export default {
         margin-left: 40rpx;
         margin-top: 48rpx;
     }
+    button::after{
+        border: none;
+    }
 }
 </style>

@@ -109,6 +109,7 @@ export default {
                 //     duration: 2000
                 // });
                 wx.setStorageSync('token', res.response.authorization) 
+                wx.setStorageSync('joinSharePlanStatus',1)
                 wx.setStorageSync('gender', res.response.gender) 
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 

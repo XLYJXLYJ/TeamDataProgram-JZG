@@ -3,18 +3,36 @@
         <section class="sec-nav">
             <navigation-bar :title="videoTitle" :navBackgroundColor="'white'" :back-visible="true"></navigation-bar>
         </section>
-        <section class="maintenance">
+        <!-- <section class="maintenance">
             <div v-if="!getInfo">
                 <img  @click="goMy" :src="aImg">
                 <p v-if="mobile">{{name}}</p>
-                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录</p>
+                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录1</p>
             </div>
             <div v-if="getInfo">
                 <img @click="goMy" :src="getInfo.headImg">
                 <p v-if="getInfo.mobile">{{getInfo.username}}</p>
-                <p v-if="!getInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录</p>
+                <p v-if="!getInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录2</p>
+                <p>{{test}}</p>
             </div>
+        </section> -->
+
+        <section class="maintenance">
+            <div v-if="!userInfo">
+                <img  @click="goMy" :src="aImg">
+                <p v-if="mobile">{{name}}</p>
+                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录1</p>
+            </div>
+            <div v-if="userInfo">
+                <img @click="goMy" :src="userInfo.headImg">
+                <p v-if="userInfo.mobile">{{userInfo.username}}</p>
+                <p v-if="!userInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录2</p>
+            </div>
+            <!-- <p>{{userInfo.username}}</p>
+              <p>2222</p> -->
         </section>
+
+
         <section>
             <ul>
                 <li @click="goC" v-if="joinSharePlanStatus==1 || getInfo.joinSharePlanStatus==1"><span>我推荐的班组</span><span><img src="/static/images/right.png"></span></li>
@@ -30,6 +48,8 @@
 </template>
 
 <script>
+import { mapState,mapMutations } from 'vuex'
+import {  USER_INFO } from '../../store/modules/mutation-type'
 import navigationBar from "@/components/navigationBar.vue";
 import bottomNavigationBar from "@/components/bottomNavigationBar.vue";
 export default {
@@ -64,18 +84,63 @@ export default {
             selectNavIndex:1
         };
     },
+    computed: {
+        ...mapState([
+            'userInfo'
+        ])
+    },
     mounted() {
         let This = this
-        This.mobile = wx.getStorageSync('mobile')
-        This.name = wx.getStorageSync('username')
+        console.log('getinfo')
+        console.log(This.getInfo)
+        console.log(This.$store.state.userInfo)
+
+        if(!This.userInfo){
+            This.mobile = wx.getStorageSync('mobile')
+            This.name = wx.getStorageSync('username')
+        }
         This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
         if(wx.getStorageSync('img')){
-            This.aImg = '/static/images/user.png'
+            let img = wx.getStorageSync('img')
+            if(img.indexOf('wx.qlogo.cn')>0){
+                console.log('默认灰色头像')
+                This.aImg = '/static/images/user.png'
+            }else{
+                console.log('哈哈哈')
+                This.aImg = wx.getStorageSync('img')
+            }
+
         }else{
             This.aImg = '/static/images/user.png'
         }
     },
+    // onshow(){
+    //     let This = this
+    //     console.log('getinfo')
+    //     console.log(This.getInfo)
+    //     This.mobile = wx.getStorageSync('mobile')
+    //     This.name = wx.getStorageSync('username')
+    //     This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
+    //     if(wx.getStorageSync('img')){
+    //         let img = wx.getStorageSync('img')
+    //         if(img.indexOf('wx.qlogo.cn')>0){
+    //             This.aImg = '/static/images/user.png'
+    //         }else{
+    //             This.aImg = wx.getStorageSync('img')
+    //         }
+
+    //     }else{
+    //         This.aImg = '/static/images/user.png'
+    //     } 
+    // },
     methods:{
+        ...mapMutations([
+            USER_INFO
+        ]),
+        // test(data1){
+        //     let This = this
+        //     This[USER_INFO](data1)
+        // },
         goUrl(url){
             wx.navigateTo({
                 url

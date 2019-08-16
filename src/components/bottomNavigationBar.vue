@@ -6,7 +6,7 @@
             <div class="modalDialog" v-show="changeModel">
                 <div class="modalContent">
                     <p class="contentTip">优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
-                    <p @click="closeAlert"><button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button></p> 
+                    <p class="alert" @click="closeAlert"><button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button></p> 
                 </div>
             </div>
         </div>
@@ -26,6 +26,8 @@
     </section>
 </template>
 <script>
+import { mapState,mapMutations } from 'vuex'
+import {  USER_INFO } from '../store/modules/mutation-type'
 import fly from "@/services/WxApi";
 import alertOk from "@/components/alertOk.vue";
 export default {
@@ -54,6 +56,11 @@ export default {
             ]
         };
     },
+    computed: {
+        ...mapState([
+            'userInfo'
+        ])
+    },
     mounted() {
 
     },
@@ -63,6 +70,13 @@ export default {
         This.isModel = false 
     },
     methods: {
+        ...mapMutations([
+            USER_INFO
+        ]),
+        test(data1){
+            let This = this
+            This[USER_INFO](data1)
+        },
         closeAlert(){
             let This = this
             This.changeModel = false
@@ -143,7 +157,8 @@ export default {
                             // wx.navigateTo({
                             //     url:'/pages/registerClass/main'
                             // })
-                            This.$emit('info',res.response)
+                            This.test(res.response)
+                            // This.$emit('info',res.response)
                         })
                     } else {
                         console.log('登录失败！' + res.errMsg)
@@ -156,7 +171,7 @@ export default {
             if(!wx.getStorageSync('token')){
                 This.changeModel = true
                 This.isModel = true
-                This.path = '/pages/registerClass/main'
+                This.path = '/pages/login/main'
             }else{
                 wx.navigateTo({
                     url:'/pages/registerClass/main'
@@ -213,6 +228,10 @@ export default {
         width: 514rpx;
         padding-top: 42rpx;
     }
+    .alert{
+        width:100%;
+        height: 96rpx;
+    }
     button {
         width: 100%;
         height: 96rpx;
@@ -226,7 +245,7 @@ export default {
         align-items: center;
         background: #fff;
         border-bottom: none;
-
+        border-top: 1px solid #e5e5e5;
     }
 }
 .tabBar-box {

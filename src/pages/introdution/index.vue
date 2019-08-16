@@ -21,11 +21,12 @@
                     </li>
                 </ul>
             </div>
-            <!-- <div class="detail">
-                <p class="one">"该班组技术好，态度好，做事负责"</p>
-                <p class="two">推荐人：张三 项目经理</p>
-                <p class="three">深圳市新丰建筑工程有限公司</p>
-            </div> -->
+            <div class="detail">
+                <!-- <p class="one">"该班组技术好，态度好，做事负责"</p> -->
+                <p class="two">推荐人：{{recommendUserName}} {{recommendUserPosition}}</p>
+                <p class="three">{{recommendCompany}}</p>
+                <img src="/static/images/good.png" alt="">
+            </div>
             <div class="brief">{{contractorDesc}}</div>
             <button class="phone" @click="seePhone">{{phone}}</button>
         </div>
@@ -35,10 +36,13 @@
             <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
         </div>
 
-        <div class="tab" :style="{top: navBarHeight + 'px'}">
-            <div v-if="!isTop" class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
-            <div v-if="projectPerformanceCount&&!isTop" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
+        <div style="height: 80rpx;">
+            <div class="tab" v-if="!isTop" :style="{top: navBarHeight + 'px'}">
+                <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
+                <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
+            </div>
         </div>
+
 
         <div v-if="isTab">
             <div class="basic">
@@ -75,7 +79,7 @@
                 </ul>
             </div>
             <div class="equip" v-if="equipmentCount">
-                <p class="self"><span>自有设备( {{equipmentCount}} 种)</span></p>
+                <p class="self"><span>自有设备( {{eqList.length}} 种)</span></p>
                 <ul class="one-ul">
                     <li class="one-li" v-for="(item,index) in eqList" :key="index">
                         <div class="machine">{{item.remark}}<span class="num1">{{item.quantity}}</span></div> 
@@ -150,6 +154,9 @@ import fly from "@/services/WxApi";
 export default {
     data() {
         return {
+            recommendCompany:'',
+            recommendUserPosition:'',
+            recommendUserName:'',
             joinSharePlanStatus:'',
             equipmentCount:'',
             title:'',
@@ -188,7 +195,7 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 500) {
+        if (res.scrollTop > 550) {
             This.isTop = true
             This.title = This.organizationName
         } else {
@@ -247,6 +254,9 @@ export default {
             This.teamPersonCount = resData.teamPersonCount
             This.projectPerformanceCount = resData.projectPerformanceCount
             This.equipmentCount = resData.equipmentCount
+            This.recommendUserName = resData.recommendUserName || '暂无推荐人'
+            This.recommendUserPosition = resData.recommendUserPosition || ''
+            This.recommendCompany = resData.recommendCompany || ''
         })
         let dataTwo = {
             contractorId:This.contractorId || wx.getStorageSync('contractorId')
@@ -254,6 +264,17 @@ export default {
         fly.post('/contractor/getProjectPerformanceList',dataTwo).then(function (res) {
             let resData = res.response
             This.list = resData.list
+            console.log(This.list)
+            This.list.map(
+                function(item,index){
+                    item.areaFullName = item.areaFullName.replace(/,/g, ' ' )
+                }
+            )
+            This.list.map(
+                function(item,index){
+                    item.projectTypeName= item.projectTypeName.replace(/  /g, '' )
+                }
+            )
         })
     },
     onShow() {
@@ -445,12 +466,16 @@ export default {
 }
 .detail {
     width: 670rpx;
+    height: 120rpx;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin: 0 auto;
     margin-top: 48rpx;
     padding: 24rpx 0 24rpx 0;
+    background: rgba(252, 184, 19, 0.1);
+    position: relative;
     .one {
         font-size: 34rpx;
         color: black;
@@ -468,6 +493,13 @@ export default {
         color: #5c5a54;
         font-family: "PingFangSC-Regular";
         text-align: center;
+    }
+    img{
+        position: absolute;
+        right: 0rpx;
+        bottom: 0rpx;
+        height: 78rpx;
+        width:68rpx;
     }
 }
 .brief {
@@ -491,14 +523,36 @@ export default {
     align-items: center;
     margin-top: 96rpx;
     border:none;
+    outline: none;
     font-weight: 550;
     border-radius: 8rpx;
 }
+.phone::after{ border: none; }
 .tab {
     display: flex;
     justify-content: space-around;
     margin-top: 96rpx;
     border-bottom:0.1rpx solid #e5e5e5;
+    animation:moveIn 1s infinite;
+    animation-iteration-count:1;
+        @keyframes moveIn
+            {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+        @keyframes moveOut
+            {
+                100% {
+                    opacity: 1;
+                }
+                0% {
+                    opacity: 0;
+                }
+            }
     .gene {
         width: 50%;
         text-align: center;
@@ -518,7 +572,7 @@ export default {
             background: #efeff4;
             padding-left: 10rpx;
             padding-right: 10rpx;
-            border-radius: 30rpx;
+            border-radius: 16rpx;
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
@@ -541,6 +595,26 @@ export default {
     background: #fff;
     border-bottom:1rpx solid #e5e5e5;
     z-index: 999;
+    animation:moveIn 1s infinite;
+    animation-iteration-count:1;
+    @keyframes moveIn
+        {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    @keyframes moveOut
+        {
+            100% {
+                opacity: 1;
+            }
+            0% {
+                opacity: 0;
+            }
+        }
     .gene {
         width: 50%;
         text-align: center;
@@ -564,7 +638,7 @@ export default {
             background: #efeff4;
             padding-left: 10rpx;
             padding-right: 10rpx;
-            border-radius: 30rpx;
+            border-radius: 16rpx;
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
@@ -604,7 +678,7 @@ export default {
 }
 .work {
     width: 670rpx;
-    height: auto;
+    min-height: 100rpx;
     margin: 0 auto;
     margin-top: 100rpx;
     title {
@@ -644,7 +718,7 @@ export default {
                 width: 80%;
                 height: 8rpx;
                 position: relative;
-                top: -6rpx;
+                top: -9rpx;
                 z-index: 0;
             }
         }
@@ -675,7 +749,7 @@ export default {
                     background: #efeff4;
                     padding-left: 10rpx;
                     padding-right: 10rpx;
-                    border-radius: 30rpx;
+                    border-radius: 16rpx;
                     font-size: 24rpx;
                     margin-left: 10rpx;
                     color: #a7a7a8;

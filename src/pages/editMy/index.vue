@@ -21,7 +21,8 @@
                 </div> 
                 <div class="get-block">
                     <p class="title">性别</p>
-                    <input type="text" v-model="gender" style="color:#5f5f5f" placeholder="请输入您的性别" autocomplete="off" @focus="showg" />
+                    <!-- <input type="text" v-model="" style="color:#5f5f5f" disabled placeholder="请输入您的性别" autocomplete="off"  /> -->
+                    <p @click="showg" style="color:#5f5f5f">{{gender}}</p>
                     <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
 
                 </div>
@@ -80,7 +81,6 @@ export default {
     mounted() {
         let This = this   
         This.gender = wx.getStorageSync('gender') 
-        This.gender = This.gender=1?'男':'女'
         This.phone = wx.getStorageSync('mobile') 
         This.wx = wx.getStorageSync('nickName') 
         This.name = wx.getStorageSync('username') 
@@ -103,9 +103,10 @@ export default {
         },
         selfSave(){
             let This = this
+            let iswho = This.gender='男'?1:0
             let data = {
                 username:This.name,
-                gender:This.gender='男'?1:0
+                gender:iswho
             }
             fly.post('/contractor/saveMyInfo',data).then(function (res) {
                 wx.setStorageSync('username', This.name)

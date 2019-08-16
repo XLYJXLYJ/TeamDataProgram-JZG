@@ -57,7 +57,7 @@
                 <div>
                     <button class="confirm" @click="applicationSharing">提交</button>
                 </div>
-                <p class="title" style="position: relative;top: 48rpx;">
+                <p class="title">
                     建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
                     <span style="color:rgb(252 184 19)" @click="agree">《建造工用户协议》</span>
                 </p>
@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import { mapState,mapMutations } from 'vuex'
+import {  USER_INFO } from '../../store/modules/mutation-type'
 import goBackNav from "@/components/goBackNav.vue";
 import mpUploader from "mpvue-weui/src/uploader";
 import fly from "@/services/WxApi";
@@ -90,6 +92,11 @@ export default {
             dataImg:''
         };
     },
+    computed: {
+        ...mapState([
+            'userInfo'
+        ])
+    },
     mounted() {
         let This = this
         // fly.post('/contractor/getMySharingPlan').then(function (res) {
@@ -101,6 +108,13 @@ export default {
         // })
     },
     methods: {
+        ...mapMutations([
+            USER_INFO
+        ]),
+        test(data1){
+            let This = this
+            This[USER_INFO](data1)
+        },
         GetClassCode() {
             if (!this.phone) {
                 wx.showToast({
@@ -196,6 +210,14 @@ export default {
                 });
                 return;
             }
+            if (this.phone.length !== 11) {
+                wx.showToast({
+                    title: "请输入正确手机号格式",
+                    icon: "none",
+                    duration: 2000
+                });
+                return;
+            } 
             if(!This.phone_code){
                 wx.showToast({
                     title: "验证码不能为空",
@@ -250,9 +272,11 @@ export default {
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
+                wx.setStorageSync('img',res.response.headImg)
                 // wx.setStorageSync('username', res.response.username) 
+                This.test(res.response)
                 wx.showToast({
-                    title: "申请加入成功",
+                    title: "提交成功",
                     icon: "none",
                     duration: 2000
                 });
@@ -299,11 +323,15 @@ export default {
             font-size: 34rpx;
             font-family: "PingFangSC-Medium";
             border:none;
-            font-weight: 550;
             height: 96rpx;
             width: 670rpx;
-            position: relative;
-            top: 48rpx;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 650!important;
+        }
+        .confirm::after {
+            border:none;
         }
     }
 }

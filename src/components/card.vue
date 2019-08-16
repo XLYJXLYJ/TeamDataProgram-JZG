@@ -11,14 +11,12 @@
             </div>
         </div>
 
-
-
             <div class="fixedSelectCity" v-if="isTop" ref="selectCityDom" :style="{top: navBarHeight + 'px'}">
                 <div>
                     <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
                         <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
                     </picker>  -->
-                    <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;margin-top:-16rpx;" src="/static/images/bottom.png" alt=""></div>
+                    <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;position:relative;top:-5rpx!important;" src="/static/images/bottom.png" alt=""></div>
                     <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
                 </div>
                 <span style="color:rgb(204,204,204)">|</span>
@@ -26,7 +24,7 @@
                     <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                         <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
                     </picker>  -->
-                    <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;margin-top:-16rpx;" src="/static/images/bottom.png" alt=""></div>
+                    <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;position:relative;top:-5rpx!important;" src="/static/images/bottom.png" alt=""></div>
                     <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
                 </div>
             </div>
@@ -39,7 +37,7 @@
                         <!-- <picker mode="multiSelector" @change="cityMultiPickerChange" @columnchange="cityMultiPickerColumnChange" :value="cityMultiIndex" :range="cityMultiArray">
                             <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
                         </picker>  -->
-                        <div class="city"  @click="showCity">{{city}}<img src="/static/images/bottom.png" alt=""></div>
+                        <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-top:-16rpx!important" src="/static/images/bottom.png" alt=""></div>
                         <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
                     </div>
                     <span v-if="!isTop" style="color:rgb(204,204,204)">|</span>
@@ -113,7 +111,10 @@
                 </li>
             </div>
         </ul> -->
-         <button class="shareButton" @click="goPoint" v-if="showButton && joinSharePlanStatus!=1">加入共建共享计划，查看更多班组</button>
+        <div style="height:120rpx" v-show="!showButton || joinSharePlanStatus==1">
+
+        </div>
+         <button class="shareButton" @click="goPoint" v-show="showButton && joinSharePlanStatus!=1">加入共建共享计划，查看更多班组</button>
     </div>
 </template>
 
@@ -456,6 +457,7 @@ export default {
                         fly.post('/contractor/weChatAuth',data).then(function (res) {
                             wx.setStorageSync('img',res.response.headImg)
                             wx.setStorageSync('token', res.response.authorization) 
+                            wx.setStorageSync('joinSharePlanStatus',res.response.joinSharePlanStatus)
                             wx.setStorageSync('gender', res.response.gender) 
                             wx.setStorageSync('mobile', res.response.mobile) 
                             wx.setStorageSync('nickName', res.response.nickName) 
@@ -600,7 +602,7 @@ export default {
         border-bottom: 1rpx solid #e5e5e5;
         font-weight: 550;
         z-index: 999;
-        animation:moveIn 1s infinite;
+        animation:moveIn .5s infinite;
         animation-iteration-count:1;
         @keyframes moveIn
             {
@@ -741,7 +743,7 @@ export default {
                     width: 126rpx;
                     height: 126rpx;
                     border-radius: 8rpx;
-                    margin-top: 8rpx;
+                    margin-top: 14rpx;
                 }
                 .text-detail{
                     font-family: 'PingFangSC-Regular';
@@ -751,7 +753,7 @@ export default {
                     display: flex;
                     justify-content: flex-start;
                     flex-direction: column;
-                    margin-top: -28rpx;
+                    margin-top: -22rpx;
                     .company{
                         font-family: 'PingFangSC-Regular';
                         font-size: 34rpx;
@@ -789,7 +791,7 @@ export default {
             .right{
                 width: 16rpx;
                 height: 25rpx;
-                margin-top: -20rpx;
+                margin-top: -27rpx;
                 img{
                     width: 16rpx;
                     height: 25.2rpx;
@@ -813,5 +815,6 @@ export default {
         font-weight: 550;
         border: none;
     }
+    .shareButton::after{ border: none; }
 }
 </style>
