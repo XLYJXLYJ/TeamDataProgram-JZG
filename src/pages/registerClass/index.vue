@@ -32,7 +32,7 @@
                             @focus="showMulLinkageTwoPicker"
                         />
                     </picker> -->
-                <div class="select picker" type="default"><p class="title" @click="show" :class="{'isblack':isblack}" style="font-size: 34rpx;">{{sort}}</p></div>
+                <div class="select picker" type="default"><p class="title" @click="show" :class="{'isblack':isblack}" style="font-size: 34rpx;height:55rpx;">{{sort}}</p></div>
                 <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
                 <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default"><p class="title">{{family}}{{sort}}</p></div>
@@ -68,7 +68,7 @@ export default {
         return {
             phone: "", // 手机号
             name: "", // 班组负责人名字
-            sort:'请选择班组类别', // 班组分类
+            sort:'', // 班组分类
             multiArray:[], // 班组数据
             multiIndex: [0,0], // 班组index
             Array:'', // 接受到的选择器总数据
@@ -81,9 +81,12 @@ export default {
     },
     mounted() {
         let This = this
+        This.phone = ''
+        This.name = ''
+        This.sort = '请选择班组类别'
         let oneRowArray = []
         let oneColumnArray = []
-        fly.get('/contractor/getContractorType').then(function (data) {
+        fly.post('/contractor/getContractorType',{showAll:0}).then(function (data) {
             // This.Array = data.response
             // data.response[0].childList.map(
             //     (items,index) => oneColumnArray.push(items.name)
@@ -261,6 +264,9 @@ export default {
             font-weight: 600;
             position: relative;
             top: 48rpx;
+        }
+        .confirm::after{
+            border:none;
         }
     }
 }

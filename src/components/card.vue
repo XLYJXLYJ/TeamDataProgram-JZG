@@ -151,7 +151,7 @@ export default {
             cityMultiIndex: [0,0],
             cityArray:'', // 接受到的选择器总数据
             citySelectIndex:'', // 选中的班组index位置
-            city: "深圳市", // 班组分类
+            city: "广东省", // 班组分类
             cityId:1971, // 城市id
             pickerValueArray:[],
             pickerCityValueArray:[],
@@ -228,7 +228,7 @@ export default {
             })
             This.pickerCityValueArray = arr
         })
-        fly.get('/contractor/getContractorType').then(function (data) {
+        fly.post('/contractor/getContractorType',{showAll:1}).then(function (data) {
             // 用于原声小程序picker
             // let oneRowArray = []
             // let oneColumnArray = []
@@ -389,9 +389,15 @@ export default {
                 This.isModel = true
                 This.path = '/pages/register/main'
             }else{
-                wx.navigateTo({
-                    url:'/pages/sharing/main'
-                })
+                if(This.joinSharePlanStatus == 0){
+                    wx.navigateTo({
+                        url:'/pages/register/main'
+                    })
+                }else{
+                    wx.navigateTo({
+                        url:'/pages/sharing/main'
+                    })
+                }
             }
 
         },
@@ -455,7 +461,11 @@ export default {
                             areaName:[userInfo.country,userInfo.province,userInfo.city]
                         }
                         fly.post('/contractor/weChatAuth',data).then(function (res) {
-                            wx.setStorageSync('img',res.response.headImg)
+                            if(res.response.headImg == null){
+                               wx.setStorageSync('img','/static/images/user.png')
+                            }else{
+                                wx.setStorageSync('img',res.response.headImg)
+                            }
                             wx.setStorageSync('token', res.response.authorization) 
                             wx.setStorageSync('joinSharePlanStatus',res.response.joinSharePlanStatus)
                             wx.setStorageSync('gender', res.response.gender) 

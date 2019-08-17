@@ -21,7 +21,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="detail">
+            <div class="detail" v-if="recommendUserName">
                 <!-- <p class="one">"该班组技术好，态度好，做事负责"</p> -->
                 <p class="two">推荐人：{{recommendUserName}} {{recommendUserPosition}}</p>
                 <p class="three">{{recommendCompany}}</p>
@@ -113,7 +113,7 @@
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
                         </ul>
-                        <div class="corner" v-if="item.nearImgList.length">
+                        <div class="corner" v-if="item.nearImgList.length>5">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
                             <span class="number">{{item.nearImgList.length}}</span>
                         </div>
@@ -254,9 +254,14 @@ export default {
             This.teamPersonCount = resData.teamPersonCount
             This.projectPerformanceCount = resData.projectPerformanceCount
             This.equipmentCount = resData.equipmentCount
-            This.recommendUserName = resData.recommendUserName || '暂无推荐人'
+            This.recommendUserName = resData.recommendUserName
             This.recommendUserPosition = resData.recommendUserPosition || ''
             This.recommendCompany = resData.recommendCompany || ''
+            if(res.response.mobile == null){
+                This.phone = '查看联系方式'
+            }else{
+                This.phone = res.response.mobile
+            }
         })
         let dataTwo = {
             contractorId:This.contractorId || wx.getStorageSync('contractorId')
@@ -391,7 +396,11 @@ export default {
                 fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
                     console.log(res)
                     This.alertType = res.response
-                    This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
+                    if(res.response.mobile == null){
+                        This.phone = '查看联系方式'
+                    }else{
+                        This.phone = res.response.mobile
+                    }
                     This.isAlert = true
                     This.ifMode = true
                     This.ischangeModel = true
@@ -572,11 +581,12 @@ export default {
             background: #efeff4;
             padding-left: 10rpx;
             padding-right: 10rpx;
+            padding-bottom:2rpx;
             border-radius: 16rpx;
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
-            margin-top: -2rpx;
+            margin-top: -4rpx;
         }
     }
     .active {
@@ -638,11 +648,12 @@ export default {
             background: #efeff4;
             padding-left: 10rpx;
             padding-right: 10rpx;
+            padding-bottom:2rpx;
             border-radius: 16rpx;
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
-            margin-top: -2rpx;
+            margin-top: -4rpx;
         }
     }
     .active {
@@ -749,11 +760,12 @@ export default {
                     background: #efeff4;
                     padding-left: 10rpx;
                     padding-right: 10rpx;
+                    padding-bottom:2rpx;
                     border-radius: 16rpx;
                     font-size: 24rpx;
                     margin-left: 10rpx;
                     color: #a7a7a8;
-                    margin-top: -2rpx;
+                    margin-top: -8rpx;
                 }
             }
             .img-contain {

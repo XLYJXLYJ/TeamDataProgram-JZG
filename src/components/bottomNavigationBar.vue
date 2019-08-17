@@ -132,7 +132,12 @@ export default {
                             areaName:[userInfo.country,userInfo.province,userInfo.city]
                         }
                         fly.post('/contractor/weChatAuth',data).then(function (res) {
-                            wx.setStorageSync('img',res.response.headImg)
+                            if(res.response.headImg == null){
+                              wx.setStorageSync('img','/static/images/user.png')
+                            }else{
+                                wx.setStorageSync('img',res.response.headImg)
+                            }
+                            
                             wx.setStorageSync('joinSharePlanStatus',res.response.joinSharePlanStatus)
                             wx.setStorageSync('token', res.response.authorization) 
                             wx.setStorageSync('gender', res.response.gender) 

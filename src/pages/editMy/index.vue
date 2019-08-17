@@ -103,18 +103,18 @@ export default {
         },
         selfSave(){
             let This = this
-            let iswho = This.gender='男'?1:0
+            let who = ''
+            if(This.gender=='男'){
+                who = 1
+            }else{
+                who = 0
+            }
             let data = {
                 username:This.name,
-                gender:iswho
+                gender:who
             }
             fly.post('/contractor/saveMyInfo',data).then(function (res) {
                 wx.setStorageSync('username', This.name)
-                if(This.gender==1){
-                    This.gender='男'
-                }else{
-                    This.gender='女'
-                }
                 wx.setStorageSync('gender', This.gender)
                 wx.showToast({
                     title: '修改成功',

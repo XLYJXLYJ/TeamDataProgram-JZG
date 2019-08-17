@@ -107,7 +107,7 @@ export default {
         margin: 0 auto;
         border-radius: 8rpx;
         padding-top: 40rpx;
-        background: #f9f9f9;
+        background: #fcfcfc;
         margin-bottom: 32rpx;
     }
 }

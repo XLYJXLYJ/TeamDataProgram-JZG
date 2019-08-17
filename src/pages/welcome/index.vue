@@ -20,7 +20,7 @@ export default {
         let This = this
         fly.post('/contractor/getMySharingPlan').then(function (res) {
             let data = res.response
-            if(data.reviewStatus==null){
+            if(data.reviewStatus==0){
                 This.url='/pages/register/main'
             }else{
                 This.url='/pages/sharing/main'

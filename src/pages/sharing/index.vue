@@ -35,7 +35,7 @@
                     <p style="color:rgb(252,184,19);margin-top:48rpx" @click="make">《建筑业优质班组共建共享计划规则》</p>
                 </li>
                 <li class="one-li">
-                    <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='不通过'" @click="goshare">再次申请加入</button>
+                    <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
                      <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
                 </li>
             </ul>
@@ -61,7 +61,8 @@ export default {
         let This = this
         fly.post('/contractor/getMySharingPlan').then(function (res) {
             let data = res.response
-            if(data.reviewStatus==null){
+            wx.setStorageSync('joinSharePlanStatus',data.reviewStatus)
+            if(data.reviewStatus==0){
                 This.status='未申请'
             }
             else if(data.reviewStatus==1){

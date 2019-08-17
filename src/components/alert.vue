@@ -29,15 +29,15 @@ export default {
         let This = this
         if(This.val.alertType==1){
             This.title = '查看联系方式'
-            This.content = '您已查看'+This.val.viewCount+'个班组的联系方式，您剩余'+This.val.remainCount+'次班组联系方式查看机会。'
+            This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您剩余 '+This.val.remainCount+' 次班组联系方式查看机会。'
             This.text = '好的'
         }else if(This.val.alertType==2){
             This.title = '查看联系方式'
-            This.content = '您已查看'+This.val.viewCount+'个班组的联系方式，您有5次体验机会，请加入共建共享计划获得更多权限，成功通过审核，可增加100次的班组查看权限。'
+            This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，请加入共建共享计划获得更多权限，成功通过审核，可增加 100 次的班组查看权限。'
             This.text = '立即加入共建共享计划'
         }else{
             This.title = '获取更多班组联系方式'
-            This.content = '您已查看'+This.val.viewCount+'个班组的联系方式，您可推荐新班组获得更多的权限。每成功推荐1个新班组，可增加100次的班组查看权限'
+            This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您可推荐新班组获得更多的权限。每成功推荐1个新班组，可增加 100 次的班组查看权限'
             This.text = '推荐班组'
         }
         This.remainCount = This.val.remainCount

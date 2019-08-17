@@ -99,13 +99,11 @@ export default {
     },
     mounted() {
         let This = this
-        // fly.post('/contractor/getMySharingPlan').then(function (res) {
-        //     let data = res.response
-        //     This.phone=data.mobile,
-        //     This.name=data.username,
-        //     This.company=data.companyName,
-        //     This.position=data.positionName
-        // })
+        This.phone = '';
+        This.phone_code = '';
+        This.name = '';
+        This.company = '';
+        This.position = ''
     },
     methods: {
         ...mapMutations([
@@ -193,7 +191,7 @@ export default {
         uploadDelete(DeleteRes){
             let This = this
             let index = DeleteRes.index
-            This.imgMessage.splice(index,1)       
+            This.imgMessage.splice(index,1)      
         },
         agree(){
             wx.navigateTo({
@@ -268,7 +266,7 @@ export default {
             }
             fly.post('/contractor/applyJoinSharingPlan',data).then(function (res) {
                 wx.setStorageSync('token', res.response.authorization) 
-                wx.setStorageSync('gender', res.response.gender) 
+                // wx.setStorageSync('gender', res.response.gender) 
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 

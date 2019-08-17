@@ -19,14 +19,16 @@
 
         <section class="maintenance">
             <div v-if="!userInfo">
-                <img  @click="goMy" :src="aImg">
+                <img  @click="goMy" :src="aImg" v-if="aImg">
+                <img  @click="goMy" src="/static/images/user.png" v-if="!aImg">
                 <p v-if="mobile">{{name}}</p>
-                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录1</p>
+                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录</p>
             </div>
             <div v-if="userInfo">
-                <img @click="goMy" :src="userInfo.headImg">
+                <img @click="goMy" :src="userInfo.headImg" v-if="userInfo.headImg">
+                <img @click="goMy" src="/static/images/user.png" v-if="!userInfo.headImg">
                 <p v-if="userInfo.mobile">{{userInfo.username}}</p>
-                <p v-if="!userInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录2</p>
+                <p v-if="!userInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录</p>
             </div>
             <!-- <p>{{userInfo.username}}</p>
               <p>2222</p> -->
@@ -98,6 +100,7 @@ export default {
         if(!This.userInfo){
             This.mobile = wx.getStorageSync('mobile')
             This.name = wx.getStorageSync('username')
+            // This.aImg = wx.getStorageSync('img')
         }
         This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
         if(wx.getStorageSync('img')){
@@ -178,7 +181,6 @@ export default {
                     url:"/pages/sharing/main"
                 }); 
             }
-
         },
         goW(){
             wx.navigateTo({
