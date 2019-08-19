@@ -60,6 +60,9 @@ export default {
             cit:'广东省'
         };
     },
+    onShareAppMessage: (res) => {
+        console.log(res)
+    },
     onLoad: function(option){ 
         console.log(option)
         // let This = this

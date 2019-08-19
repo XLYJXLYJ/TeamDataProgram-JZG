@@ -1,14 +1,21 @@
 <template>
     <div>
-        <goBackNav :title='title'></goBackNav>
         <div v-if="isAlert">
-            <selfAlert
-                v-bind:changeModel="ischangeModel"
-                v-bind:isModel="ifMode"
-                v-bind:val="alertType"
-                @func="controlAlert"
-            ></selfAlert>
+            <!--弹窗的页面-->
+            <div class="modalMask" v-if="isModel" @click="hidePanel"></div>
+            <div class="modalDialog" v-if="changeModel">
+                <div class="modalContent">
+                    <img src="/static/images/share.png" />
+                    <p class="contentTip">{{titleAlert}}</p>
+                    <p class="detail">{{content}}</p>
+                    <button @click="goWhere">{{text}}</button>
+                </div>
+            </div>
         </div>
+
+        <goBackNav :title='title'></goBackNav>
+
+
         <div>
             <div class="img-head">
                 <img @click="headPreviewImage" :src="headimg" />
@@ -21,7 +28,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="detail" v-if="recommendUserName">
+            <div class="detail1" v-if="recommendUserName">
                 <p class="one">{{recommendDesc}}</p>
                 <p class="two">推荐人：{{recommendUserName}} {{recommendUserPosition}}</p>
                 <p class="three">{{recommendCompany}}</p>
@@ -65,7 +72,7 @@
             </div>
             <div class="work">
                 <ul>
-                    <title>施工报价 <span v-if="qtotal">({{qtotal}} 项)</span> </title>
+                    <title v-if="qtotal">施工报价<span>({{qtotal}} 项)</span> </title>
                     <li v-for="(item,index) in subModels" :key="index">
                         <p>{{item.name}}</p>
                         <ul class="two-ul">
@@ -154,6 +161,10 @@ import fly from "@/services/WxApi";
 export default {
     data() {
         return {
+            val:'',
+            titleAlert:'',
+            content:'',
+            text:'',
             recommendDesc:'',
             recommendCompany:'',
             recommendUserPosition:'',
@@ -174,6 +185,8 @@ export default {
             ifMode: false,
             ischangeModel: false,
             isAlert: false,
+            isModel:'',
+            changeModel:'',
             isTop:false,
             statusBarHeight: "", // 状态栏高度
             titleBarHeight: "", // 标题栏高度
@@ -284,6 +297,9 @@ export default {
             )
         })
     },
+    onShareAppMessage: (res) => {
+        console.log(res)
+    },
     onShow() {
         let This = this
         This.organizationName = ''
@@ -349,13 +365,13 @@ export default {
         // padLeftZero(str) {
         //     return ('00' + str).substr(str.length);
         // },
-        controlAlert(data) {
-            console.log(data)
-            let This = this
-            This.isAlert = data
-            This.ifMode = data 
-            This.ischangeModel = data
-        },
+        // controlAlert(data) {
+        //     console.log(data)
+        //     let This = this
+        //     This.isAlert = data
+        //     This.ifMode = data 
+        //     This.ischangeModel = data
+        // },
         goOne(){
             let This = this
             This.isTab = true
@@ -363,7 +379,6 @@ export default {
         goachi(){
             let This = this
             This.isTab = false
-
         },
         // seePhone() {
         //     (this.ifMode = true), (this.ischangeModel = true);
@@ -392,20 +407,40 @@ export default {
                     phoneNumber: This.phone
                 })
             }else{
+                This.isAlert = true
+                This.isModel = true
+                This.changeModel = true
+                console.log('tantantatn')
                 let data = {
                     contractorId:This.contractorId || wx.getStorageSync('contractorId')
                 }
                 fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
                     console.log(res)
-                    This.alertType = res.response
+                    This.val = res.response
+
+                    if(This.val.alertType==1){
+                        This.titleAlert = '查看联系方式'
+                        This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您剩余 '+This.val.remainCount+' 次班组联系方式查看机会。'
+                        This.text = '好的'
+                    }else if(This.val.alertType==2){
+                        This.titleAlert = '查看联系方式'
+                        This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，请加入共建共享计划获得更多权限，成功通过审核，可增加 100 次的班组查看权限。'
+                        This.text = '立即加入共建共享计划'
+                    }else{
+                        This.titleAlert = '获取更多班组联系方式'
+                        This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您可推荐新班组获得更多的权限。每成功推荐1个新班组，可增加 100 次的班组查看权限'
+                        This.text = '推荐班组'
+                    }
+
                     if(res.response.mobile == null){
                         This.phone = '查看联系方式'
                     }else{
                         This.phone = res.response.mobile
                     }
-                    This.isAlert = true
-                    This.ifMode = true
-                    This.ischangeModel = true
+                    console.log(This.isAlert)
+                    console.log(This.isModel)
+                    console.log(This.changeModel)
+
                 })
             }
         },
@@ -424,6 +459,26 @@ export default {
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
             })
+        },
+        hidePanel: function(event) {
+            //这句是说如果我们点击到了id为myPanel以外的区域
+            this.$emit("func", false);
+        },
+        goWhere(){
+            let This = this
+            if(This.text == '好的'){
+                This.changeModel = !This.changeModel;
+                This.isModel = !This.isModel;
+                This.$emit("func", false);
+            }else if(This.text == '立即加入共建共享计划'){
+                wx.navigateTo({
+                    url:'/pages/welcome/main'
+                })
+            }else{
+                wx.navigateTo({
+                    url:'/pages/welcomeClass/main'
+                })
+            }
         }
     },
     components: {
@@ -433,6 +488,70 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.modalMask {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.5;
+    overflow: hidden;
+    z-index: 9000;
+    color: #fff;
+}
+.modalDialog {
+    box-sizing: border-box;
+    width: 590rpx;
+    height: auto;
+    overflow: hidden;
+    position: fixed;
+    top: 30%;
+    left: 0;
+    z-index: 9999;
+    background: #fff;
+    margin: -180rpx 95rpx;
+    border-radius: 8rpx;
+}
+.modalContent {
+    box-sizing: border-box;
+    display: flex;
+    font-size: 32rpx;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    img {
+        width: 590rpx;
+        height: 340rpx;
+        margin-bottom: 40rpx;
+    }
+    .contentTip {
+        font-size: 34rpx;
+        color: black;
+        font-family: "PingFangSC-Regular";
+    }
+    .detail {
+        font-size: 30rpx;
+        color: rgb(88, 88, 88);
+        padding: 0 40rpx 0 40rpx;
+        font-family: "PingFangSC-Regular";
+    }
+    button {
+        width: 510rpx;
+        height: 96rpx;
+        margin-top: 20rpx;
+        font-size: 34rpx;
+        color: black;
+        font-family: "PingFangSC-Medium";
+        font-weight: 550;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgb(252, 184, 19);
+        border: none;
+        margin-bottom: 40rpx;
+    }
+}
 .img-head {
     height: 400rpx;
     width: 100%;
@@ -446,10 +565,12 @@ export default {
     }
 }
 .title {
+    width: 90%;
     font-family: "PingFangSC-Regular";
     font-size: 52rpx;
     text-align: center;
     margin: 16rpx 0 16rpx 0;
+    margin: 0 auto;
 }
 .tag {
     width: 100%;
@@ -475,7 +596,7 @@ export default {
         }
     }
 }
-.detail {
+.detail1 {
     width: 670rpx;
     height: 120rpx;
     display: flex;
@@ -821,6 +942,7 @@ export default {
         font-size: 36rpx;
         font-weight: 550;
     }
+
     .one-ul {
         .one-li {
             .machine {
@@ -834,7 +956,7 @@ export default {
 
             .img-contain {
                 position: relative;
-                height: 458rpx;
+                min-height: 0rpx;
                 .three-ul{
                     display:inline;
                     white-space: nowrap;
@@ -854,9 +976,11 @@ export default {
  
                 }
                 .corner {
-                    position: absolute;
-                    right: 6rpx;
-                    bottom: 12rpx;
+                    // display: flex;
+                    // justify-content: flex-end;
+                    // align-items: flex-end;
+                    width: 36rpx;
+                    height: 28rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
                     .img-corner {

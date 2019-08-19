@@ -11,7 +11,7 @@
             >
                 <block v-for="item in imgUrls" :key="item.id">
                     <swiper-item>
-                        <image :src="item.img" class="slide-image" />
+                        <image :src="item.img" class="slide-image" @click="goshare" />
                         <text class="text1">{{cit}}{{item.desc}}</text>
                         <text class="text2">查看详情</text>
                     </swiper-item>
@@ -35,6 +35,13 @@ export default {
         fly.post('/contractor/getBanner',{bannerType: 200}).then(function (data) {
             This.imgUrls = data.response
         })
+    },
+    methods: {
+        goshare(){
+            wx.navigateTo({
+                url:'/pages/commonMake/main'
+            })
+        }
     },
 };
 </script>

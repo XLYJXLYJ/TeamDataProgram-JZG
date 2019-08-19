@@ -1,8 +1,11 @@
 {
   "pages": [
+    "pages/index/main",
+    "pages/userAgreement/main",
+
     "pages/login/main",
     "pages/registerClass/main",
-    "pages/index/main",
+
 
     "pages/register/main",
     "pages/editMy/main",
@@ -15,7 +18,7 @@
     "pages/my/main",
     "pages/achievement/main",
     "pages/welcome/main",
-    "pages/userAgreement/main",
+
     "pages/logs/main"
 
   ],

@@ -66,13 +66,13 @@
                             <div class="company">{{item.organizationName}}</div>
                             <div>
                                 <ul class="text-ul">
-                                    <li v-for="(twoItem,twoIndex) in item.contractorProjectTypes" :key="twoIndex">
-                                        <div v-if="twoItem.medalNum" class="text-li">
+                                    <li class="text-li" v-for="(twoItem,twoIndex) in item.contractorProjectTypes" :key="twoIndex">
+                                        <div v-if="twoItem.medalNum" style="padding:0rpx 10rpx 0rpx 10rpx">
                                             {{twoItem.projectTypeName}} 
                                             <img src="/static/images/star.png" alt="">
                                             {{twoItem.medalNum}}
                                         </div>
-                                        <div v-if="!twoItem.medalNum" style="font-size:28rpx;margin-top:4rpx;margin-bottom:4rpx;">
+                                        <div v-if="!twoItem.medalNum" style="font-size:28rpx;margin-bottom:4rpx;background-color:#fff;color:#000">
                                             {{twoItem.projectTypeName}} 
                                         </div>
                                     </li>
@@ -758,21 +758,25 @@ export default {
                     font-family: 'PingFangSC-Regular';
                     font-size: 34rpx;
                     margin-left:20rpx;
-                    height: 126rpx;
+                    height: auto;
                     display: flex;
                     justify-content: flex-start;
                     flex-direction: column;
-                    margin-top: -22rpx;
                     .company{
                         font-family: 'PingFangSC-Regular';
+                        width: 480rpx;
+                        height: 58rpx;
+                        overflow: hidden;
                         font-size: 34rpx;
                         color: black;
                         font-weight: 550;
                     }
                     .text-ul{
                         list-style: none;
+                        width: 480rpx;
+                        height: 46rpx;
+                        overflow: hidden;
                         .text-li{
-                            float: left;
                             height: 40rpx;
                             width: auto;
                             background-color: rgba(252, 184, 19,.2);
@@ -780,9 +784,13 @@ export default {
                             font-size: 24rpx;
                             color: rgb(202, 146, 9);
                             display: flex;
+                            justify-content: space-around;
+                            flex-direction: column;
                             align-items: center;
                             margin-right: 10rpx;
-                            padding: 0rpx 10rpx 0 10rpx;
+                            margin-bottom: 8rpx;
+                            float: left;
+                            overflow: hidden;
                             img{
                                 width: 16rpx;
                                 height: 16rpx;

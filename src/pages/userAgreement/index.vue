@@ -1,8 +1,8 @@
 <template>
     <div class="agreement">
-        <goBackNav title></goBackNav>
+        <goBackNav title='建造工用户协议'></goBackNav>
         <div class="contain">
-            <p class="title">建造工用户协议</p>
+            <web-view src="https://m.jianzaogong.com/h5/explains/pages/userAgreement.html"></web-view>
         </div>
     </div>
 </template>
