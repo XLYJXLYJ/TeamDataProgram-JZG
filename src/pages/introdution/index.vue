@@ -22,7 +22,7 @@
                 </ul>
             </div>
             <div class="detail" v-if="recommendUserName">
-                <!-- <p class="one">"该班组技术好，态度好，做事负责"</p> -->
+                <p class="one">{{recommendDesc}}</p>
                 <p class="two">推荐人：{{recommendUserName}} {{recommendUserPosition}}</p>
                 <p class="three">{{recommendCompany}}</p>
                 <img src="/static/images/good.png" alt="">
@@ -154,6 +154,7 @@ import fly from "@/services/WxApi";
 export default {
     data() {
         return {
+            recommendDesc:'',
             recommendCompany:'',
             recommendUserPosition:'',
             recommendUserName:'',
@@ -257,6 +258,7 @@ export default {
             This.recommendUserName = resData.recommendUserName
             This.recommendUserPosition = resData.recommendUserPosition || ''
             This.recommendCompany = resData.recommendCompany || ''
+            This.recommendDesc = resData.recommendDesc
             if(res.response.mobile == null){
                 This.phone = '查看联系方式'
             }else{

@@ -38,6 +38,12 @@
                     <div class="select picker" type="default"><p class="title">{{family}}{{sort}}</p></div>
                 </picker> -->
                 </div>
+
+                <div class="get-block">
+                    <p class="title" style="color:black">推荐说明</p>
+                    <input type="text" v-model="recommendDesc" placeholder="推荐语将显示在班组信息展示页"  placeholder-style="color:#ccc" autocomplete="off" />
+                </div>
+
                 <!-- <div class="img-block">
                 <p class="title" style="margin-bottom:20rpx;">在职证明（请提交三种资料之一：1.公司出具的证明函、2.工作证、3.名片）</p>
                 <mp-uploader @upLoadSuccess="upLoadSuccess" @upLoadFail="upLoadFail" @uploadDelete="uploadDelete" :showTip=false :count=1></mp-uploader>
@@ -76,7 +82,8 @@ export default {
             projectType:'', // 选中的班组ID
             mode: 'multiLinkageSelector',
             pickerValueArray:[],
-            isblack:false
+            isblack:false,
+            recommendDesc:''
         };
     },
     mounted() {
@@ -185,6 +192,7 @@ export default {
                 username:This.name,
                 mobile:This.phone,
                 contractorType:This.projectType,
+                recommendDesc:This.recommendDesc
             }
             fly.post('/contractor/recommendContractor',data).then(function (res) {
                 wx.showToast({

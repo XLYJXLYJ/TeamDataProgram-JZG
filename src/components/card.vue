@@ -129,7 +129,6 @@ export default {
     },
     data() {
         return {
-
             joinSharePlanStatus:'',
             changeModel:false,
             isModel:false,
