@@ -36,7 +36,7 @@
                 </li>
                 <li class="one-li">
                     <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
-                     <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
+                    <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
                 </li>
             </ul>
         </div>
@@ -129,6 +129,9 @@ export default {
                         margin-top: 16rpx;
                     }
                 }
+            }
+            button::after{
+                border:none;
             }
         }
     }

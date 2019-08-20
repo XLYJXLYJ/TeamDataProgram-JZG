@@ -266,7 +266,11 @@ export default {
             }
             fly.post('/contractor/applyJoinSharingPlan',data).then(function (res) {
                 wx.setStorageSync('token', res.response.authorization) 
-                // wx.setStorageSync('gender', res.response.gender) 
+                if(res.response.gender == 1 ){
+                    wx.setStorageSync('gender', '男') 
+                }else{
+                    wx.setStorageSync('gender', '女') 
+                }
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 

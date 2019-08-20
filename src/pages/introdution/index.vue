@@ -115,7 +115,7 @@
                     <div class="img-contain">
                         <ul class="three-ul">
                             <div v-for="(threeItem,threeIndex) in item.nearImgList" :key="threeIndex">
-                                <li class="three-li" v-if="threeIndex<6"><img @click="previewImage(threeItem,item.nearImgList)" :src='threeItem' /></li>
+                                <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
                             </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
@@ -172,7 +172,6 @@ export default {
             joinSharePlanStatus:'',
             equipmentCount:'',
             title:'',
-            isTab:'',
             qtotal:'',
             quantity:'',
             alertType:'',
@@ -342,6 +341,17 @@ export default {
             //     urls:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg'] // 需要预览的图片http链接列表
             // });
         },
+        previewImage1(current,urls) {
+            console.log('2222')
+            wx.previewImage({
+                current:current, // 当前显示图片的http链接
+                urls:urls // 需要预览的图片http链接列表
+            });
+            // wx.previewImage({
+            //     current:"http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg", // 当前显示图片的http链接
+            //     urls:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg'] // 需要预览的图片http链接列表
+            // });
+        },
         // formatDate(date, fmt) {
         //     let This = this
         //     if (/(y+)/.test(fmt)) {
@@ -454,7 +464,11 @@ export default {
             }
             fly.post('/contractor/weChatAuth',data).then(function (res) {
                 wx.setStorageSync('token', res.response.authorization) 
-                wx.setStorageSync('gender', res.response.gender) 
+                if(res.response.gender == 1 ){
+                    wx.setStorageSync('gender', '男') 
+                }else{
+                    wx.setStorageSync('gender', '女') 
+                }
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
@@ -497,7 +511,7 @@ export default {
     background: #000;
     opacity: 0.5;
     overflow: hidden;
-    z-index: 9000;
+    z-index: 900;
     color: #fff;
 }
 .modalDialog {
@@ -508,7 +522,7 @@ export default {
     position: fixed;
     top: 30%;
     left: 0;
-    z-index: 9999;
+    z-index: 999;
     background: #fff;
     margin: -180rpx 95rpx;
     border-radius: 8rpx;
@@ -702,8 +716,8 @@ export default {
             width: 32rpx;
             height: 32rpx;
             background: #efeff4;
-            padding-left: 10rpx;
-            padding-right: 10rpx;
+            padding-left: 15rpx;
+            padding-right: 15rpx;
             padding-bottom:2rpx;
             border-radius: 16rpx;
             font-size: 24rpx;
@@ -769,8 +783,8 @@ export default {
             width: 32rpx;
             height: 32rpx;
             background: #efeff4;
-            padding-left: 10rpx;
-            padding-right: 10rpx;
+            padding-left: 15rpx;
+            padding-right: 15rpx;
             padding-bottom:2rpx;
             border-radius: 16rpx;
             font-size: 24rpx;
@@ -881,8 +895,8 @@ export default {
                     width: 32rpx;
                     height: 32rpx;
                     background: #efeff4;
-                    padding-left: 10rpx;
-                    padding-right: 10rpx;
+                    padding-left: 15rpx;
+                    padding-right: 15rpx;
                     padding-bottom:2rpx;
                     border-radius: 16rpx;
                     font-size: 24rpx;
@@ -893,6 +907,7 @@ export default {
             }
             .img-contain {
                 position: relative;
+                height: 436rpx;
                 .two-ul{
                     display: flex;
                     justify-content: space-around;
@@ -942,7 +957,6 @@ export default {
         font-size: 36rpx;
         font-weight: 550;
     }
-
     .one-ul {
         .one-li {
             .machine {
@@ -951,12 +965,10 @@ export default {
                 font-family: "PingFangSC-Regular";
                 margin-bottom: 24rpx;
                 z-index: 0;
-
             }
-
             .img-contain {
                 position: relative;
-                min-height: 0rpx;
+                height: 458rpx;
                 .three-ul{
                     display:inline;
                     white-space: nowrap;
@@ -967,6 +979,7 @@ export default {
                         display:block;
                         margin-right: 3rpx;
                         margin-bottom: 3rpx;
+                        z-index: 999;
                         img {
                             width: 220rpx;
                             height: 222rpx;
@@ -976,11 +989,9 @@ export default {
  
                 }
                 .corner {
-                    // display: flex;
-                    // justify-content: flex-end;
-                    // align-items: flex-end;
-                    width: 36rpx;
-                    height: 28rpx;
+                    position: absolute;
+                    right: 6rpx;
+                    bottom: 12rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
                     .img-corner {

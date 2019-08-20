@@ -314,6 +314,7 @@ export default {
                     return;
                 }
                 if(This.page == 1){
+                    console.log('jinlai')
                    This.list = res.response.list
                     if(res.response.list == null || res.response.list.length<5){
                         This.showButton = true
@@ -411,6 +412,7 @@ export default {
             let arr = e.label.split('-')
             console.log(arr)
             This.sort = arr[1]
+            This.page = 1
             This.getClass()
         },
         onChange(e) {
@@ -432,6 +434,7 @@ export default {
             let arr = This.city.split('-')
             This.city = arr[1] 
             This.$emit('city',This.city)
+            This.page = 1
             This.page = 1
         },
         onCityChange(e) {
@@ -467,7 +470,11 @@ export default {
                             }
                             wx.setStorageSync('token', res.response.authorization) 
                             wx.setStorageSync('joinSharePlanStatus',res.response.joinSharePlanStatus)
-                            wx.setStorageSync('gender', res.response.gender) 
+                            if(res.response.gender == 1 ){
+                                wx.setStorageSync('gender', '男') 
+                            }else{
+                                wx.setStorageSync('gender', '女') 
+                            }
                             wx.setStorageSync('mobile', res.response.mobile) 
                             wx.setStorageSync('nickName', res.response.nickName) 
                             wx.setStorageSync('username', res.response.username) 

@@ -55,7 +55,11 @@ export default {
                             wx.setStorageSync('img',res.response.headImg)
                             wx.setStorageSync('joinSharePlanStatus',res.response.joinSharePlanStatus)
                             wx.setStorageSync('token', res.response.authorization) 
-                            wx.setStorageSync('gender', res.response.gender) 
+                            if(res.response.gender == 1 ){
+                                wx.setStorageSync('gender', '男') 
+                            }else{
+                                wx.setStorageSync('gender', '女') 
+                            }
                             wx.setStorageSync('mobile', res.response.mobile) 
                             wx.setStorageSync('nickName', res.response.nickName) 
                             wx.setStorageSync('username', res.response.username) 

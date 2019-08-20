@@ -110,7 +110,11 @@ export default {
                 // });
                 wx.setStorageSync('token', res.response.authorization) 
                 wx.setStorageSync('joinSharePlanStatus',1)
-                // wx.setStorageSync('gender', res.response.gender) 
+                if(res.response.gender == 1 ){
+                    wx.setStorageSync('gender', '男') 
+                }else{
+                    wx.setStorageSync('gender', '女') 
+                }
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
@@ -179,6 +183,9 @@ export default {
             border:none;
             height: 96rpx;
             width: 670rpx;
+        }
+        .confirm::after {
+            border:none;
         }
     }
 }

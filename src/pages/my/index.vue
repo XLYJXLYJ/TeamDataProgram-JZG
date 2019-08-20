@@ -172,6 +172,7 @@ export default {
             }); 
         },
         goS(){
+            console.log('55555555')
             if(!wx.getStorageSync('mobile')){
                 wx.navigateTo({
                     url:"/pages/welcome/main"
@@ -183,6 +184,7 @@ export default {
             }
         },
         goW(){
+            console.log('666666666')
             wx.navigateTo({
                 url:"/pages/aboutUs/main"
             }); 
@@ -215,6 +217,8 @@ export default {
             width: 120rpx;
             height: 120rpx;
             border-radius: 60rpx;
+            text-align: center;
+            margin: 0 auto;
         }
         p{
             margin-top: 28rpx;
@@ -222,6 +226,7 @@ export default {
             font-weight: bold;
             color: rgb(51, 51, 51);
             text-align: center;
+            margin: 0 auto;
         }
     }
     ul{
