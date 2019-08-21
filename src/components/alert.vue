@@ -54,11 +54,11 @@ export default {
                 This.isModel = !This.isModel;
                 This.$emit("func", false);
             }else if(This.text == '立即加入共建共享计划'){
-                wx.navigateTo({
+                wx.reLaunch({
                     url:'/pages/welcome/main'
                 })
             }else{
-                wx.navigateTo({
+                wx.reLaunch({
                     url:'/pages/welcomeClass/main'
                 })
             }

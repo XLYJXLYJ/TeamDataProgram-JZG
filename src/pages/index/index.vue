@@ -63,11 +63,6 @@ export default {
     onShareAppMessage: (res) => {
         console.log(res)
     },
-    onLoad: function(option){ 
-        console.log(option)
-        // let This = this
-        // This.getInfo = option
-    },
     methods:{
         indexFuc(data){
             let This = this
@@ -106,10 +101,8 @@ export default {
     .img-contain {
         display: block;
         width: 100%;
-        height: 310rpx;
         margin: 0 auto;
         border-radius: 8rpx;
-        padding-top: 40rpx;
         background: #fcfcfc;
         margin-bottom: 32rpx;
     }

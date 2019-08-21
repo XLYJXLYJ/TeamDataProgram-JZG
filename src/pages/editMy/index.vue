@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <goBackNav title="个人信息"></goBackNav>
+        <goBackNav title="个人信息" url='/pages/index/main'></goBackNav>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { mapState,mapMutations } from 'vuex'
+import {  USER_INFO } from '../../store/modules/mutation-type'
 import mpPicker from 'mpvue-weui/src/picker';
 import goBackNav from "@/components/goBackNav.vue";
 import mpUploader from "mpvue-weui/src/uploader";
@@ -78,6 +80,11 @@ export default {
             pickerValueDefault: [0,0],
         };
     },
+    computed: {
+        ...mapState([
+            'userInfo'
+        ])
+    },
     mounted() {
         let This = this   
         This.gender = wx.getStorageSync('gender') 
@@ -86,6 +93,13 @@ export default {
         This.name = wx.getStorageSync('username') 
     },
     methods: {
+        ...mapMutations([
+            USER_INFO
+        ]),
+        test(data1){
+            let This = this
+            This[USER_INFO](data1)
+        },
         showg(){
             let This = this
             This.$refs.mpPicker.show();
@@ -121,7 +135,11 @@ export default {
                     icon: "none",
                     duration: 2000
                 })
-                wx.navigateTo({
+                // let data1 = {
+                //     username:This.name,
+                // }
+                // This.test(data1)
+                wx.reLaunch({
                     url:'/pages/index/main?name=' + This.name + '&gender=' + This.gender
                 });
             })

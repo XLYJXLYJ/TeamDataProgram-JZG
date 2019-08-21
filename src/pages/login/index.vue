@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <goBackNav title="登陆/注册建造工"></goBackNav>
+        <goBackNav title="登陆/注册建造工" :url='url'></goBackNav>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { mapState,mapMutations } from 'vuex'
+import {  USER_INFO } from '../../store/modules/mutation-type'
 import goBackNav from "@/components/goBackNav.vue";
 import mpUploader from "mpvue-weui/src/uploader";
 import fly from "@/services/WxApi";
@@ -60,10 +62,31 @@ export default {
             btnTxt: "获取验证码",
             disabled: false,
             time: 0, // 验证码时间初始化
-            btn: true
+            btn: true,
+            url:''
         };
     },
+    computed: {
+        ...mapState([
+            'userInfo'
+        ])
+    },
+    mounted() {
+        let This = this
+        This.url = getCurrentPages()
+        console.log(This.url)
+        This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
+        This.url = '/' +  This.url[0]
+        console.log(This.url)
+    }, 
     methods: {
+        ...mapMutations([
+            USER_INFO
+        ]),
+        test(data1){
+            let This = this
+            This[USER_INFO](data1)
+        },
         GetCode() {
             if (!this.phone) {
                 wx.showToast({
@@ -109,7 +132,7 @@ export default {
                 //     duration: 2000
                 // });
                 wx.setStorageSync('token', res.response.authorization) 
-                wx.setStorageSync('joinSharePlanStatus',1)
+                // wx.setStorageSync('joinSharePlanStatus',1)
                 if(res.response.gender == 1 ){
                     wx.setStorageSync('gender', '男') 
                 }else{
@@ -118,7 +141,8 @@ export default {
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
-                wx.navigateTo({
+                This.test(res.response)
+                wx.reLaunch({
                     url:'/pages/index/main'
                 });
             })
@@ -136,7 +160,7 @@ export default {
             }
         },
         goUser(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/userAgreement/main'
             });
         }

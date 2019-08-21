@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <goBackNav :title='title'></goBackNav>
+        <goIndex :title='title'></goIndex>
 
 
         <div>
@@ -90,10 +90,10 @@
                 <ul class="one-ul">
                     <li class="one-li" v-for="(item,index) in eqList" :key="index">
                         <div class="machine">{{item.remark}}<span class="num1">{{item.quantity}}</span></div> 
-                        <div class="img-contain">
+                        <div class="img-contain" v-if="imgList">
                             <ul class="two-ul">
                                 <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
-                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,testImg)" :src='twoItem' /></li>
+                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,imgList)" :src='twoItem' /></li>
                                 </div>
                                 <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
                             </ul>
@@ -112,7 +112,7 @@
                 <li class="one-li" v-for="(item,index) in list" :key="index">
                     <p class="self">{{item.projectName}}</p>
                     <p class="machine">{{item.areaFullName}}</p>
-                    <div class="img-contain">
+                    <div class="img-contain" v-if="item.nearImgList">
                         <ul class="three-ul">
                             <div v-for="(threeItem,threeIndex) in item.nearImgList" :key="threeIndex">
                                 <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import goBackNav from "@/components/goBackNav.vue";
+import goIndex from "@/components/goIndex.vue";
 import selfAlert from "@/components/alert.vue";
 import fly from "@/services/WxApi";
 export default {
@@ -208,9 +208,9 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 550) {
+        if (res.scrollTop > 400) {
             This.isTop = true
-            This.title = This.organizationName
+            // This.title = This.organizationName
         } else {
             This.isTop = false
         }
@@ -246,6 +246,7 @@ export default {
         This.ifMode = false
         This.ischangeModel = false
         This.title = ''
+        This.isTab = true
         let data = {
             page:1,
             pageSize:5,
@@ -271,6 +272,18 @@ export default {
             This.recommendUserPosition = resData.recommendUserPosition || ''
             This.recommendCompany = resData.recommendCompany || ''
             This.recommendDesc = resData.recommendDesc
+            This.ContractorProjectType = resData.contractorProjectTypes
+            This.contractorDesc = resData.contractorDesc
+            This.organizationName = resData.organizationName
+            console.log(resData.headimg)
+            if(resData.headimg == null){
+                console.log('没有图片')
+                This.headimg = '/static/images/user1.png'
+            }else{
+                console.log('没有图片')
+                This.headimg = resData.headimg
+            }
+
             if(res.response.mobile == null){
                 This.phone = '查看联系方式'
             }else{
@@ -291,44 +304,45 @@ export default {
             )
             This.list.map(
                 function(item,index){
-                    item.projectTypeName= item.projectTypeName.replace(/  /g, '' )
+                    if(!item.nearImgList){
+                        item.nearImgList = []
+                        item.nearImgList = item.nearImgList.concat(item.farImgList)
+                        item.nearImgList = item.nearImgList.concat(item.evaluateImgList)
+                        if(item.nearImgList[0]==null&&item.nearImgList[1]==null){
+                            item.nearImgList = null
+                        }
+                    }else{
+                        item.nearImgList = item.nearImgList.concat(item.farImgList)
+                        item.nearImgList = item.nearImgList.concat(item.evaluateImgList)
+                    }
                 }
             )
+            console.log(This.list)
         })
     },
     onShareAppMessage: (res) => {
         console.log(res)
     },
-    onShow() {
-        let This = this
-        This.organizationName = ''
-        This.ContractorProjectType = ''
-        This.contractorDesc = ''
-        This.headimg = ''
-        let data = {
-            page:1,
-            pageSize:5,
-            contractorId:This.contractorId || wx.getStorageSync('contractorId')
-        }
-        fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
-            let resData = res.response.list[0]
+    // onShow() {
+    //     let This = this
+    //     This.organizationName = ''
+    //     This.ContractorProjectType = ''
+    //     This.contractorDesc = ''
+    //     This.headimg = ''
+    //     let data = {
+    //         page:1,
+    //         pageSize:5,
+    //         contractorId:This.contractorId || wx.getStorageSync('contractorId')
+    //     }
+    //     fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
+    //         let resData = res.response.list[0]
             
-        })
-        fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
-            let resData = res.response
-            This.ContractorProjectType = resData.contractorProjectTypes
-            This.contractorDesc = resData.contractorDesc
-            This.organizationName = resData.organizationName
-            console.log(resData.headimg)
-            if(resData.headimg == null){
-                console.log('没有图片')
-                This.headimg = '/static/images/user1.png'
-            }else{
-                console.log('没有图片')
-                This.headimg = resData.headimg
-            }
-        })
-    },
+    //     })
+    //     fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
+    //         let resData = res.response
+
+    //     })
+    // },
 
     methods: {
         previewImage(current,urls) {
@@ -336,10 +350,6 @@ export default {
                 current:current, // 当前显示图片的http链接
                 urls:urls // 需要预览的图片http链接列表
             });
-            // wx.previewImage({
-            //     current:"http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg", // 当前显示图片的http链接
-            //     urls:['http://img.redocn.com/sheji/20141219/zhongguofengdaodeliyizhanbanzhijing_3744115.jpg','http://pic33.nipic.com/20131007/13639685_123501617185_2.jpg','http://pic18.nipic.com/20111214/6834314_092609528357_2.jpg'] // 需要预览的图片http链接列表
-            // });
         },
         previewImage1(current,urls) {
             console.log('2222')
@@ -485,18 +495,18 @@ export default {
                 This.isModel = !This.isModel;
                 This.$emit("func", false);
             }else if(This.text == '立即加入共建共享计划'){
-                wx.navigateTo({
+                wx.reLaunch({
                     url:'/pages/welcome/main'
                 })
             }else{
-                wx.navigateTo({
+                wx.reLaunch({
                     url:'/pages/welcomeClass/main'
                 })
             }
         }
     },
     components: {
-        goBackNav,
+        goIndex,
         selfAlert
     }
 };
@@ -673,7 +683,7 @@ export default {
     font-weight: 550;
     border-radius: 8rpx;
 }
-.phone::after{ border: none; }
+.phone::after{ border: none;}
 .tab {
     display: flex;
     justify-content: space-around;
@@ -826,7 +836,7 @@ export default {
 }
 .work {
     width: 670rpx;
-    min-height: 100rpx;
+    height: auto;
     margin: 0 auto;
     margin-top: 100rpx;
     title {
@@ -1016,7 +1026,6 @@ export default {
             .two-ul {
                 margin-bottom: 40rpx;
                 margin-top: 13rpx;
-                height: 300rpx;
                 li {
                     display: flex;
                     flex-direction: row;

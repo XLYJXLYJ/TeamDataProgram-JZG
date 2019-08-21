@@ -1,6 +1,6 @@
 <template>
     <div class="agreement">
-        <goBackNav title></goBackNav>
+        <goBackNav title :url='url'></goBackNav>
         <div class="contain">
             <p class="title">建筑业优质班组共建共享计划规则</p>
             <br/>
@@ -26,7 +26,20 @@ import goBackNav from "@/components/goBackNav.vue";
 export default {
     components: {
         goBackNav
-    }
+    },
+    data() {
+        return {
+            url:''
+        }
+    },
+    mounted() {
+        let This = this
+        This.url = getCurrentPages()
+        console.log(This.url)
+        This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
+        This.url = '/' +  This.url[0]
+        console.log(This.url)
+    },  
 };
 </script>
 <style lang="scss" scoped>

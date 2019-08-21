@@ -390,11 +390,11 @@ export default {
                 This.path = '/pages/register/main'
             }else{
                 if(This.joinSharePlanStatus == 0){
-                    wx.navigateTo({
+                    wx.reLaunch({
                         url:'/pages/register/main'
                     })
                 }else{
-                    wx.navigateTo({
+                    wx.reLaunch({
                         url:'/pages/sharing/main'
                     })
                 }
@@ -451,6 +451,8 @@ export default {
         getUserInfo (e) {
             let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
+            This.changeModel = false
+            This.isModel = false
             wx.login({
                 success (res) {
                     if (res.code) {
@@ -478,7 +480,7 @@ export default {
                             wx.setStorageSync('mobile', res.response.mobile) 
                             wx.setStorageSync('nickName', res.response.nickName) 
                             wx.setStorageSync('username', res.response.username) 
-                            // wx.navigateTo({
+                            // wx.reLaunch({
                             //     url:This.path
                             // });
                             This.changeModel = false

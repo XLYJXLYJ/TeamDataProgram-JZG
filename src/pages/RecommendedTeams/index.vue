@@ -1,6 +1,6 @@
 <template>
     <div class="recommend">
-        <goBackNav></goBackNav>
+        <goBackNav url='/pages/index/main'></goBackNav>
         <div class="no-recommend" v-if="!list.length">
           <img src="/static/images/none.png">
         </div>
@@ -64,12 +64,12 @@ export default {
             }) 
         },
         goReClass(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/registerClass/main'
             });
         },
         goClass(index){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/introdution/main?contractorId=' + index
             })
         }

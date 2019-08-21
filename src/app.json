@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/main",
     "pages/introdution/main",
+    "pages/natural/main",
 
     "pages/userAgreement/main",
 

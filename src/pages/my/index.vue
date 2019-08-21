@@ -145,47 +145,47 @@ export default {
         //     This[USER_INFO](data1)
         // },
         goUrl(url){
-            wx.navigateTo({
+            wx.reLaunch({
                 url
             });
         },
         goMy(){
             if(wx.getStorageSync('mobile')){
-                wx.navigateTo({
+                wx.reLaunch({
                     url:"/pages/editMy/main"
                 });
             }else{
-                wx.navigateTo({
+                wx.reLaunch({
                     url:"/pages/login/main"
                 });
             }
 
         },
         goLogin(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:"/pages/login/main"
             });  
         },
         goC(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:"/pages/RecommendedTeams/main"
             }); 
         },
         goS(){
             console.log('55555555')
             if(!wx.getStorageSync('mobile')){
-                wx.navigateTo({
+                wx.reLaunch({
                     url:"/pages/welcome/main"
                 }); 
             }else{
-                wx.navigateTo({
+                wx.reLaunch({
                     url:"/pages/sharing/main"
                 }); 
             }
         },
         goW(){
             console.log('666666666')
-            wx.navigateTo({
+            wx.reLaunch({
                 url:"/pages/aboutUs/main"
             }); 
         }
@@ -219,6 +219,8 @@ export default {
             border-radius: 60rpx;
             text-align: center;
             margin: 0 auto;
+            display: flex;
+            justify-content: center;
         }
         p{
             margin-top: 28rpx;

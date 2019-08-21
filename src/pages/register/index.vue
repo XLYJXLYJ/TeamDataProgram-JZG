@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <goBackNav title="申请加入共建共享计划"></goBackNav>
+        <goBackNav title="申请加入共建共享计划" :url='url'></goBackNav>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -89,7 +89,8 @@ export default {
             time: 0, // 验证码时间初始化
             btn: true,
             imgMessage:[],
-            dataImg:''
+            dataImg:'',
+            url:''
         };
     },
     computed: {
@@ -104,6 +105,12 @@ export default {
         This.name = '';
         This.company = '';
         This.position = ''
+
+        This.url = getCurrentPages()
+        console.log(This.url)
+        This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
+        This.url = '/' +  This.url[0]
+        console.log(This.url)
     },
     methods: {
         ...mapMutations([
@@ -194,7 +201,7 @@ export default {
             This.imgMessage.splice(index,1)      
         },
         agree(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/userAgreement/main'
             });
         },
@@ -282,7 +289,7 @@ export default {
                     icon: "none",
                     duration: 2000
                 });
-                wx.navigateTo({
+                wx.reLaunch({
                     url:'/pages/index/main'
                 });
             })

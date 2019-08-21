@@ -1,6 +1,6 @@
 <template>
     <div>
-        <goBackNav title="共建共享计划"></goBackNav>
+        <goBackNav title="共建共享计划" url='/pages/index/main'></goBackNav>
         <div class="share">
             <ul class="one-ul">
                 <li class="one-li">
@@ -83,12 +83,12 @@ export default {
     },
     methods: {
         goshare(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/register/main'
             })
         },
         make(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/commonMake/main'
             });
         }

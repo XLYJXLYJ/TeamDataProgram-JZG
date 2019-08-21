@@ -150,20 +150,20 @@ export default {
                             wx.setStorageSync('username', res.response.username) 
                             if(This.path == '/pages/register/main'){
                                 if(res.response.joinSharePlanStatus==0){
-                                    wx.navigateTo({
+                                    wx.reLaunch({
                                         url:'/pages/register/main'
                                     });
                                 }else{
-                                    wx.navigateTo({
+                                    wx.reLaunch({
                                         url:'/pages/sharing/main'
                                     });
                                 }
                             }else{
-                                wx.navigateTo({
+                                wx.reLaunch({
                                     url:This.path
                                 });
                             }
-                            // wx.navigateTo({
+                            // wx.reLaunch({
                             //     url:'/pages/registerClass/main'
                             // })
                             This.test(res.response)
@@ -182,7 +182,7 @@ export default {
                 This.isModel = true
                 This.path = '/pages/login/main'
             }else{
-                wx.navigateTo({
+                wx.reLaunch({
                     url:'/pages/registerClass/main'
                 })
             }

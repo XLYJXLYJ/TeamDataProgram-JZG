@@ -1,6 +1,6 @@
 <template>
     <div class="welcome">
-        <goBackNav :title='title'></goBackNav>
+        <goBackNav :title='title' url='/pages/index/main'></goBackNav>
         <p class="about">{{message}}</p>
         <p class="rule" @click="goRule">{{rules}}</p>
         <button style="border:none;" class="confirm" @click="goSharing">{{buttonContent}}</button>
@@ -14,15 +14,23 @@ export default {
     components: {
         goBackNav
     },
+    data() {
+        return {
+     
+        }
+    },
+    mounted() {
+
+    },
     methods: {
         goSharing(){
             let This = this
-            wx.navigateTo({
+            wx.reLaunch({
                 url:This.url
             });
         },
         goRule(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/commonMake/main'
             });
         }

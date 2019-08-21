@@ -1,6 +1,6 @@
 <template>
     <div>
-        <goBackNav></goBackNav>
+        <goBackNav url='/pages/index/main'></goBackNav>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -179,7 +179,7 @@ export default {
             // });
         },
         gointro(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/introdution/main'
             })
         },

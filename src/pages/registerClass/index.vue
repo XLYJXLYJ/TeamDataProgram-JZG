@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <goBackNav title="推荐班组"></goBackNav>
+        <goBackNav title="推荐班组" :url='url'></goBackNav>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -83,7 +83,8 @@ export default {
             mode: 'multiLinkageSelector',
             pickerValueArray:[],
             isblack:false,
-            recommendDesc:''
+            recommendDesc:'',
+            url:''
         };
     },
     mounted() {
@@ -122,6 +123,11 @@ export default {
                 }    
             }    
         });
+        This.url = getCurrentPages()
+        console.log(This.url)
+        This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
+        This.url = '/' +  This.url[0]
+        console.log(This.url)
     },
     methods: {
         show(){
@@ -137,7 +143,7 @@ export default {
             This.isblack = true
         },
         make(){
-            wx.navigateTo({
+            wx.reLaunch({
                 url:'/pages/commonMake/main'
             });
         },
@@ -201,7 +207,7 @@ export default {
                     duration: 2000
                 })
                 if(res.message == '成功'){
-                    wx.navigateTo({
+                    wx.reLaunch({
                         url:'/pages/RecommendedTeams/main'
                     });
                 }
