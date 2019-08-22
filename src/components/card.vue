@@ -151,7 +151,7 @@ export default {
             cityArray:'', // 接受到的选择器总数据
             citySelectIndex:'', // 选中的班组index位置
             city: "广东省", // 班组分类
-            cityId:1971, // 城市id
+            cityId:'', // 城市id
             pickerValueArray:[],
             pickerCityValueArray:[],
             showButton:false,
@@ -202,7 +202,7 @@ export default {
         let This = this
         This.isTop = false
     },
-    mounted() {
+    created() {
         let This = this
         This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
         fly.get('/contractor/getProvinceCityDropDown').then(function (data) {
@@ -218,6 +218,9 @@ export default {
             // This.cityMultiArray[0] = oneRowArray
             // This.cityMultiArray[1] = oneColumnArray
             // This.$set(This.cityMultiArray,This.cityMultiArray)
+            This.cityId = data.response[0].childList[0].id
+            console.log(data.response[0])
+            console.log(This.cityId)
             let arr = []
             data.response.map((value,index,arry)=>{
                 arr.push({ 'label': value.name, 'value': value.id,'getchildren': value.childList,'children': [] })
@@ -226,6 +229,7 @@ export default {
                 })
             })
             This.pickerCityValueArray = arr
+            This.getClass()
         })
         fly.post('/contractor/getContractorType',{showAll:1}).then(function (data) {
             // 用于原声小程序picker
@@ -255,7 +259,7 @@ export default {
             //     })
             // })
         })
-        This.getClass()
+
     },
     methods: {
         closeAlert(){

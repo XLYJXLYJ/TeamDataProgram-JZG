@@ -15,15 +15,20 @@
                     <span class="status" v-if='item.reviewStatus==1'>通过</span>
                     <span class="status" v-if='item.reviewStatus==0'>未注册</span>
                     <span class="time">  {{item.recommendTimeStr}}推荐</span>
+                    <span class="cause0">  推荐语:{{item.recommendDesc}}</span>
                     <p class="cause" v-if='item.remark'>原因：{{remark}}</p>
                 </li>
-                <!-- <li @click="goClass(10462)">
+
+                
+                <!--<li @click="goClass(10462)">
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
                     <span class="time">    2019年7月13日推荐</span>
+                    <br/>
+                    <span class="cause0">  推荐语:55656565656565656565656</span>
                     <p class="cause">原因：资料不全</p>
                 </li>
-                <li @click="goClass(item.contractorId)">
+                 <li @click="goClass(item.contractorId)">
                     <p class="company-name">呼勒浩特好利建筑有限公司</p>
                     <span class="status">审核中</span>
                     <span class="time">    2019年7月13日推荐</span>
@@ -140,6 +145,17 @@ export default {
                     font-size: 28rpx;
                     color: #6c6962;
                     font-family: "PingFangSC-Light";
+                    position: relative;
+                    top: -12rpx;
+                }
+                .cause0 {
+                    font-size: 28rpx;
+                    color: #6c6962;
+                    font-family: "PingFangSC-Light";
+                    position: relative;
+                    top: -10rpx;
+                    width: 600rpx;
+                    overflow: hidden;
                 }
             }
         }
