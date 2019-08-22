@@ -11,8 +11,8 @@
             <swiper
                 :indicator-dots="true"
                 autoplay
-                :interval="3000"
-                :duration="1000"
+                :interval="5000"
+                :duration="500"
                 circular
                 indicator-color="rgba(255,255,255,.5)"
                 indicator-active-color="#ffffff"
