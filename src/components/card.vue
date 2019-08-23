@@ -394,7 +394,7 @@ export default {
                 This.path = '/pages/register/main'
             }else{
                 if(This.joinSharePlanStatus == 0){
-                    wx.reLaunch({
+                    wx.redirectTo({
                         url:'/pages/register/main'
                     })
                 }else{

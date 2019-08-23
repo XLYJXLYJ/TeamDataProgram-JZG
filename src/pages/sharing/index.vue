@@ -83,7 +83,7 @@ export default {
     },
     methods: {
         goshare(){
-            wx.reLaunch({
+            wx.redirectTo({
                 url:'/pages/register/main'
             })
         },

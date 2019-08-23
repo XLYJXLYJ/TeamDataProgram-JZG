@@ -25,12 +25,12 @@ export default {
     methods: {
         goSharing(){
             let This = this
-            wx.reLaunch({
+            wx.redirectTo({
                 url:This.url
             });
         },
         goRule(){
-            wx.reLaunch({
+            wx.redirectTo({
                 url:'/pages/commonMake/main'
             });
         }

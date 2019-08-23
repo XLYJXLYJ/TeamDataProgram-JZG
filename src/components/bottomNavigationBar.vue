@@ -150,7 +150,7 @@ export default {
                             wx.setStorageSync('username', res.response.username) 
                             if(This.path == '/pages/register/main'){
                                 if(res.response.joinSharePlanStatus==0){
-                                    wx.reLaunch({
+                                    wx.redirectTo({
                                         url:'/pages/register/main'
                                     });
                                 }else{
@@ -182,7 +182,7 @@ export default {
                 This.isModel = true
                 This.path = '/pages/login/main'
             }else{
-                wx.reLaunch({
+                wx.redirectTo({
                     url:'/pages/registerClass/main'
                 })
             }

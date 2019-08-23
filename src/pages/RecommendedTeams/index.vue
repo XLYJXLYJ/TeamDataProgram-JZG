@@ -69,7 +69,7 @@ export default {
             }) 
         },
         goReClass(){
-            wx.reLaunch({
+            wx.redirectTo({
                 url:'/pages/registerClass/main'
             });
         },

@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <goBackNav title="推荐班组" :url='url'></goBackNav>
+        <goIndex01 title="推荐班组"></goIndex01>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="get-block">
-                    <p class="title" style="color:black">推荐说明</p>
+                    <p class="title" style="color:black">推荐评语</p>
                     <input type="text" v-model="recommendDesc" placeholder="推荐语将显示在班组信息展示页"  placeholder-style="color:#ccc" autocomplete="off" />
                 </div>
 
@@ -62,12 +62,12 @@
 </template>
 
 <script>
-import goBackNav from "@/components/goBackNav.vue";
+import goIndex01 from "@/components/goIndex01.vue";
 import mpPicker from "mpvue-weui/src/picker";
 import fly from "@/services/WxApi";
 export default {
     components: {
-        goBackNav,
+        goIndex01,
         mpPicker
     },
     data() {

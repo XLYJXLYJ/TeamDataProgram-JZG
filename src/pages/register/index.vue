@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <goBackNav title="申请加入共建共享计划" :url='url'></goBackNav>
+        <goIndex title="申请加入共建共享计划"></goIndex>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -69,12 +69,12 @@
 <script>
 import { mapState,mapMutations } from 'vuex'
 import {  USER_INFO } from '../../store/modules/mutation-type'
-import goBackNav from "@/components/goBackNav.vue";
+import goIndex from "@/components/goIndex.vue";
 import mpUploader from "mpvue-weui/src/uploader";
 import fly from "@/services/WxApi";
 export default {
     components: {
-        goBackNav,
+        goIndex,
         mpUploader
     },
     data() {
