@@ -21,8 +21,11 @@
                         </p>
                 </li>
             </ul>
+
         </article>
-        <button style="border:none;" @click="isOk"> <img class="buttom-img" src="/static/images/button.png"></button>
+        <div class="res">推荐班组</div>
+        <button style="border:none;" @click="isOk"> <img class="buttom-img" src="/static/images/button.png"> </button>
+
     </section>
 </template>
 <script>
@@ -256,6 +259,7 @@ export default {
         border-bottom: none;
         border-top: 1px solid #e5e5e5;
     }
+
 }
 .tabBar-box {
     position: fixed;
@@ -310,5 +314,12 @@ button::after{
     margin: 0 auto;
     text-align: center;
     border-radius: 48rpx;
+}
+.res{
+    z-index: 999;
+    position: fixed;
+    left: 348rpx;
+    bottom: 12rpx;
+    font-size: 20rpx;
 }
 </style>
