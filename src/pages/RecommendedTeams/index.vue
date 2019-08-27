@@ -14,7 +14,7 @@
                     <span class="status" v-if='item.reviewStatus==2'>不通过</span>
                     <span class="status" v-if='item.reviewStatus==1'>通过</span>
                     <span class="status" v-if='item.reviewStatus==0'>未注册</span>
-                    <span class="time">  {{item.recommendTimeStr}}推荐</span>
+                    <span class="time">  {{item.recommendTimeStr}}推荐</span><br/>
                     <span class="cause0">  推荐语:{{item.recommendDesc}}</span>
                     <p class="cause" v-if='item.remark'>原因：{{remark}}</p>
                 </li>
@@ -64,8 +64,12 @@ export default {
     methods: {
         recommond(){
             let This = this
+            wx.showLoading({
+                title:'加载中...'
+            })
             fly.post('/contractor/getMyRecommendContractor').then(function (res) {
                 This.list = res.response
+                wx.hideLoading();
             }) 
         },
         goReClass(){
@@ -86,6 +90,9 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     .no-recommend {
         position: absolute;
         left: 50%;
@@ -98,28 +105,29 @@ export default {
         }
     }
     .shareButton {
-        position: absolute;
-        bottom: 40rpx;
-        left: 40rpx;
         width: 670rpx;
         height: 96rpx;
         font-family: "PingFangSC-Medium";
         font-size: 34rpx;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         background: rgb(252, 184, 19);
         color: black;
         font-weight: 550;
         border: none;
         border-radius: 8rpx;
+        flex:0;
+        margin: 80rpx auto;
+        text-align: center;
+        padding: 16rpx 0;
+    }
+    .shareButton::after {
+        border: none;
     }
     .content {
         ul {
             width: 100%;
             height: auto;
             margin-top: 40rpx;
+            flex:1;
             li {
                 width: 670rpx;
                 margin: 0 auto;
@@ -140,6 +148,8 @@ export default {
                     font-size: 28rpx;
                     color: black;
                     font-family: "PingFangSC-Light";
+                    position: relative;
+                    top: 2rpx;
                 }
                 .cause {
                     font-size: 28rpx;

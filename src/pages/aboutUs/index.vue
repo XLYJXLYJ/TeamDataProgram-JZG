@@ -57,10 +57,10 @@ export default {
     .one-ul {
         width: 100%;
         height: 100%;
-        margin-top: 48rpx;
+        margin-top: 70rpx;
         .one-li {
             width: 670rpx;
-            margin: 0 auto;
+            margin: 24rpx auto;
             height: 120rpx;
             .one {
                 font-size: 28rpx;

@@ -523,4 +523,7 @@ export default {
         }
     }
 }
+button::after {
+    border: none;
+}
 </style>

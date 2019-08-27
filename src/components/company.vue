@@ -166,4 +166,7 @@ export default {
     align-items: center;
     margin-top: 96rpx;
 }
+button::after {
+    border: none;
+}
 </style>

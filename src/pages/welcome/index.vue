@@ -1,6 +1,6 @@
 <template>
     <div class="welcome">
-        <rule title="共建共享计划" message='欢迎加入建筑业优质班组共建共享计划，与众多行业资深管理者联合打造实名、专业、优质的班组资源数据库，推动行业进步！' rules='《建筑业优质班组共建共享计划规则》' buttonContent='申请加入共建共享计划' :url='url'></rule>
+        <rule title="" message='欢迎加入建筑业优质班组共建共享计划，与众多行业资深管理者联合打造实名、专业、优质的班组资源数据库，推动行业进步！' rules='《建筑业优质班组共建共享计划规则》' buttonContent='申请加入共建共享计划' :url='url'></rule>
     </div>
 </template>
 

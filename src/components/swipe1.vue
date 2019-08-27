@@ -16,7 +16,7 @@
                 circular
                 indicator-color="rgba(255,255,255,.5)"
                 indicator-active-color="#ffffff"
-                style="height:402rpx"
+                style="height:346rpx"
             >
                 <block v-for="item in imgUrls" :key="item.id">
                     <swiper-item>
@@ -217,9 +217,13 @@ export default {
         border-bottom: none;
         border-top: 1px solid #e5e5e5;
     }
+    button::after {
+        border: none;
+    }
 }
 image {
     width: 100%;
+    height: 390rpx;
     border-radius: 8rpx;
 }
 .text1{

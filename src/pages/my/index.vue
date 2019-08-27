@@ -91,7 +91,7 @@ export default {
             'userInfo'
         ])
     },
-    mounted() {
+    onLoad() {
         let This = this
         console.log('getinfo')
         console.log(This.getInfo)
@@ -173,7 +173,7 @@ export default {
         },
         goS(){
             console.log('55555555')
-            if(!wx.getStorageSync('mobile')){
+            if(!wx.getStorageSync('mobile') || This.joinSharePlanStatus == 0){
                 wx.reLaunch({
                     url:"/pages/welcome/main"
                 }); 
@@ -228,7 +228,7 @@ export default {
             font-weight: bold;
             color: rgb(51, 51, 51);
             text-align: center;
-            margin: 0 auto;
+            margin: 3rpx auto;
         }
     }
     ul{

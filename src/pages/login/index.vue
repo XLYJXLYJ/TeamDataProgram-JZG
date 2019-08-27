@@ -45,12 +45,10 @@
 import { mapState,mapMutations } from 'vuex'
 import {  USER_INFO } from '../../store/modules/mutation-type'
 import goBackNav from "@/components/goBackNav.vue";
-import mpUploader from "mpvue-weui/src/uploader";
 import fly from "@/services/WxApi";
 export default {
     components: {
         goBackNav,
-        mpUploader
     },
     data() {
         return {
@@ -181,6 +179,10 @@ export default {
             .get-code {
                 display: flex;
                 justify-content: space-between;
+            }
+            input{
+                 height: 50rpx;
+               
             }
         }
         .img-block {

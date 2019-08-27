@@ -21,8 +21,8 @@
                 </div> 
                 <div class="get-block">
                     <p class="title">性别</p>
-                    <!-- <input type="text" v-model="" style="color:#5f5f5f" disabled placeholder="请输入您的性别" autocomplete="off"  /> -->
-                    <p @click="showg" style="color:#5f5f5f">{{gender}}</p>
+                    <input type="text" v-model="gender" style="color:#5f5f5f" disabled autocomplete="off" @click="showg" />
+                    <!-- <p @click="showg" style="color:#5f5f5f">{{gender}}</p> -->
                     <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
 
                 </div>
@@ -47,12 +47,10 @@ import { mapState,mapMutations } from 'vuex'
 import {  USER_INFO } from '../../store/modules/mutation-type'
 import mpPicker from 'mpvue-weui/src/picker';
 import goBackNav from "@/components/goBackNav.vue";
-import mpUploader from "mpvue-weui/src/uploader";
 import fly from "@/services/WxApi";
 export default {
     components: {
         goBackNav,
-        mpUploader,
         mpPicker
     },
     data() {
@@ -190,6 +188,9 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .confirm::after {
+            border:none;
         }
     }
 }

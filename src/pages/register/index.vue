@@ -27,7 +27,7 @@
                             placeholder-style="color:#ccc;"
                         />
                         <!-- <p @click="GetClassCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p> -->
-                       <p @click="GetClassCode" :disabled='btn' style="color:#ccc;">{{btnTxt}}</p>
+                       <p @click="GetClassCode" :disabled='btn' :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p>
                     </div>
                 </div>
                 <div class="get-block">
@@ -170,19 +170,21 @@ export default {
             wx.showLoading({
                 title:'上传图片中'
             })
-            wx.getFileSystemManager().readFile({
-                filePath: successRes.tempFilePaths[0], //选择图片返回的相对路径
-                encoding: 'base64', //编码格式
-                success:(res) =>{
-                    // let img = 'data:image/png;base64,' + res.data
-                    wx.hideLoading();
-                    let img1 = res.data
-                    This.dataImg = {
-                        imgs:img1
+            for(let i=0;i<successRes.tempFilePaths.length;i++){
+                wx.getFileSystemManager().readFile({
+                    filePath: successRes.tempFilePaths[i], //选择图片返回的相对路径
+                    encoding: 'base64', //编码格式
+                    success:(res) =>{
+                        // let img = 'data:image/png;base64,' + res.data
+                        let img1 = res.data
+                        This.dataImg = {
+                            imgs:img1
+                        }
+                        This.uploadImg()
                     }
-                    This.uploadImg()
-                }
-            })
+                })
+            }
+            wx.hideLoading();
         },
         uploadImg(){
             let This = this
@@ -345,10 +347,10 @@ export default {
     }
 }
 .getCode {
-    color: black;
+    color: #fcb813;
 }
 .getCodeDisabled {
-    color: rgb(204, 204, 204);
+    color: #e5e5e5;
 }
 
 </style>

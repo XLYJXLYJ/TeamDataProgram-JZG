@@ -569,6 +569,9 @@ export default {
         border-bottom: none;
 
     }
+    button::after {
+        border: none;
+    }
 }
 .card-contain {
     width: 100%;

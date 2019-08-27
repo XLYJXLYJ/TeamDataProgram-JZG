@@ -93,7 +93,7 @@
                         <div class="img-contain" v-if="imgList">
                             <ul class="two-ul">
                                 <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
-                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,imgList)" :src='twoItem' /></li>
+                                    <li class="two-li" v-if="twoIndex<5"><img @click="previewImage(twoItem,imgList)" :src='twoItem' /></li>
                                 </div>
                                 <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
                             </ul>
@@ -115,7 +115,7 @@
                     <div class="img-contain" v-if="item.nearImgList">
                         <ul class="three-ul">
                             <div v-for="(threeItem,threeIndex) in item.nearImgList" :key="threeIndex">
-                                <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
+                                <li class="three-li" v-if="threeIndex<5" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
                             </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
@@ -575,6 +575,9 @@ export default {
         border: none;
         margin-bottom: 40rpx;
     }
+    button::after {
+        border: none;
+    }
 }
 .img-head {
     height: 400rpx;
@@ -726,14 +729,14 @@ export default {
             width: 32rpx;
             height: 32rpx;
             background: #efeff4;
-            padding-left: 15rpx;
-            padding-right: 15rpx;
+            padding-left: 10rpx;
+            padding-right: 10rpx;
             padding-bottom:2rpx;
             border-radius: 16rpx;
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
-            margin-top: -4rpx;
+            margin-top: -5rpx;
         }
     }
     .active {
@@ -793,14 +796,14 @@ export default {
             width: 32rpx;
             height: 32rpx;
             background: #efeff4;
-            padding-left: 15rpx;
-            padding-right: 15rpx;
+            padding-left: 10rpx;
+            padding-right: 10rpx;
             padding-bottom:2rpx;
             border-radius: 16rpx;
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
-            margin-top: -4rpx;
+            margin-top: -5rpx;
         }
     }
     .active {
@@ -905,14 +908,14 @@ export default {
                     width: 32rpx;
                     height: 32rpx;
                     background: #efeff4;
-                    padding-left: 15rpx;
-                    padding-right: 15rpx;
+                    padding-left: 10rpx;
+                    padding-right: 10rpx;
                     padding-bottom:2rpx;
                     border-radius: 16rpx;
                     font-size: 24rpx;
                     margin-left: 10rpx;
                     color: #a7a7a8;
-                    margin-top: -8rpx;
+                    margin-top: -9rpx;
                 }
             }
             .img-contain {
@@ -1000,8 +1003,8 @@ export default {
                 }
                 .corner {
                     position: absolute;
-                    right: 6rpx;
-                    bottom: 12rpx;
+                    right: 8rpx;
+                    bottom: 13rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
                     .img-corner {

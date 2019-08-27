@@ -130,6 +130,9 @@ export default {
         border: none;
         margin-bottom: 40rpx;
     }
+    button::after {
+        border: none;
+    }
 }
 </style>
 
