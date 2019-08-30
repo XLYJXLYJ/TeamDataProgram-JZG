@@ -1,12 +1,23 @@
 {
   "pages": [
+    "pages/index/main",
+    "pages/introdution/main",
+    "pages/register/main",
+    "pages/web/main",
+
+
+ 
+
+
+
+
     "pages/login/main",
     "pages/welcome/main",
-    "pages/index/main",
-    "pages/register/main",
+
+
     "pages/RecommendedTeams/main",
     "pages/registerClass/main",
-    "pages/introdution/main",
+
     "pages/natural/main",
     "pages/userAgreement/main",
 

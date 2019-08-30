@@ -93,11 +93,11 @@
                         <div class="img-contain" v-if="imgList">
                             <ul class="two-ul">
                                 <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
-                                    <li class="two-li" v-if="twoIndex<5"><img @click="previewImage(twoItem,imgList)" :src='twoItem' /></li>
+                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,imgList)" :src='twoItem' /></li>
                                 </div>
                                 <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
                             </ul>
-                            <div class="corner" v-if="item.imgs">
+                            <div class="corner" v-if="item.imgs.length>6">
                                 <div class="img-corner"><img src="/static/images/more.png"> </div>
                                 <span class="number">{{item.imgs}}</span>
                             </div>
@@ -112,15 +112,28 @@
                 <li class="one-li" v-for="(item,index) in list" :key="index">
                     <p class="self">{{item.projectName}}</p>
                     <p class="machine">{{item.areaFullName}}</p>
-                    <div class="img-contain" v-if="item.nearImgList">
+                    <div class="img-contain-01" v-if="item.nearImgList && item.nearImgList.length<4">
                         <ul class="three-ul">
                             <div v-for="(threeItem,threeIndex) in item.nearImgList" :key="threeIndex">
-                                <li class="three-li" v-if="threeIndex<5" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
+                                <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
                             </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
                         </ul>
-                        <div class="corner" v-if="item.nearImgList.length>5">
+                        <div class="corner" v-if="item.nearImgList.length>6">
+                            <div class="img-corner"><img src="/static/images/more.png"> </div>
+                            <span class="number">{{item.nearImgList.length}}</span>
+                        </div>
+                    </div>
+                    <div class="img-contain" v-else-if="item.nearImgList && item.nearImgList.length>3">
+                        <ul class="three-ul">
+                            <div v-for="(threeItem,threeIndex) in item.nearImgList" :key="threeIndex">
+                                <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
+                            </div>
+                            <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
+
+                        </ul>
+                        <div class="corner" v-if="item.nearImgList.length>6">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
                             <span class="number">{{item.nearImgList.length}}</span>
                         </div>
@@ -982,6 +995,54 @@ export default {
             .img-contain {
                 position: relative;
                 height: 458rpx;
+                min-height: 236rpx;
+                .three-ul{
+                    display:inline;
+                    white-space: nowrap;
+                    li{
+                        float:left;
+                        width: 220rpx;
+                        height: 222rpx;
+                        display:block;
+                        margin-right: 3rpx;
+                        margin-bottom: 3rpx;
+                        z-index: 999;
+                        img {
+                            width: 220rpx;
+                            height: 222rpx;
+                            border-right: 3rpx solid #fff;
+                        }
+                    }
+ 
+                }
+                .corner {
+                    position: absolute;
+                    right: 8rpx;
+                    bottom: 13rpx;
+                    background: rgba(0, 0, 0, 0.4);
+                    padding: 0rpx 10rpx 0rpx 10rpx;
+                    .img-corner {
+                        display: inline-block;
+                        width: 36rpx;
+                        height: 28rpx;
+                        img{
+                            width: 36rpx;
+                            height: 28rpx;
+                        }
+                    }
+                    .number {
+                        font-size: 30rpx;
+                        color: white;
+                        font-family: "PingFangSC-Regular";
+                        position: relative;
+                        top: -4rpx;
+                        left: 6rpx;
+                    }
+                }
+            }
+            .img-contain-01 {
+                position: relative;
+                height: 236rpx;
                 .three-ul{
                     display:inline;
                     white-space: nowrap;

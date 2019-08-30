@@ -32,7 +32,16 @@
                             @focus="showMulLinkageTwoPicker"
                         />
                     </picker> -->
-                <div class="select picker" type="default"><p class="title" @click="show" :class="{'isblack':isblack}" style="font-size: 34rpx;height:55rpx;">{{sort}}</p></div>
+                        <input
+                            type="text"
+                            v-model="sort"
+                            placeholder="请选择班组类别"
+                            autocomplete="off"
+                            placeholder-style="color:#ccc"
+                            @click="show"
+                            disabled
+                        />
+                <!-- <div class="select picker" type="default"><p class="title" @click="show" :class="{'isblack':isblack}" style="font-size: 32rpx;height:55rpx;">{{sort}}</p></div> -->
                 <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
                 <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default"><p class="title">{{family}}{{sort}}</p></div>
@@ -91,7 +100,8 @@ export default {
         let This = this
         This.phone = ''
         This.name = ''
-        This.sort = '请选择班组类别'
+        This.recommendDesc = ''
+        This.sort = ''
         let oneRowArray = []
         let oneColumnArray = []
         fly.post('/contractor/getContractorType',{showAll:0}).then(function (data) {
@@ -249,6 +259,9 @@ export default {
             .get-code {
                 display: flex;
                 justify-content: space-between;
+            }
+            input{
+                height: 60rpx;
             }
         }
         .img-block {

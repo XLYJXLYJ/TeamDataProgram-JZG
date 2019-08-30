@@ -89,7 +89,7 @@ export default {
             time: 0, // 验证码时间初始化
             btn: true,
             imgMessage:[],
-            dataImg:'',
+            dataImg:[],
             url:''
         };
     },
@@ -177,21 +177,28 @@ export default {
                     success:(res) =>{
                         // let img = 'data:image/png;base64,' + res.data
                         let img1 = res.data
-                        This.dataImg = {
-                            imgs:img1
-                        }
+                        console.log(res)
+                        This.dataImg.push(img1)
                         This.uploadImg()
+                        wx.hideLoading();
                     }
                 })
             }
-            wx.hideLoading();
         },
         uploadImg(){
+
             let This = this
-            console.log('上传图片咯')
-            fly.post('/uploadImg',This.dataImg).then(function (res) {
+            console.log('上传开始')
+            console.log(This.dataImg)
+            let data = {
+                imgs:This.dataImg.join(",")
+            }
+
+            fly.post('/uploadImg',data).then(function (res) {
                 This.imgMessage.push(res.response)
             })
+            console.log(This.imgMessage)
+            console.log('上传图片结束')
         },
 
         upLoadFail(errMsg){
@@ -200,7 +207,11 @@ export default {
         uploadDelete(DeleteRes){
             let This = this
             let index = DeleteRes.index
-            This.imgMessage.splice(index,1)      
+            console.log(DeleteRes)
+            This.dataImg.splice(index,1) 
+            This.imgMessage.splice(index,1)  
+            console.log(This.dataImg)   
+            console.log(This.imgMessage) 
         },
         agree(){
             wx.reLaunch({

@@ -173,6 +173,7 @@ export default {
         },
         goS(){
             console.log('55555555')
+            let This = this
             if(!wx.getStorageSync('mobile') || This.joinSharePlanStatus == 0){
                 wx.reLaunch({
                     url:"/pages/welcome/main"
