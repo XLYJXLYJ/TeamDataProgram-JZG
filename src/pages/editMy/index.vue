@@ -75,7 +75,9 @@ export default {
                 label: '女',
                 value: 2
             }],
-            pickerValueDefault: [0,0],
+            pickerValueDefault: [
+
+            ],
         };
     },
     computed: {
@@ -88,6 +90,12 @@ export default {
         This.gender = wx.getStorageSync('gender') 
         This.phone = wx.getStorageSync('mobile') 
         This.wx = wx.getStorageSync('nickName') 
+        if(This.gender = '男'){
+            This.pickerValueDefault = [0]
+        }else{
+            This.pickerValueDefault = [1]
+        }
+
         This.name = wx.getStorageSync('username') 
     },
     methods: {

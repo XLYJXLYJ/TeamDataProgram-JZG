@@ -23,11 +23,11 @@
                     <p class="one">职位</p>
                     <p class="two">{{position}}</p>
                 </li>
-                <li class="one-li">
+                <li class="one-li" style="height:400rpx;width:95%;margin-left:40rpx;">
                     <p class="one">在职证明</p>
                     <ul class="two-ul">
-                        <li class="two-li">
-                            <img :src="imgs" />
+                        <li class="two-li" v-for="(item,index) in imgs" :key='index'>
+                            <img :src="item" />
                         </li>
                     </ul>
                 </li>
@@ -78,7 +78,8 @@ export default {
             This.name=data.username || '—',
             This.company=data.companyName || '—',
             This.position=data.positionName || '—',
-            This.imgs=data.imgs || '—'
+            This.imgs=data.imgs.split(",") || '—'
+            console.log(This.imgs)
         })
     },
     methods: {

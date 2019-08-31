@@ -1,8 +1,10 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/introdution/main",
     "pages/register/main",
+
+    "pages/introdution/main",
+
     "pages/web/main",
 
 

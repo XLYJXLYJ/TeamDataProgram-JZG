@@ -49,9 +49,9 @@
                         @upLoadFail="upLoadFail"
                         @uploadDelete="uploadDelete"
                         ref="uploader"
-                        :showTip=false
-                        :maxLength=1
-                        :isMaxHiddenChoose=true
+                        :showTip='false'
+                        :maxLength='12'
+                        :isMaxHiddenChoose='true'
                     ></mp-uploader>
                 </div>
                 <div>
@@ -105,12 +105,10 @@ export default {
         This.name = '';
         This.company = '';
         This.position = ''
-
+        this.$refs.uploader.clearFiles()
         This.url = getCurrentPages()
-        console.log(This.url)
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
-        console.log(This.url)
     },
     methods: {
         ...mapMutations([
@@ -162,7 +160,6 @@ export default {
                 mobile:This.phone
             }
             fly.post('/contractor/getVerificationCode',data).then(function (res) {
-                console.log(res)
             })
         },
         upLoadSuccess(successRes){
@@ -170,6 +167,7 @@ export default {
             wx.showLoading({
                 title:'上传图片中'
             })
+            console.log(successRes)
             for(let i=0;i<successRes.tempFilePaths.length;i++){
                 wx.getFileSystemManager().readFile({
                     filePath: successRes.tempFilePaths[i], //选择图片返回的相对路径
@@ -177,7 +175,6 @@ export default {
                     success:(res) =>{
                         // let img = 'data:image/png;base64,' + res.data
                         let img1 = res.data
-                        console.log(res)
                         This.dataImg.push(img1)
                         This.uploadImg()
                         wx.hideLoading();
@@ -186,32 +183,23 @@ export default {
             }
         },
         uploadImg(){
-
             let This = this
-            console.log('上传开始')
-            console.log(This.dataImg)
             let data = {
                 imgs:This.dataImg.join(",")
             }
 
             fly.post('/uploadImg',data).then(function (res) {
-                This.imgMessage.push(res.response)
+                This.imgMessage = res.response.split(',')
             })
-            console.log(This.imgMessage)
-            console.log('上传图片结束')
         },
-
         upLoadFail(errMsg){
             console.log(errMsg)
         },
         uploadDelete(DeleteRes){
             let This = this
             let index = DeleteRes.index
-            console.log(DeleteRes)
             This.dataImg.splice(index,1) 
             This.imgMessage.splice(index,1)  
-            console.log(This.dataImg)   
-            console.log(This.imgMessage) 
         },
         agree(){
             wx.reLaunch({

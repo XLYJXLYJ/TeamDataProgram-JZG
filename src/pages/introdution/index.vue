@@ -38,13 +38,13 @@
             <button class="phone" @click="seePhone">{{phone}}</button>
         </div>
 
-        <div class="fixedTab" v-if="isTop" :style="{top: navBarHeight + 'px'}">
+        <div class="fixedTab" v-show="isTop" :style="{top: navBarHeight + 'px'}">
             <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
             <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
         </div>
 
         <div style="height: 80rpx;">
-            <div class="tab" v-if="!isTop" :style="{top: navBarHeight + 'px'}">
+            <div class="tab" id="tab" v-show="!isTop" :style="{top: navBarHeight + 'px'}">
                 <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
                 <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
             </div>
@@ -221,12 +221,27 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 400) {
-            This.isTop = true
+        if (res.scrollTop > 350) {
+            
             // This.title = This.organizationName
         } else {
-            This.isTop = false
+           
         }
+
+        let query = wx.createSelectorQuery()
+        query.select('#tab').boundingClientRect((rect) => {
+            let top = rect.top
+            if(top<80){
+                This.isTop = true
+            }else{
+                This.isTop = false
+            }
+            // 这里是关键
+            console.log(rect)
+        }).exec()
+
+
+
     },
     onLoad(options){
         let This = this
@@ -260,6 +275,7 @@ export default {
         This.ischangeModel = false
         This.title = ''
         This.isTab = true
+        This.isTop = false
         let data = {
             page:1,
             pageSize:5,
@@ -335,6 +351,17 @@ export default {
     },
     onShareAppMessage: (res) => {
         console.log(res)
+        let that =this;
+        wx.getShareInfo({
+            success: (res)=> { 
+                console.log(res)
+            },
+            fail: function (res) { console.log(res) },
+            complete: function (res) { console.log(res) }
+        })
+    },
+    onShareAppMessage: function () {
+
     },
     // onShow() {
     //     let This = this
@@ -357,12 +384,12 @@ export default {
     //     })
     // },
 
-    methods: {
+    methods:{
         previewImage(current,urls) {
             wx.previewImage({
                 current:current, // 当前显示图片的http链接
                 urls:urls // 需要预览的图片http链接列表
-            });
+            })
         },
         previewImage1(current,urls) {
             console.log('2222')
@@ -768,7 +795,7 @@ export default {
     background: #fff;
     border-bottom:1rpx solid #e5e5e5;
     z-index: 999;
-    animation:moveIn 1s infinite;
+    animation:moveIn .1s infinite;
     animation-iteration-count:1;
     @keyframes moveIn
         {

@@ -91,17 +91,18 @@ export default {
             'userInfo'
         ])
     },
-    onLoad() {
+    onShow() {
         let This = this
-        console.log('getinfo')
+        console.log('getinfo66666')
         console.log(This.getInfo)
         console.log(This.$store.state.userInfo)
+        console.log('This.userInfo')
+        console.log(This.userInfo)
 
-        if(!This.userInfo){
-            This.mobile = wx.getStorageSync('mobile')
-            This.name = wx.getStorageSync('username')
+
+        This.mobile = wx.getStorageSync('mobile')
+        This.name = wx.getStorageSync('username')
             // This.aImg = wx.getStorageSync('img')
-        }
         This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
         if(wx.getStorageSync('img')){
             let img = wx.getStorageSync('img')
@@ -224,7 +225,7 @@ export default {
             justify-content: center;
         }
         p{
-            margin-top: 28rpx;
+            margin-top: 38rpx;
             font-size: 34rpx;
             font-weight: bold;
             color: rgb(51, 51, 51);

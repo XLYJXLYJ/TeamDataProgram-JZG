@@ -7,7 +7,7 @@
             <section class="img-contain">
                 <swiper1 :cit='cit'></swiper1>
             </section>
-            <section class="maintenance">
+            <section class="maintenance" style="margin-bottom:30rpx;">
                 <card @city='city'></card>
             </section>
         </div>

@@ -203,12 +203,15 @@ export default {
             margin-bottom: 24rpx;
             font-size: 34rpx;
             font-family: "PingFangSC-Medium";
-            font-weight: 550;
+            font-weight: 650;
             border-radius: 8rpx;
             margin-top: 96rpx;
             border:none;
             height: 96rpx;
             width: 670rpx;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .confirm::after {
             border:none;
