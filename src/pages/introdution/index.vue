@@ -790,7 +790,7 @@ export default {
     position: fixed;
     // top: 160rpx;
     width: 100%;
-    height: 80rpx;
+    height: 78rpx;
     // padding-top: 40rpx;
     background: #fff;
     border-bottom:1rpx solid #e5e5e5;

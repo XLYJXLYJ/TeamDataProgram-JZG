@@ -94,11 +94,10 @@ export default {
     flex-direction: column;
     min-height: 100vh;
     .no-recommend {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin-top: -67rpx;
-        margin-left: -64rpx;
+        flex:1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         img {
             width: 128rpx;
             height: 134rpx;
@@ -123,11 +122,12 @@ export default {
         border: none;
     }
     .content {
+        flex:1;
         ul {
             width: 100%;
             height: auto;
             margin-top: 40rpx;
-            flex:1;
+
             li {
                 width: 670rpx;
                 margin: 0 auto;

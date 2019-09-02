@@ -37,7 +37,7 @@
 
         <section>
             <ul>
-                <li @click="goC" v-if="joinSharePlanStatus==1 || getInfo.joinSharePlanStatus==1"><span>我推荐的班组</span><span><img src="/static/images/right.png"></span></li>
+                <li @click="goC" v-if="joinSharePlanStatus==1 | getInfo.joinSharePlanStatus==1"><span>我推荐的班组</span><span><img src="/static/images/right.png"></span></li>
                 <li @click="goS"><span>共建共享计划</span><span><img src="/static/images/right.png"></span></li>
                 <li @click="goW"><span>关于我们</span><span><img src="/static/images/right.png"></span></li>
                 <!-- <li v-for="(item,index) in list" :key="index" @click="goUrl(item.url)"><span>{{item.name}}</span><span><img src="/static/images/right.png"></span></li> -->
@@ -65,7 +65,7 @@ export default {
             mobile:'',
             name:'',
             aImg:'',
-            joinSharePlanStatus:'',
+            joinSharePlanStatus:wx.getStorageSync('joinSharePlanStatus') || '',
             list: [
                 {
                     id: 0,
@@ -104,6 +104,7 @@ export default {
         This.name = wx.getStorageSync('username')
             // This.aImg = wx.getStorageSync('img')
         This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
+        console.log(This.joinSharePlanStatus)
         if(wx.getStorageSync('img')){
             let img = wx.getStorageSync('img')
             if(img.indexOf('wx.qlogo.cn')>0){
@@ -174,7 +175,9 @@ export default {
         },
         goS(){
             console.log('55555555')
+            console.log(!wx.getStorageSync('mobile'))
             let This = this
+            console.log(This.joinSharePlanStatus)
             if(!wx.getStorageSync('mobile') || This.joinSharePlanStatus == 0){
                 wx.reLaunch({
                     url:"/pages/welcome/main"

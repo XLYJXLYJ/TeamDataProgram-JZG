@@ -219,8 +219,6 @@ export default {
             // This.cityMultiArray[1] = oneColumnArray
             // This.$set(This.cityMultiArray,This.cityMultiArray)
             This.cityId = data.response[0].childList[0].id
-            console.log(data.response[0])
-            console.log(This.cityId)
             let arr = []
             data.response.map((value,index,arry)=>{
                 arr.push({ 'label': value.name, 'value': value.id,'getchildren': value.childList,'children': [] })
@@ -311,14 +309,12 @@ export default {
             }
             fly.post('/contractor/getHQContractorList',data).then(function (res) {
                 wx.hideLoading();
-                console.log(res)
                 if(res.message == '您的登录已失效,请重新登录'){
                     wx.clearStorage()
                     This.getClass()
                     return;
                 }
                 if(This.page == 1){
-                    console.log('jinlai')
                    This.list = res.response.list
                     if(res.response.list == null || res.response.list.length<5){
                         This.showButton = true
@@ -326,7 +322,6 @@ export default {
                         This.showButton = false
                    }
                 }else{
-                    console.log(res.response.list)
                 //    This.list.push(JSON.parse(JSON.stringify([res.response.list])))
                    if(res.response.list == null || res.response.list.length == 0){
                         This.showButton = true
@@ -410,11 +405,9 @@ export default {
             this.$refs.mpPicker.show();
         },
         onConfirm(e) {
-            console.log(e)
             let This = this
             This.projectType = e.value[1]
             let arr = e.label.split('-')
-            console.log(arr)
             This.sort = arr[1]
             This.page = 1
             This.getClass()
@@ -431,7 +424,6 @@ export default {
             This.$refs.cityPicker.show();
         },
         onCityConfirm(e) {
-            console.log(e);
             let This = this
             This.cityId = e.value[1]
             This.city = e.label
@@ -567,6 +559,7 @@ export default {
         align-items: center;
         background: #fff;
         border-bottom: none;
+        border-top: 1px solid #e5e5e5;
 
     }
     button::after {

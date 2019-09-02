@@ -130,7 +130,7 @@ export default {
                 //     duration: 2000
                 // });
                 wx.setStorageSync('token', res.response.authorization) 
-                // wx.setStorageSync('joinSharePlanStatus',1)
+                wx.setStorageSync('joinSharePlanStatus',res.response.joinSharePlanStatus)
                 if(res.response.gender == 1 ){
                     wx.setStorageSync('gender', '男') 
                 }else{

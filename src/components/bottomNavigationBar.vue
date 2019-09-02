@@ -318,7 +318,7 @@ button::after{
 .res{
     z-index: 999;
     position: fixed;
-    left: 348rpx;
+    left: 350rpx;
     bottom: 12rpx;
     font-size: 20rpx;
 }

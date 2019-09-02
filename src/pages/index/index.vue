@@ -78,7 +78,6 @@ export default {
             This.getInfo = data
         },
         city(data){
-            console.log(data)
             let This = this
             This.cit = data
         }
