@@ -16,7 +16,7 @@
                     <span class="status" v-if='item.reviewStatus==0'>未注册</span>
                     <span class="time">  {{item.recommendTimeStr}}推荐</span><br/>
                     <span class="cause0">  推荐语:{{item.recommendDesc}}</span>
-                    <p class="cause" v-if='item.remark'>原因：{{remark}}</p>
+                    <p class="cause" v-if='item.reviewStatus!==1'>原因：{{remark}}</p>
                 </li>
 
                 
@@ -149,7 +149,7 @@ export default {
                     color: black;
                     font-family: "PingFangSC-Light";
                     position: relative;
-                    top: 2rpx;
+                    top: 0rpx;
                 }
                 .cause {
                     font-size: 28rpx;

@@ -165,7 +165,6 @@ export default {
     // onLoad(options){
     //     let This = this
     //     This.contractorId = options.contractorId
-    //     console.log(options)
     // },
     methods: {
         previewImage(current,urls) {

@@ -40,13 +40,29 @@
 
         <div class="fixedTab" v-show="isTop" :style="{top: navBarHeight + 'px'}">
             <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
-            <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
+            <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩
+                <div class="num" v-if="!isIos" style="position:relative;top:-2rpx;">
+                    <span style="display:flex;justify-content: center;align-items: center;line-height:27rpx;">{{projectPerformanceCount}}</span>
+                </div>
+                <div class="num" v-if="isIos">
+                    <span style="display:flex;justify-content: center;align-items: center;" v-if="isIos">{{projectPerformanceCount}}</span>
+                </div>
+                               
+
+            </div>
         </div>
 
         <div style="height: 80rpx;">
             <div class="tab" id="tab" v-show="!isTop" :style="{top: navBarHeight + 'px'}">
                 <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
-                <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩<span class="num">{{projectPerformanceCount}}</span></div>
+                <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩
+                    <div class="num" v-if="!isIos" style="position:relative;top:-2rpx;">
+                        <span style="display: flex;justify-content: center;align-items: center;line-height:27rpx;">{{projectPerformanceCount}}</span>
+                    </div>  
+                    <div class="num" v-if="isIos"> 
+                        <span style="display: flex;justify-content: center;align-items: center;">{{projectPerformanceCount}}</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -89,10 +105,17 @@
                 <p class="self"><span>自有设备( {{eqList.length}} 种)</span></p>
                 <ul class="one-ul">
                     <li class="one-li" v-for="(item,index) in eqList" :key="index">
-                        <div class="machine">{{item.remark}}<span class="num1">{{item.quantity}}</span></div> 
+                        <div class="machine">{{item.remark}}
+                            <div class="num1" v-if="!isIos" style="position:relative;top:-2rpx;">
+                                <span style="display: flex;justify-content: center;align-items: center;line-height:27rpx;" v-if="!isIos">{{item.quantity}}</span>
+                            </div>
+                            <div class="num1" v-if="isIos">
+                                <span style="display: flex;justify-content: center;align-items: center">{{item.quantity}}</span>
+                            </div>
+                        </div> 
                         <div class="img-contain" v-if="imgList">
                             <ul class="two-ul">
-                                <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">
+                                <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">line-height:27rpx;
                                     <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,imgList)" :src='twoItem' /></li>
                                 </div>
                                 <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
@@ -174,6 +197,7 @@ import fly from "@/services/WxApi";
 export default {
     data() {
         return {
+            isIos:'',
             val:'',
             titleAlert:'',
             content:'',
@@ -237,7 +261,6 @@ export default {
                 This.isTop = false
             }
             // 这里是关键
-            console.log(rect)
         }).exec()
 
 
@@ -247,6 +270,15 @@ export default {
         let This = this
         This.contractorId = options.contractorId || wx.getStorageSync('contractorId')
         wx.setStorageSync('contractorId', This.contractorId) 
+        wx.getSystemInfo({
+            success (res) {
+                if(res.system.indexOf('iOS')>-1){
+                    This.isIos = true
+                }else{
+                    This.isIos = false
+                }
+            }
+        })
     },
     beforeMount() {
         const self = this;
@@ -282,9 +314,7 @@ export default {
             contractorId:This.contractorId || wx.getStorageSync('contractorId')
         }
         fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
-            console.log('获取优质班组详细信息')
             let resData = res.response
-            console.log(resData)
             This.areaName = resData.areaName
             This.projectTypeName = resData.projectTypeName
             This.teamPersonCountName = resData.teamPersonCountName
@@ -304,15 +334,11 @@ export default {
             This.ContractorProjectType = resData.contractorProjectTypes
             This.contractorDesc = resData.contractorDesc
             This.organizationName = resData.organizationName
-            console.log(resData.headimg)
             if(resData.headimg == null){
-                console.log('没有图片')
                 This.headimg = '/static/images/user1.png'
             }else{
-                console.log('没有图片')
                 This.headimg = resData.headimg
             }
-
             if(res.response.mobile == null){
                 This.phone = '查看联系方式'
             }else{
@@ -325,7 +351,6 @@ export default {
         fly.post('/contractor/getProjectPerformanceList',dataTwo).then(function (res) {
             let resData = res.response
             This.list = resData.list
-            console.log(This.list)
             This.list.map(
                 function(item,index){
                     item.areaFullName = item.areaFullName.replace(/,/g, ' ' )
@@ -335,8 +360,12 @@ export default {
                 function(item,index){
                     if(!item.nearImgList){
                         item.nearImgList = []
-                        item.nearImgList = item.nearImgList.concat(item.farImgList)
-                        item.nearImgList = item.nearImgList.concat(item.evaluateImgList)
+                        if(item.farImgList != null){
+                            item.nearImgList = item.nearImgList.concat(item.farImgList)
+                        }
+                        if(item.evaluateImgList != null){
+                            item.nearImgList = item.nearImgList.concat(item.evaluateImgList)
+                        }
                         if(item.nearImgList[0]==null&&item.nearImgList[1]==null){
                             item.nearImgList = null
                         }
@@ -392,7 +421,6 @@ export default {
             })
         },
         previewImage1(current,urls) {
-            console.log('2222')
             wx.previewImage({
                 current:current, // 当前显示图片的http链接
                 urls:urls // 需要预览的图片http链接列表
@@ -426,7 +454,6 @@ export default {
         //     return ('00' + str).substr(str.length);
         // },
         // controlAlert(data) {
-        //     console.log(data)
         //     let This = this
         //     This.isAlert = data
         //     This.ifMode = data 
@@ -470,14 +497,11 @@ export default {
                 This.isAlert = true
                 This.isModel = true
                 This.changeModel = true
-                console.log('tantantatn')
                 let data = {
                     contractorId:This.contractorId || wx.getStorageSync('contractorId')
                 }
                 fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
-                    console.log(res)
                     This.val = res.response
-
                     if(This.val.alertType==1){
                         This.titleAlert = '查看联系方式'
                         This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您剩余 '+This.val.remainCount+' 次班组联系方式查看机会。'
@@ -497,10 +521,6 @@ export default {
                     }else{
                         This.phone = res.response.mobile
                     }
-                    console.log(This.isAlert)
-                    console.log(This.isModel)
-                    console.log(This.changeModel)
-
                 })
             }
         },
@@ -723,7 +743,7 @@ export default {
     margin-top: 96rpx;
     border:none;
     outline: none;
-    font-weight: 550;
+    font-weight: 650;
     border-radius: 8rpx;
 }
 .phone::after{ border: none;}
@@ -769,10 +789,11 @@ export default {
             width: 32rpx;
             height: 32rpx;
             background: #efeff4;
-            padding-left: 10rpx;
-            padding-right: 10rpx;
-            padding-bottom:2rpx;
-            border-radius: 16rpx;
+            display: inline-block;
+            // padding-left: 10rpx;
+            // padding-right: 10rpx;
+            // padding-bottom:2rpx;
+            border-radius: 50%;
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
@@ -836,10 +857,11 @@ export default {
             width: 32rpx;
             height: 32rpx;
             background: #efeff4;
-            padding-left: 10rpx;
-            padding-right: 10rpx;
-            padding-bottom:2rpx;
-            border-radius: 16rpx;
+            display: inline-block;
+            // padding-left: 10rpx;
+            // padding-right: 10rpx;
+            // padding-bottom:2rpx;
+            border-radius: 50%;
             font-size: 24rpx;
             margin-left: 10rpx;
             color: #a7a7a8;
@@ -948,14 +970,15 @@ export default {
                     width: 32rpx;
                     height: 32rpx;
                     background: #efeff4;
-                    padding-left: 10rpx;
-                    padding-right: 10rpx;
-                    padding-bottom:2rpx;
-                    border-radius: 16rpx;
+                    // padding-left: 10rpx;
+                    // padding-right: 10rpx;
+                    // padding-bottom:2rpx;
+                    border-radius: 50%;
                     font-size: 24rpx;
                     margin-left: 10rpx;
                     color: #a7a7a8;
                     margin-top: -9rpx;
+                    display:inline-block;
                 }
             }
             .img-contain {
@@ -1137,6 +1160,8 @@ export default {
                         font-size: 30rpx;
                         color: black;
                         font-family: "PingFangSC-Regular";
+                        position: relative;
+                        top:-2rpx;
                     }
                 }
             }

@@ -93,25 +93,15 @@ export default {
     },
     onShow() {
         let This = this
-        console.log('getinfo66666')
-        console.log(This.getInfo)
-        console.log(This.$store.state.userInfo)
-        console.log('This.userInfo')
-        console.log(This.userInfo)
-
-
         This.mobile = wx.getStorageSync('mobile')
         This.name = wx.getStorageSync('username')
-            // This.aImg = wx.getStorageSync('img')
+        // This.aImg = wx.getStorageSync('img')
         This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
-        console.log(This.joinSharePlanStatus)
         if(wx.getStorageSync('img')){
             let img = wx.getStorageSync('img')
             if(img.indexOf('wx.qlogo.cn')>0){
-                console.log('默认灰色头像')
                 This.aImg = '/static/images/user.png'
             }else{
-                console.log('哈哈哈')
                 This.aImg = wx.getStorageSync('img')
             }
 
@@ -119,25 +109,23 @@ export default {
             This.aImg = '/static/images/user.png'
         }
     },
-    // onshow(){
-    //     let This = this
-    //     console.log('getinfo')
-    //     console.log(This.getInfo)
-    //     This.mobile = wx.getStorageSync('mobile')
-    //     This.name = wx.getStorageSync('username')
-    //     This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
-    //     if(wx.getStorageSync('img')){
-    //         let img = wx.getStorageSync('img')
-    //         if(img.indexOf('wx.qlogo.cn')>0){
-    //             This.aImg = '/static/images/user.png'
-    //         }else{
-    //             This.aImg = wx.getStorageSync('img')
-    //         }
-
-    //     }else{
-    //         This.aImg = '/static/images/user.png'
-    //     } 
-    // },
+    mounted() {
+        let This = this
+        This.mobile = wx.getStorageSync('mobile')
+        This.name = wx.getStorageSync('username')
+        // This.aImg = wx.getStorageSync('img')
+        This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
+        if(wx.getStorageSync('img')){
+            let img = wx.getStorageSync('img')
+            if(img.indexOf('wx.qlogo.cn')>0){
+                This.aImg = '/static/images/user.png'
+            }else{
+                This.aImg = wx.getStorageSync('img')
+            }
+        }else{
+            This.aImg = '/static/images/user.png'
+        }
+    },
     methods:{
         ...mapMutations([
             USER_INFO
@@ -174,10 +162,7 @@ export default {
             }); 
         },
         goS(){
-            console.log('55555555')
-            console.log(!wx.getStorageSync('mobile'))
             let This = this
-            console.log(This.joinSharePlanStatus)
             if(!wx.getStorageSync('mobile') || This.joinSharePlanStatus == 0){
                 wx.reLaunch({
                     url:"/pages/welcome/main"
@@ -189,7 +174,6 @@ export default {
             }
         },
         goW(){
-            console.log('666666666')
             wx.reLaunch({
                 url:"/pages/aboutUs/main"
             }); 

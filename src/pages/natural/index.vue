@@ -25,10 +25,8 @@ export default {
     mounted() {
         let This = this
         This.url = getCurrentPages()
-        console.log(This.url)
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
-        console.log(This.url)
     },
 };
 </script>

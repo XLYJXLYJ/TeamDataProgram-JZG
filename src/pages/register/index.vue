@@ -59,7 +59,7 @@
                 </div>
                 <p class="title">
                     建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
-                    <span style="color:rgb(252 184 19)" @click="agree">《建造工用户协议》</span>
+                    <span style="color:#fcb813;" @click="agree">《建造工用户协议》</span>
                 </p>
             </form>
         </div>
@@ -167,7 +167,6 @@ export default {
             wx.showLoading({
                 title:'上传图片中'
             })
-            console.log(successRes)
             for(let i=0;i<successRes.tempFilePaths.length;i++){
                 wx.getFileSystemManager().readFile({
                     filePath: successRes.tempFilePaths[i], //选择图片返回的相对路径

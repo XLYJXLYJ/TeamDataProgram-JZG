@@ -71,7 +71,6 @@ export default {
                 contractorId:This.contractorId
             }
             fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
-                console.log(res)
                 This.phone = res.response.mobile == null? '查看联系方式':res.response.mobile
             })
         }

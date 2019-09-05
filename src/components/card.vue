@@ -553,7 +553,7 @@ export default {
         font-size: 34rpx;
         color: rgb(252, 184, 19);
         font-family: "PingFangSC-Medium";
-        font-weight: 550;
+        font-weight: 650;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -838,7 +838,7 @@ export default {
         align-items: center;
         background:rgb(252, 184, 19);
         color: black;
-        font-weight: 550;
+        font-weight: 650;
         border: none;
     }
     .shareButton::after{ border: none; }

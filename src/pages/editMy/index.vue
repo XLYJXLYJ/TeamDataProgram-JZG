@@ -111,7 +111,6 @@ export default {
             This.$refs.mpPicker.show();
         },
         onConfirm(e) {
-            console.log(e)
             let This = this
             This.gender = e.label
         },
@@ -192,7 +191,7 @@ export default {
             height: 96rpx;
             bottom: 40rpx;
             border:none;
-            font-weight:550;
+            font-weight:650;
             display: flex;
             align-items: center;
             justify-content: center;

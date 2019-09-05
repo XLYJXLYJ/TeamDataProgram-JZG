@@ -63,7 +63,7 @@
                 </div>
                 <p class="title" style="color:black;position:relative;top: 48rpx;">
                     成功推荐新班组，可获得更多权限与资源，详见
-                    <span style="color:rgb(252 184 19)" @click="make">《建筑业优质班组共建共享计划规则》</span>
+                    <span style="color:#fcb813;" @click="make">《建筑业优质班组共建共享计划规则》</span>
                 </p>
             </form>
         </div>
@@ -134,10 +134,8 @@ export default {
             }    
         });
         This.url = getCurrentPages()
-        console.log(This.url)
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
-        console.log(This.url)
     },
     methods: {
         show(){
@@ -146,9 +144,7 @@ export default {
         },
         onConfirm(e) {
             let This = this
-            console.log(e)
             This.projectType = e.value[1]
-            console.log(This.projectType)
             This.sort = e.label
             This.isblack = true
         },
@@ -288,9 +284,10 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: 600;
+            font-weight: 650;
             position: relative;
             top: 48rpx;
+            color:black;
         }
         .confirm::after{
             border:none;

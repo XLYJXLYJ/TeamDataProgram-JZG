@@ -79,7 +79,6 @@ export default {
             This.company=data.companyName || '—',
             This.position=data.positionName || '—',
             This.imgs=data.imgs.split(",") || '—'
-            console.log(This.imgs)
         })
     },
     methods: {

@@ -34,7 +34,7 @@
                 </div>
                 <p class="title">
                     建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
-                    <span style="color:rgb(252 184 19)" @click="goUser">《建造工用户协议》</span>
+                    <span style="color:#fcb813;" @click="goUser">《建造工用户协议》</span>
                 </p>
             </form>
         </div>
@@ -44,7 +44,7 @@
 <script>
 import { mapState,mapMutations } from 'vuex'
 import {  USER_INFO } from '../../store/modules/mutation-type'
-import goBackNav from "@/components/goBackNav.vue";
+import goBackNav from "@/components/goIndex01.vue";
 import fly from "@/services/WxApi";
 export default {
     components: {
@@ -72,10 +72,8 @@ export default {
     mounted() {
         let This = this
         This.url = getCurrentPages()
-        console.log(This.url)
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
-        console.log(This.url)
     }, 
     methods: {
         ...mapMutations([
@@ -114,7 +112,6 @@ export default {
                 mobile:This.phone
             }
             fly.post('/contractor/getVerificationCode',data).then(function (res) {
-                console.log(res)
             })
         },
         login(){
