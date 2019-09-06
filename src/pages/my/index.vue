@@ -93,6 +93,8 @@ export default {
     },
     onShow() {
         let This = this
+        console.log('onShow')
+        console.log(This.getInfo)
         This.mobile = wx.getStorageSync('mobile')
         This.name = wx.getStorageSync('username')
         // This.aImg = wx.getStorageSync('img')
@@ -111,6 +113,7 @@ export default {
     },
     mounted() {
         let This = this
+        console.log('mounted')
         This.mobile = wx.getStorageSync('mobile')
         This.name = wx.getStorageSync('username')
         // This.aImg = wx.getStorageSync('img')

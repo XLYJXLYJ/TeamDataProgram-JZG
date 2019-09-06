@@ -79,6 +79,7 @@ export default {
     },
     data() {
         return {
+            Timeout:'',
             phone: "",
             phone_code: "",
             name: "",
@@ -109,6 +110,10 @@ export default {
         This.url = getCurrentPages()
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
+    },
+    destroyed() {
+        let This = this
+        clearTimeout(This.Timeout)
     },
     methods: {
         ...mapMutations([
@@ -186,7 +191,6 @@ export default {
             let data = {
                 imgs:This.dataImg.join(",")
             }
-
             fly.post('/uploadImg',data).then(function (res) {
                 This.imgMessage = res.response.split(',')
             })
@@ -287,11 +291,13 @@ export default {
                 wx.showToast({
                     title: "提交成功",
                     icon: "none",
-                    duration: 2000
+                    duration: 1000
                 });
-                wx.reLaunch({
-                    url:'/pages/index/main'
-                });
+                This.Timeout = setTimeout(function(){
+                    wx.reLaunch({
+                        url:'/pages/index/main'
+                    });
+                },1000)
             })
         }
     }

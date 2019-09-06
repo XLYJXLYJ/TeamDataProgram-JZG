@@ -41,7 +41,7 @@
         <div class="fixedTab" v-show="isTop" :style="{top: navBarHeight + 'px'}">
             <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
             <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩
-                <div class="num" v-if="!isIos" style="position:relative;top:-2rpx;">
+                <div class="num" v-if="!isIos" style="position:relative;top:-3rpx;">
                     <span style="display:flex;justify-content: center;align-items: center;line-height:27rpx;">{{projectPerformanceCount}}</span>
                 </div>
                 <div class="num" v-if="isIos">
@@ -56,7 +56,7 @@
             <div class="tab" id="tab" v-show="!isTop" :style="{top: navBarHeight + 'px'}">
                 <div class="gene" :class="{'active':isTab}" @click="goOne">概况</div>
                 <div v-if="projectPerformanceCount" class="achi" :class="{'active':!isTab}" @click="goachi">业绩
-                    <div class="num" v-if="!isIos" style="position:relative;top:-2rpx;">
+                    <div class="num" v-if="!isIos" style="position:relative;top:-3rpx;">
                         <span style="display: flex;justify-content: center;align-items: center;line-height:27rpx;">{{projectPerformanceCount}}</span>
                     </div>  
                     <div class="num" v-if="isIos"> 
@@ -106,7 +106,7 @@
                 <ul class="one-ul">
                     <li class="one-li" v-for="(item,index) in eqList" :key="index">
                         <div class="machine">{{item.remark}}
-                            <div class="num1" v-if="!isIos" style="position:relative;top:-2rpx;">
+                            <div class="num1" v-if="!isIos" style="position:relative;top:-3rpx;">
                                 <span style="display: flex;justify-content: center;align-items: center;line-height:27rpx;" v-if="!isIos">{{item.quantity}}</span>
                             </div>
                             <div class="num1" v-if="isIos">
@@ -138,7 +138,11 @@
                     <div class="img-contain-01" v-if="item.nearImgList && item.nearImgList.length<4">
                         <ul class="three-ul">
                             <div v-for="(threeItem,threeIndex) in item.nearImgList" :key="threeIndex">
-                                <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
+                                <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem.url,item.address)">
+                                    <img class="img-02" src="/static/images/h.png" alt="" v-if="threeItem.sort==1">
+                                    <img class="img-02" src="/static/images/p.png" alt="" v-if="threeItem.sort==2">
+                                    <img class="img-01" :src='threeItem.url' />
+                                </li>
                             </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
@@ -151,7 +155,11 @@
                     <div class="img-contain" v-else-if="item.nearImgList && item.nearImgList.length>3">
                         <ul class="three-ul">
                             <div v-for="(threeItem,threeIndex) in item.nearImgList" :key="threeIndex">
-                                <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem,item.nearImgList)"><img :src='threeItem' /></li>
+                                <li class="three-li" v-if="threeIndex<6" @click="previewImage1(threeItem.url,item.address)">
+                                    <img class="img-02" src="/static/images/h.png" alt="" v-if="threeItem.sort==1">
+                                    <img class="img-02" src="/static/images/p.png" alt="" v-if="threeItem.sort==2">
+                                    <img class="img-01" :src='threeItem.url' />
+                                </li>
                             </div>
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
@@ -247,7 +255,7 @@ export default {
         let This = this
         if (res.scrollTop > 350) {
             
-            // This.title = This.organizationName
+
         } else {
            
         }
@@ -257,8 +265,10 @@ export default {
             let top = rect.top
             if(top<80){
                 This.isTop = true
+                This.title = This.organizationName
             }else{
                 This.isTop = false
+                This.title = ''
             }
             // 这里是关键
         }).exec()
@@ -360,18 +370,111 @@ export default {
                 function(item,index){
                     if(!item.nearImgList){
                         item.nearImgList = []
-                        if(item.farImgList != null){
-                            item.nearImgList = item.nearImgList.concat(item.farImgList)
-                        }
                         if(item.evaluateImgList != null){
-                            item.nearImgList = item.nearImgList.concat(item.evaluateImgList)
+                            let arr = []
+                            item.evaluateImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 1
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = arr.concat(item.nearImgList)
+                        }
+                        if(item.proveImgList != null){
+                            let arr = []
+                            item.proveImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 2
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = item.nearImgList.concat(arr)
+
+                        }
+                        if(item.farImgList != null){
+                            let arr = []
+                            item.farImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 0
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = item.nearImgList.concat(arr)
                         }
                         if(item.nearImgList[0]==null&&item.nearImgList[1]==null){
                             item.nearImgList = null
                         }
+                        console.log(item.nearImgList)
+                        item.address = []
+                        item.nearImgList.map(
+                            function(item1,index1){
+                                item.address.push(item1.url)
+                            }
+                        )
+ 
                     }else{
-                        item.nearImgList = item.nearImgList.concat(item.farImgList)
-                        item.nearImgList = item.nearImgList.concat(item.evaluateImgList)
+                        let arr01 = []
+                        item.nearImgList.map(
+                            function(item,index){
+                                let obj = {}
+                                obj.url = item
+                                obj.sort = 0
+                                arr01.push(obj)
+                            }
+                        )
+                        let arr02 = []
+                        item.nearImgList = arr02.concat(arr01)
+
+                        if(item.evaluateImgList != null){
+                            let arr = []
+                            item.evaluateImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 1
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = arr.concat(item.nearImgList)
+                        }
+                        if(item.proveImgList != null){
+                            let arr = []
+                            item.proveImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 2
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = arr.concat(item.nearImgList)
+                        }
+
+                        if(item.farImgList != null){
+                            let arr = []
+                            item.farImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 0
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = item.nearImgList.concat(arr)
+                        }
+                        console.log(item.nearImgList)
+                        item.address = []
+                        item.nearImgList.map(
+                            function(item1,index1){
+                                item.address.push(item1.url)
+                            }
+                        )
                     }
                 }
             )
@@ -546,6 +649,9 @@ export default {
         },
         hidePanel: function(event) {
             //这句是说如果我们点击到了id为myPanel以外的区域
+            let This = this
+            This.changeModel = !This.changeModel;
+            This.isModel = !This.isModel;
             this.$emit("func", false);
         },
         goWhere(){
@@ -627,7 +733,7 @@ export default {
         font-size: 34rpx;
         color: black;
         font-family: "PingFangSC-Medium";
-        font-weight: 550;
+        font-weight: 650;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -777,6 +883,7 @@ export default {
         text-align: center;
         padding-bottom: 24rpx;
         font-family: "PingFang-SC-Semibold";
+        color: #9F9F9F;
         // border-bottom:1rpx solid #e5e5e5;
     }
     .achi {
@@ -802,6 +909,8 @@ export default {
     }
     .active {
         border-bottom: 6rpx solid rgb(252, 184, 19);
+        font-weight: 650;
+        color: #000;
     }
 }
 .fixedTab{
@@ -843,6 +952,7 @@ export default {
         font-family: "PingFang-SC-Semibold";
         position: absolute;
         left: 0rpx;
+        color: #9F9F9F;
         // border-bottom:1rpx solid #e5e5e5;
     }
     .achi {
@@ -870,6 +980,8 @@ export default {
     }
     .active {
         border-bottom: 6rpx solid rgb(252, 184, 19);
+        font-weight: 650;
+        color: #000;
     }
 }
 .basic {
@@ -999,6 +1111,7 @@ export default {
                     top: 0rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
+                    z-index: 999;
                     .img-corner {
                         display: inline-block;
                         width: 36rpx;
@@ -1031,7 +1144,7 @@ export default {
     .self {
         font-family: "PingFang-SC-Semibold";
         font-size: 36rpx;
-        font-weight: 550;
+        font-weight: 650;
     }
     .one-ul {
         .one-li {
@@ -1057,10 +1170,16 @@ export default {
                         margin-right: 3rpx;
                         margin-bottom: 3rpx;
                         z-index: 999;
-                        img {
+                        position: relative;
+                        .img-01 {
                             width: 220rpx;
                             height: 222rpx;
                             border-right: 3rpx solid #fff;
+                        }
+                        .img-02{
+                            position: absolute;
+                            width: 88rpx;
+                            height: 88rpx; 
                         }
                     }
  
@@ -1071,6 +1190,7 @@ export default {
                     bottom: 13rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
+                    z-index: 999;
                     .img-corner {
                         display: inline-block;
                         width: 36rpx;
@@ -1104,10 +1224,16 @@ export default {
                         margin-right: 3rpx;
                         margin-bottom: 3rpx;
                         z-index: 999;
-                        img {
+                        position: relative;
+                        .img-01 {
                             width: 220rpx;
                             height: 222rpx;
                             border-right: 3rpx solid #fff;
+                        }
+                        .img-02{
+                            position: absolute;
+                            width: 88rpx;
+                            height: 88rpx; 
                         }
                     }
  
@@ -1118,6 +1244,7 @@ export default {
                     bottom: 13rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
+                    z-index: 999;
                     .img-corner {
                         display: inline-block;
                         width: 36rpx;

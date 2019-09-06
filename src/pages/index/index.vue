@@ -69,8 +69,10 @@ export default {
             This.selectNavIndex = data
             if(data==0){
                 This.bottomId = true
+                console.log('显示主页')
             }else{
                 This.bottomId = false
+                console.log('显示我的')
             }
         },
         info(data){
@@ -104,6 +106,7 @@ export default {
         border-radius: 8rpx;
         background: #fcfcfc;
         margin-bottom: 32rpx;
+        padding-bottom: 40rpx;
     }
 }
 </style>

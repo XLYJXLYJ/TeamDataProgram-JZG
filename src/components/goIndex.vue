@@ -87,12 +87,12 @@ export default {
     methods: {
         backClick() {
             let This = this
-            // wx.navigateBack({ 
-            //     delta: 2, 
-            // });
-            wx.reLaunch({
-                url: '/pages/index/main'
+            wx.navigateBack({ 
+                delta: 2, 
             });
+            // wx.reLaunch({
+            //     url: '/pages/index/main'
+            // });
         },
         homeClick() {
             wx.redirectTo({

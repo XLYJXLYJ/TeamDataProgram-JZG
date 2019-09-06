@@ -52,6 +52,7 @@ export default {
     },
     data() {
         return {
+            Timeout:'',
             phone: "",
             phone_code: "",
             name: "",
@@ -75,6 +76,10 @@ export default {
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
     }, 
+    destroyed() {
+        let This = this
+        clearTimeout(This.Timeout)
+    },
     methods: {
         ...mapMutations([
             USER_INFO
@@ -137,9 +142,17 @@ export default {
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
                 This.test(res.response)
-                wx.reLaunch({
-                    url:'/pages/index/main'
+
+                wx.showToast({
+                    title: "登录成功",
+                    icon: "none",
+                    duration: 1000
                 });
+                This.Timeout = setTimeout(function(){
+                    wx.reLaunch({
+                        url:'/pages/index/main'
+                    });
+                },1000)
             })
         },
         Timer() {

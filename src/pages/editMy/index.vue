@@ -55,6 +55,7 @@ export default {
     },
     data() {
         return {
+            Timeout:'',
             mode: 'selector',
             phone: "",
             phone_code: "",
@@ -98,6 +99,10 @@ export default {
 
         This.name = wx.getStorageSync('username') 
     },
+    destroyed() {
+        let This = this
+        clearTimeout(This.Timeout)
+    },
     methods: {
         ...mapMutations([
             USER_INFO
@@ -138,15 +143,17 @@ export default {
                 wx.showToast({
                     title: '修改成功',
                     icon: "none",
-                    duration: 2000
+                    duration: 1000
                 })
                 // let data1 = {
                 //     username:This.name,
                 // }
                 // This.test(data1)
-                wx.reLaunch({
-                    url:'/pages/index/main?name=' + This.name + '&gender=' + This.gender
-                });
+                This.Timeout = setTimeout(function(){
+                    wx.reLaunch({
+                        url:'/pages/index/main?name=' + This.name + '&gender=' + This.gender
+                    });
+                },1000)
             })
         }
     }

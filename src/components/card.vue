@@ -442,6 +442,8 @@ export default {
         hidePanel: function(event) {
             //这句是说如果我们点击到了id为myPanel以外的区域
             let This = this
+            This.changeModel = false
+            This.isModel = false
             This.$emit("func", false);
         },
         getUserInfo (e) {

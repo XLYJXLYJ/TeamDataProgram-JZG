@@ -81,6 +81,7 @@ export default {
     },
     data() {
         return {
+            Timeout:'',
             phone: "", // 手机号
             name: "", // 班组负责人名字
             sort:'', // 班组分类
@@ -136,6 +137,10 @@ export default {
         This.url = getCurrentPages()
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
+    },
+    destroyed() {
+        let This = this
+        clearTimeout(This.Timeout)
     },
     methods: {
         show(){
@@ -210,12 +215,15 @@ export default {
                 wx.showToast({
                     title: res.message,
                     icon: "none",
-                    duration: 2000
+                    duration: 1000
                 })
                 if(res.message == '成功'){
-                    wx.reLaunch({
+                This.Timeout = setTimeout(function(){
+                     wx.reLaunch({
                         url:'/pages/RecommendedTeams/main'
                     });
+                },1000)
+     
                 }
             })
         },

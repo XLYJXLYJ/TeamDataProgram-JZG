@@ -29,7 +29,10 @@ export default {
     methods: {
         hidePanel: function(event) {
             //这句是说如果我们点击到了id为myPanel以外的区域
-            this.$emit("func", false);
+            let This = this
+            This.changeModel = false
+            This.isModel = false
+            This.$emit("func", false);
         },
         closeAlert(){
             let This = this
