@@ -26,17 +26,17 @@
                 <li class="one-li" style="height:400rpx;width:95%;margin-left:40rpx;">
                     <p class="one">在职证明</p>
                     <ul class="two-ul">
-                        <li class="two-li" v-for="(item,index) in imgs" :key='index'>
+                        <li class="two-li" v-for="(item,index) in imgs" :key='index'  @click="PreviewImage(item,imgs)">
                             <img :src="item" />
                         </li>
                     </ul>
                 </li>
                 <li class="one-li">
-                    <p style="color:rgb(252,184,19);margin-top:48rpx" @click="make">《建筑业优质班组共建共享计划规则》</p>
+                    <p style="color:#FCB813;margin-top:48rpx" @click="make">《建筑业优质班组共建共享计划规则》</p>
                 </li>
                 <li class="one-li">
-                    <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
-                    <button style="background-color:rgb(252 184 19);border:none;height: 96rpx;width: 670rpx;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
+                    <button style="background-color:#fcb813;border:none;height: 96rpx;width: 670rpx;" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
+                    <button style="background-color:#fcb813;border:none;height: 96rpx;width: 670rpx;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
                 </li>
             </ul>
         </div>
@@ -57,7 +57,7 @@ export default {
             imgs:''
         };
     },
-    mounted() {
+    onShow() {
         let This = this
         fly.post('/contractor/getMySharingPlan').then(function (res) {
             let data = res.response
@@ -82,6 +82,12 @@ export default {
         })
     },
     methods: {
+        PreviewImage(url,arr) {
+            wx.previewImage({
+                current:url,
+                urls: arr
+            });
+        },
         goshare(){
             wx.redirectTo({
                 url:'/pages/register/main'
@@ -123,10 +129,12 @@ export default {
                 .two-li {
                     float: left;
                     margin-right: 32rpx;
+                    border-radius: 12rpx;
+                    margin-top: 16rpx;
                     img {
                         width: 144rpx;
                         height: 144rpx;
-                        margin-top: 16rpx;
+                        border-radius: 12rpx;
                     }
                 }
             }

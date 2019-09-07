@@ -93,7 +93,7 @@ export default {
             display: flex;
             justify-content: center;
             font-size: 20rpx;
-            color: rgb(204, 204, 204);
+            color: #CCCCCC;
             font-family: "PingFangSC-Regular";
         }
     }

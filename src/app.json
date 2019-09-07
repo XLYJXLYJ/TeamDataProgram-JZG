@@ -2,27 +2,14 @@
   "pages": [
     "pages/index/main",
     "pages/register/main",
-
     "pages/introdution/main",
-
     "pages/web/main",
-
-
- 
-
-
-
-
     "pages/login/main",
     "pages/welcome/main",
-
-
     "pages/RecommendedTeams/main",
     "pages/registerClass/main",
-
     "pages/natural/main",
     "pages/userAgreement/main",
-
     "pages/editMy/main",
     "pages/sharing/main",
     "pages/commonMake/main",

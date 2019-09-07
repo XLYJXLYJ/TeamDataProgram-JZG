@@ -7,29 +7,29 @@
             <div v-if="!getInfo">
                 <img  @click="goMy" :src="aImg">
                 <p v-if="mobile">{{name}}</p>
-                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录1</p>
+                <p v-if="!mobile" style="font-weight:100;color:#FCB813;" @click="goLogin">点击登录1</p>
             </div>
             <div v-if="getInfo">
                 <img @click="goMy" :src="getInfo.headImg">
                 <p v-if="getInfo.mobile">{{getInfo.username}}</p>
-                <p v-if="!getInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录2</p>
+                <p v-if="!getInfo.mobile" style="font-weight:100;color:#FCB813;" @click="goLogin">点击登录2</p>
                 <p>{{test}}</p>
             </div>
         </section> -->
 
         <section class="maintenance">
-            <div v-if="!userInfo">
+            <div>
                 <img  @click="goMy" :src="aImg" v-if="aImg">
                 <img  @click="goMy" src="/static/images/user.png" v-if="!aImg">
                 <p v-if="mobile">{{name}}</p>
-                <p v-if="!mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录</p>
+                <p v-if="!mobile" style="font-weight:100;color:#FCB813;" @click="goLogin">点击登录</p>
             </div>
-            <div v-if="userInfo">
+            <!-- <div v-if="userInfo">
                 <img @click="goMy" :src="userInfo.headImg" v-if="userInfo.headImg">
                 <img @click="goMy" src="/static/images/user.png" v-if="!userInfo.headImg">
                 <p v-if="userInfo.mobile">{{userInfo.username}}</p>
-                <p v-if="!userInfo.mobile" style="font-weight:100;color:rgb(252, 184, 19);" @click="goLogin">点击登录</p>
-            </div>
+                <p v-if="!userInfo.mobile" style="font-weight:100;color:#FCB813;" @click="goLogin">点击登录</p>
+            </div> -->
             <!-- <p>{{userInfo.username}}</p>
               <p>2222</p> -->
         </section>
@@ -95,39 +95,52 @@ export default {
         let This = this
         console.log('onShow')
         console.log(This.getInfo)
-        This.mobile = wx.getStorageSync('mobile')
-        This.name = wx.getStorageSync('username')
-        // This.aImg = wx.getStorageSync('img')
-        This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
-        if(wx.getStorageSync('img')){
-            let img = wx.getStorageSync('img')
-            if(img.indexOf('wx.qlogo.cn')>0){
-                This.aImg = '/static/images/user.png'
-            }else{
-                This.aImg = wx.getStorageSync('img')
-            }
+        This.mobile = ''
+        This.name = ''
+        This.getInfo = ''
+        wx.nextTick(() => {
+            This.mobile = wx.getStorageSync('mobile')
+            This.name = wx.getStorageSync('username')
+            // This.aImg = wx.getStorageSync('img')
+                        console.log(This.mobile)
+                        console.log(This.name)
+            This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
+            if(wx.getStorageSync('img')){
+                let img = wx.getStorageSync('img')
+                if(img.indexOf('wx.qlogo.cn')>0){
+                    This.aImg = '/static/images/user.png'
+                }else{
+                    This.aImg = wx.getStorageSync('img')
+                }
 
-        }else{
-            This.aImg = '/static/images/user.png'
-        }
+            }else{
+                This.aImg = '/static/images/user.png'
+            }
+        })
+
     },
     mounted() {
         let This = this
         console.log('mounted')
-        This.mobile = wx.getStorageSync('mobile')
-        This.name = wx.getStorageSync('username')
-        // This.aImg = wx.getStorageSync('img')
-        This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
-        if(wx.getStorageSync('img')){
-            let img = wx.getStorageSync('img')
-            if(img.indexOf('wx.qlogo.cn')>0){
-                This.aImg = '/static/images/user.png'
+        wx.nextTick(() => {
+            This.mobile = wx.getStorageSync('mobile')
+            This.name = wx.getStorageSync('username')
+            // This.aImg = wx.getStorageSync('img')
+            console.log(This.mobile)
+            console.log(This.name)
+            This.joinSharePlanStatus = wx.getStorageSync('joinSharePlanStatus')
+            if(wx.getStorageSync('img')){
+                let img = wx.getStorageSync('img')
+                if(img.indexOf('wx.qlogo.cn')>0){
+                    This.aImg = '/static/images/user.png'
+                }else{
+                    This.aImg = wx.getStorageSync('img')
+                }
+
             }else{
-                This.aImg = wx.getStorageSync('img')
+                This.aImg = '/static/images/user.png'
             }
-        }else{
-            This.aImg = '/static/images/user.png'
-        }
+        })
     },
     methods:{
         ...mapMutations([

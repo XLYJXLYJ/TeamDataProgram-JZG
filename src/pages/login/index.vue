@@ -141,7 +141,7 @@ export default {
                 wx.setStorageSync('mobile', res.response.mobile) 
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
-                This.test(res.response)
+                // This.test(res.response)
 
                 wx.showToast({
                     title: "登录成功",
@@ -232,6 +232,6 @@ export default {
     color: black;
 }
 .getCodeDisabled {
-    color: rgb(204, 204, 204);
+    color: #CCCCCC;
 }
 </style>

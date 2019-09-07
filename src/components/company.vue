@@ -158,7 +158,7 @@ export default {
 .phone {
     width: 360rpx;
     height: 96rpx;
-    background: rgb(252, 184, 19);
+    background: #FCB813;
     font-size: 34rpx;
     display: flex;
     justify-content: center;

@@ -42,7 +42,7 @@
                             disabled
                         />
                 <!-- <div class="select picker" type="default"><p class="title" @click="show" :class="{'isblack':isblack}" style="font-size: 32rpx;height:55rpx;">{{sort}}</p></div> -->
-                <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+                <mp-picker ref="mpPicker" :mode="mode" themeColor="#FCB813" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
                 <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                     <div class="select picker" type="default"><p class="title">{{family}}{{sort}}</p></div>
                 </picker> -->
@@ -306,7 +306,7 @@ export default {
     color: black;
 }
 .getCodeDisabled {
-    color: rgb(204, 204, 204);
+    color: #CCCCCC;
 }
 .isblack{
     color: black!important;

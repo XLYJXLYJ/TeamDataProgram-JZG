@@ -172,7 +172,7 @@ export default {
                             // wx.reLaunch({
                             //     url:'/pages/registerClass/main'
                             // })
-                            This.test(res.response)
+                            // This.test(res.response)
                             // This.$emit('info',res.response)
                         })
                     } else {
@@ -252,7 +252,7 @@ export default {
         height: 96rpx;
         margin-top: 40rpx;
         font-size: 34rpx;
-        color: rgb(252, 184, 19);
+        color: #FCB813;
         font-family: "PingFangSC-Medium";
         font-weight: 550;
         display: flex;
@@ -287,7 +287,7 @@ export default {
         margin-top: -8rpx;
     }
     .item-text-active {
-        color: rgb(252, 184, 19);
+        color: #FCB813;
         margin-top: -8rpx;
     }
     .item-images {

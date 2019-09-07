@@ -17,15 +17,15 @@
                         <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
                     </picker>  -->
                     <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;position:relative;top:-5rpx!important;" src="/static/images/bottom.png" alt=""></div>
-                    <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
+                    <mp-picker ref="cityPicker" :mode="mode" themeColor="#FCB813" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
                 </div>
-                <span style="color:rgb(204,204,204)">|</span>
+                <span style="color:#CCCCCC">|</span>
                 <div>
                     <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                         <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
                     </picker>  -->
                     <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;position:relative;top:-5rpx!important;" src="/static/images/bottom.png" alt=""></div>
-                    <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+                    <mp-picker ref="mpPicker" :mode="mode" themeColor="#FCB813" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
                 </div>
             </div>
 
@@ -38,15 +38,15 @@
                             <div class="city">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;" src="/static/images/bottom.png" alt=""></div>
                         </picker>  -->
                         <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-top:-16rpx!important" src="/static/images/bottom.png" alt=""></div>
-                        <mp-picker ref="cityPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
+                        <mp-picker ref="cityPicker" :mode="mode" themeColor="#FCB813" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
                     </div>
-                    <span v-if="!isTop" style="color:rgb(204,204,204)">|</span>
+                    <span v-if="!isTop" style="color:#CCCCCC">|</span>
                     <div v-if="!isTop">
                         <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                             <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
                         </picker>  -->
                         <div class="select picker" type="default" @click="show">{{sort}} <img style="width:20.2rpx;height:16rpx;margin-top:-16rpx!important" src="/static/images/bottom.png" alt=""></div>
-                        <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+                        <mp-picker ref="mpPicker" :mode="mode" themeColor="#FCB813" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
                     </div>
                 </div>
             </div>
@@ -553,7 +553,7 @@ export default {
         width: 100%;
         height: 96rpx;
         font-size: 34rpx;
-        color: rgb(252, 184, 19);
+        color: #FCB813;
         font-family: "PingFangSC-Medium";
         font-weight: 650;
         display: flex;
@@ -838,7 +838,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        background:rgb(252, 184, 19);
+        background:#FCB813;
         color: black;
         font-weight: 650;
         border: none;

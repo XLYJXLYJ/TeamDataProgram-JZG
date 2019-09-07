@@ -20,7 +20,7 @@
             >
                 <block v-for="item in imgUrls" :key="item.id">
                     <swiper-item>
-                        <image :src="item.img" class="slide-image" @click="goshare(item.url,item.order)"/>
+                        <image :src="item.img" class="slide-image" style="height:380rpx" @click="goshare(item.url,item.order)"/>
                         <!-- <text class="text1">{{cit}}{{item.desc}}</text>
                         <text class="text2">查看详情</text> -->
                     </swiper-item>
@@ -106,7 +106,7 @@ export default {
                             // wx.reLaunch({
                             //     url:'/pages/registerClass/main'
                             // })
-                            This.test(res.response)
+                            // This.test(res.response)
                             // This.$emit('info',res.response)
                         })
                     } else {
@@ -214,7 +214,7 @@ export default {
         height: 96rpx;
         margin-top: 40rpx;
         font-size: 34rpx;
-        color: rgb(252, 184, 19);
+        color: #FCB813;
         font-family: "PingFangSC-Medium";
         font-weight: 550;
         display: flex;

@@ -102,10 +102,12 @@ export default {
     .img-contain {
         display: block;
         width: 100%;
+        height: 340rpx;
         margin: 0 auto;
         border-radius: 8rpx;
         background: #fcfcfc;
         margin-bottom: 32rpx;
+        padding-bottom: 10rpx;
         padding-bottom: 40rpx;
     }
 }

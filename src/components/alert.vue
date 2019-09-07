@@ -111,7 +111,7 @@ export default {
     }
     .detail {
         font-size: 30rpx;
-        color: rgb(88, 88, 88);
+        color: #585858;
         padding: 0 40rpx 0 40rpx;
         font-family: "PingFangSC-Regular";
     }
@@ -126,7 +126,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: rgb(252, 184, 19);
+        background: #FCB813;
         border: none;
         margin-bottom: 40rpx;
     }

@@ -113,16 +113,30 @@
                                 <span style="display: flex;justify-content: center;align-items: center">{{item.quantity}}</span>
                             </div>
                         </div> 
-                        <div class="img-contain" v-if="imgList">
+
+                        <div class="img-contain-01" v-if="item.imgList && item.imgList.length<4">
                             <ul class="two-ul">
-                                <div v-for="(twoItem,twoIndex) in imgList" :key="twoIndex">line-height:27rpx;
-                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,imgList)" :src='twoItem' /></li>
+                                <div v-for="(twoItem,twoIndex) in item.imgList" :key="twoIndex">
+                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,item.imgList)" :src='twoItem' /></li>
                                 </div>
                                 <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
                             </ul>
-                            <div class="corner" v-if="item.imgs.length>6">
+                            <div class="corner" v-if="item.imgList.length>6">
                                 <div class="img-corner"><img src="/static/images/more.png"> </div>
-                                <span class="number">{{item.imgs}}</span>
+                                <span class="number">{{item.quantity}}</span>
+                            </div>
+                        </div>
+
+                        <div class="img-contain" v-if="item.imgList && item.imgList.length>3">
+                            <ul class="two-ul">
+                                <div v-for="(twoItem,twoIndex) in item.imgList" :key="twoIndex">
+                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,item.imgList)" :src='twoItem' /></li>
+                                </div>
+                                <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
+                            </ul>
+                            <div class="corner" v-if="item.imgList.length>6">
+                                <div class="img-corner"><img src="/static/images/more.png"> </div>
+                                <span class="number">{{item.quantity}}</span>
                             </div>
                         </div>
                     </li>
@@ -147,9 +161,9 @@
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
                         </ul>
-                        <div class="corner" v-if="item.nearImgList.length>6">
+                        <div class="corner" v-if="item.address.length>6">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
-                            <span class="number">{{item.nearImgList.length}}</span>
+                            <span class="number">{{item.address.length}}</span>
                         </div>
                     </div>
                     <div class="img-contain" v-else-if="item.nearImgList && item.nearImgList.length>3">
@@ -164,9 +178,9 @@
                             <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
 
                         </ul>
-                        <div class="corner" v-if="item.nearImgList.length>6">
+                        <div class="corner" v-if="item.address.length>6">
                             <div class="img-corner"><img src="/static/images/more.png"> </div>
-                            <span class="number">{{item.nearImgList.length}}</span>
+                            <span class="number">{{item.address.length}}</span>
                         </div>
                     </div>
                     <ul class="two-ul">
@@ -178,9 +192,12 @@
                             <div class="one"><img src="/static/images/2.png"></div>
                             <div class="two">{{item.startTimeStr}} 至 {{item.endTimeStr}}</div>
                         </li>
-                        <li v-if="item.prizeList">
+                        <li v-if="item.projectNewPrizeList">
                             <div class="one"><img src="/static/images/3.png"></div>
-                            <div class="two">{{item.prizeList}}</div>
+                            <ul>
+                                <li v-for="(item03,index03) in item.projectNewPrizeList" :key="index03"><div class="two" style="display:inline-block">{{item03.name}}</div></li>
+                            </ul>
+ 
                         </li>
                         <li  v-if="item.employers">
                             <div class="one"><img src="/static/images/4.png"></div>
@@ -332,6 +349,14 @@ export default {
             This.subModels = resData.quotationBillModels.subModels
             This.qtotal = resData.quotationBillModels.total
             This.eqList = resData.eqList
+            This.eqList.map(
+                function(item,index){
+                    if(item.imgList.length == 0){
+                        item.imgList = ''
+                    }
+                    item.quantity = item.imgList.length
+                }
+            )
             This.quantity = resData.eqList.quantity
             This.imgList = resData.imgList
             This.teamPersonCount = resData.teamPersonCount
@@ -382,9 +407,9 @@ export default {
                             )
                             item.nearImgList = arr.concat(item.nearImgList)
                         }
-                        if(item.proveImgList != null){
+                        if(item.prizeList != null){
                             let arr = []
-                            item.proveImgList.map(
+                            item.prizeList.map(
                                 function(item,index){
                                     let obj = {}
                                     obj.url = item
@@ -410,15 +435,66 @@ export default {
                         if(item.nearImgList[0]==null&&item.nearImgList[1]==null){
                             item.nearImgList = null
                         }
-                        console.log(item.nearImgList)
+
+                        item.nearImgList = []
+                        if(item.evaluateImgList != null){
+                            let arr = []
+                            item.evaluateImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 1
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = arr.slice(0,1).concat(item.nearImgList)
+                        }
+                        if(item.prizeList != null){
+                            let arr = []
+                            item.prizeList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 2
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = arr.slice(0,1).concat(item.nearImgList)
+
+                        }
+                        if(item.farImgList != null){
+                            let arr = []
+                            item.farImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 0
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = item.nearImgList.concat(arr)
+                        }
+                        if(item.nearImgList[0]==null&&item.nearImgList[1]==null){
+                            item.nearImgList = null
+                        }
                         item.address = []
                         item.nearImgList.map(
                             function(item1,index1){
                                 item.address.push(item1.url)
                             }
                         )
- 
                     }else{
+                        item.address = []
+                        if(item.evaluateImgList != null){
+                            item.address = item.evaluateImgList.concat(item.nearImgList)
+                        }
+                        if(item.prizeList != null){
+  
+                            item.address = item.prizeList.concat(item.address)
+                        }
+                        if(item.farImgList != null){
+                            item.address= item.address.concat(item.farImgList)
+                        }
                         let arr01 = []
                         item.nearImgList.map(
                             function(item,index){
@@ -441,11 +517,11 @@ export default {
                                     arr.push(obj)
                                 }
                             )
-                            item.nearImgList = arr.concat(item.nearImgList)
+                            item.nearImgList = arr.slice(0,1).concat(item.nearImgList)
                         }
-                        if(item.proveImgList != null){
+                        if(item.prizeList != null){
                             let arr = []
-                            item.proveImgList.map(
+                            item.prizeList.map(
                                 function(item,index){
                                     let obj = {}
                                     obj.url = item
@@ -453,9 +529,8 @@ export default {
                                     arr.push(obj)
                                 }
                             )
-                            item.nearImgList = arr.concat(item.nearImgList)
+                            item.nearImgList = arr.slice(0,1).concat(item.nearImgList)
                         }
-
                         if(item.farImgList != null){
                             let arr = []
                             item.farImgList.map(
@@ -468,21 +543,12 @@ export default {
                             )
                             item.nearImgList = item.nearImgList.concat(arr)
                         }
-                        console.log(item.nearImgList)
-                        item.address = []
-                        item.nearImgList.map(
-                            function(item1,index1){
-                                item.address.push(item1.url)
-                            }
-                        )
                     }
                 }
             )
-            console.log(This.list)
         })
     },
     onShareAppMessage: (res) => {
-        console.log(res)
         let that =this;
         wx.getShareInfo({
             success: (res)=> { 
@@ -722,7 +788,7 @@ export default {
     }
     .detail {
         font-size: 30rpx;
-        color: rgb(88, 88, 88);
+        color: #585858;
         padding: 0 40rpx 0 40rpx;
         font-family: "PingFangSC-Regular";
     }
@@ -737,7 +803,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: rgb(252, 184, 19);
+        background: #FCB813;
         border: none;
         margin-bottom: 40rpx;
     }
@@ -841,7 +907,7 @@ export default {
 .phone {
     width: 360rpx;
     height: 96rpx;
-    background: rgb(252, 184, 19);
+    background: #FCB813;
     font-size: 34rpx;
     display: flex;
     justify-content: center;
@@ -908,7 +974,7 @@ export default {
         }
     }
     .active {
-        border-bottom: 6rpx solid rgb(252, 184, 19);
+        border-bottom: 6rpx solid #FCB813;
         font-weight: 650;
         color: #000;
     }
@@ -979,7 +1045,7 @@ export default {
         }
     }
     .active {
-        border-bottom: 6rpx solid rgb(252, 184, 19);
+        border-bottom: 6rpx solid #FCB813;
         font-weight: 650;
         color: #000;
     }
@@ -1093,25 +1159,36 @@ export default {
                     display:inline-block;
                 }
             }
-            .img-contain {
+            .img-contain-01 {
                 position: relative;
-                height: 436rpx;
+                height: 236rpx;
                 .two-ul{
-                    display: flex;
-                    justify-content: space-around;
-                    img {
-                        width: 222rpx;
+                    display:inline;
+                    white-space: nowrap;
+                    .two-li{
+                        float:left;
+                        width: 220rpx;
                         height: 222rpx;
-                        border-right: 3rpx solid #fff;
+                        display:block;
+                        margin-right: 3rpx;
+                        margin-bottom: 3rpx;
+                        z-index: 100;
+                        position: relative;
+                        img {
+                            width: 220rpx;
+                            height: 222rpx;
+                            border-right: 3rpx solid #fff;
+                        }
                     }
+ 
                 }
                 .corner {
                     position: absolute;
-                    right: 0rpx;
-                    top: 0rpx;
+                    right: 8rpx;
+                    bottom: 13rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
-                    z-index: 999;
+                    z-index: 100;
                     .img-corner {
                         display: inline-block;
                         width: 36rpx;
@@ -1125,8 +1202,56 @@ export default {
                         font-size: 30rpx;
                         color: white;
                         font-family: "PingFangSC-Regular";
-                        margin-bottom: 6rpx;
-                        margin-left: 6rpx;
+                        position: relative;
+                        top: -4rpx;
+                        left: 6rpx;
+                    }
+                }
+            }
+            .img-contain {
+                position: relative;
+                height: 458rpx;
+                min-height: 236rpx;
+                .two-ul{
+                    display:inline;
+                    white-space: nowrap;
+                    .two-li{
+                        float:left;
+                        width: 220rpx;
+                        height: 222rpx;
+                        display:block;
+                        margin-right: 3rpx;
+                        margin-bottom: 3rpx;
+                        z-index: 100;
+                        position: relative;
+                        img {
+                            width: 220rpx;
+                            height: 222rpx;
+                            border-right: 3rpx solid #fff;
+                        }
+                    }
+ 
+                }
+                .corner {
+                    position: absolute;
+                    right: 8rpx;
+                    bottom: 13rpx;
+                    background: rgba(0, 0, 0, 0.4);
+                    padding: 0rpx 10rpx 0rpx 10rpx;
+                    z-index: 100;
+                    .img-corner {
+                        display: inline-block;
+                        width: 36rpx;
+                        height: 28rpx;
+                        img{
+                            width: 36rpx;
+                            height: 28rpx;
+                        }
+                    }
+                    .number {
+                        font-size: 30rpx;
+                        color: white;
+                        font-family: "PingFangSC-Regular";
                         position: relative;
                         top: -4rpx;
                         left: 6rpx;
@@ -1150,7 +1275,7 @@ export default {
         .one-li {
             .machine {
                 font-size: 30rpx;
-                color: rgb(252, 184, 19);
+                color: #FCB813;
                 font-family: "PingFangSC-Regular";
                 margin-bottom: 24rpx;
                 z-index: 0;
@@ -1169,7 +1294,7 @@ export default {
                         display:block;
                         margin-right: 3rpx;
                         margin-bottom: 3rpx;
-                        z-index: 999;
+                        z-index: 100;
                         position: relative;
                         .img-01 {
                             width: 220rpx;
@@ -1190,7 +1315,7 @@ export default {
                     bottom: 13rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
-                    z-index: 999;
+                    z-index: 100;
                     .img-corner {
                         display: inline-block;
                         width: 36rpx;
@@ -1223,7 +1348,7 @@ export default {
                         display:block;
                         margin-right: 3rpx;
                         margin-bottom: 3rpx;
-                        z-index: 999;
+                        z-index: 100;
                         position: relative;
                         .img-01 {
                             width: 220rpx;
@@ -1244,7 +1369,7 @@ export default {
                     bottom: 13rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
-                    z-index: 999;
+                    z-index: 100;
                     .img-corner {
                         display: inline-block;
                         width: 36rpx;

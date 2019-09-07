@@ -133,7 +133,7 @@ export default {
         height: 96rpx;
         margin-top: 40rpx;
         font-size: 34rpx;
-        color: rgb(252, 184, 19);
+        color: #FCB813;
         font-family: "PingFangSC-Medium";
         font-weight: 550;
         display: flex;

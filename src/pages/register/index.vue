@@ -69,7 +69,7 @@
 <script>
 import { mapState,mapMutations } from 'vuex'
 import {  USER_INFO } from '../../store/modules/mutation-type'
-import goIndex from "@/components/goIndex.vue";
+import goIndex from "@/components/goIndex01.vue";
 import mpUploader from "mpvue-weui/src/uploader";
 import fly from "@/services/WxApi";
 export default {
@@ -106,7 +106,8 @@ export default {
         This.name = '';
         This.company = '';
         This.position = ''
-        this.$refs.uploader.clearFiles()
+        This.$refs.uploader.clearFiles()
+        This.imgMessage = ''
         This.url = getCurrentPages()
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
@@ -169,19 +170,27 @@ export default {
         },
         upLoadSuccess(successRes){
             let This = this
-            wx.showLoading({
-                title:'上传图片中'
-            })
+            console.log(successRes)
             for(let i=0;i<successRes.tempFilePaths.length;i++){
+                wx.showLoading({
+                    title:'上传图片中'
+                })
                 wx.getFileSystemManager().readFile({
                     filePath: successRes.tempFilePaths[i], //选择图片返回的相对路径
                     encoding: 'base64', //编码格式
                     success:(res) =>{
                         // let img = 'data:image/png;base64,' + res.data
-                        let img1 = res.data
-                        This.dataImg.push(img1)
-                        This.uploadImg()
-                        wx.hideLoading();
+                        // let img1 = res.data
+                        // This.dataImg.push(img1)
+                        // This.uploadImg()
+                        let data = {
+                            imgs:res.data
+                        }
+                        fly.post('/uploadImg',data).then(function (res) {
+                            This.imgMessage.push(res.response)
+                            wx.hideLoading();
+                        })
+
                     }
                 })
             }
@@ -287,7 +296,7 @@ export default {
                 wx.setStorageSync('username', res.response.username) 
                 wx.setStorageSync('img',res.response.headImg)
                 // wx.setStorageSync('username', res.response.username) 
-                This.test(res.response)
+                // This.test(res.response)
                 wx.showToast({
                     title: "提交成功",
                     icon: "none",

@@ -23,7 +23,7 @@
                     <p class="title">性别</p>
                     <input type="text" v-model="gender" style="color:#5f5f5f" disabled autocomplete="off" @click="showg" />
                     <!-- <p @click="showg" style="color:#5f5f5f">{{gender}}</p> -->
-                    <mp-picker ref="mpPicker" :mode="mode" themeColor="rgb(252,184,19)" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
+                    <mp-picker ref="mpPicker" :mode="mode" themeColor="#FCB813" :deepLength=deepLength :pickerValueDefault="pickerValueDefault" @onChange="onChange" @onConfirm="onConfirm" @onCancel="onCancel" :pickerValueArray="pickerValueArray"></mp-picker>
 
                 </div>
                 <div class="get-block" style="border:none">
@@ -168,7 +168,7 @@ export default {
         margin: 0 auto;
         margin-top: 40rpx;
         .get-block {
-            border-bottom: 1rpx solid rgb(204, 204, 204);
+            border-bottom: 1rpx solid #CCCCCC;
             margin-bottom: 48rpx;
             .get-code {
                 display: flex;
@@ -212,6 +212,6 @@ export default {
     color: black;
 }
 .getCodeDisabled {
-    color: rgb(204, 204, 204);
+    color: #CCCCCC;
 }
 </style>

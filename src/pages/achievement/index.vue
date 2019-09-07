@@ -307,7 +307,7 @@ export default {
 .phone {
     width: 360rpx;
     height: 96rpx;
-    background: rgb(252, 184, 19);
+    background: #FCB813;
     font-size: 34rpx;
     display: flex;
     justify-content: center;
@@ -383,7 +383,7 @@ export default {
 .phone {
     width: 360rpx;
     height: 96rpx;
-    background: rgb(252, 184, 19);
+    background: #FCB813;
     font-size: 34rpx;
     display: flex;
     justify-content: center;
@@ -407,7 +407,7 @@ export default {
         font-family: "PingFang-SC-Semibold";
     }
     .active {
-        border-bottom: 6rpx solid rgb(252, 184, 19);
+        border-bottom: 6rpx solid #FCB813;
     }
 }
 .fixedTab{
@@ -438,7 +438,7 @@ export default {
         right: 0rpx;
     }
     .active {
-        border-bottom: 6rpx solid rgb(252, 184, 19);
+        border-bottom: 6rpx solid #FCB813;
     }
 }
 .equip-two {
@@ -456,7 +456,7 @@ export default {
         .one-li {
             .machine {
                 font-size: 30rpx;
-                color: rgb(252, 184, 19);
+                color: #FCB813;
                 font-family: "PingFangSC-Regular";
                 margin-bottom: 24rpx;
                 z-index: 0;
