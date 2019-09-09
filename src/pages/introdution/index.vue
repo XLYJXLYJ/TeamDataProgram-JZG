@@ -23,14 +23,14 @@
             <div class="title">{{organizationName}}</div>
             <div class="tag">
                 <ul class="text-ul">
-                    <li v-for="(item,index) in ContractorProjectType" :key="index">
-                        <span v-if="item.medalNum" class="text-li"> {{item.projectTypeName}}  &nbsp;<img style="width:16rpx;height:16rpx" src="/static/images/star.png" alt="">&nbsp; {{item.medalNum}}</span>
+                    <li v-for="(item,index) in ContractorProjectType" :key="index" class="text-li">
+                        <span v-if="item.medalNum"> {{item.projectTypeName}}  &nbsp;<img style="width:16rpx;height:16rpx" src="/static/images/star.png" alt="">&nbsp; {{item.medalNum}}</span>
                     </li>
                 </ul>
             </div>
             <div class="detail1" v-if="recommendUserName">
                 <p class="one">{{recommendDesc}}</p>
-                <p class="two">推荐人：{{recommendUserName}} {{recommendUserPosition}}</p>
+                <p class="two">推荐人：{{recommendUserName}}  {{recommendUserPosition}}</p>
                 <p class="three">{{recommendCompany}}</p>
                 <img src="/static/images/good.png" alt="">
             </div>
@@ -88,7 +88,7 @@
             </div>
             <div class="work">
                 <ul>
-                    <title v-if="qtotal">施工报价<span>({{qtotal}} 项)</span> </title>
+                    <title v-if="qtotal" style="font-weight:650">施工报价<span style="font-weight:650">({{qtotal}} 项)</span> </title>
                     <li v-for="(item,index) in subModels" :key="index">
                         <p>{{item.name}}</p>
                         <ul class="two-ul">
@@ -102,7 +102,7 @@
                 </ul>
             </div>
             <div class="equip" v-if="equipmentCount">
-                <p class="self"><span>自有设备( {{eqList.length}} 种)</span></p>
+                <p class="self"><span style="font-weight:650">自有设备( {{eqList.length}} 种)</span></p>
                 <ul class="one-ul">
                     <li class="one-li" v-for="(item,index) in eqList" :key="index">
                         <div class="machine">{{item.remark}}
@@ -114,31 +114,31 @@
                             </div>
                         </div> 
 
-                        <div class="img-contain-01" v-if="item.imgList && item.imgList.length<4">
+                        <!-- <div class="img-contain-01" v-if="item.imgList && item.imgList.length<4"> -->
+                        <div class="img-contain-01" v-if="item.imgList">
                             <ul class="two-ul">
                                 <div v-for="(twoItem,twoIndex) in item.imgList" :key="twoIndex">
-                                    <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,item.imgList)" :src='twoItem' /></li>
+                                    <li class="two-li" v-if="twoIndex<3"><img @click="previewImage(twoItem,item.imgList)" :src='twoItem' /></li>
                                 </div>
                                 <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
                             </ul>
-                            <div class="corner" v-if="item.imgList.length>6">
+                            <div class="corner" v-if="item.imgList.length>3">
                                 <div class="img-corner"><img src="/static/images/more.png"> </div>
                                 <span class="number">{{item.quantity}}</span>
                             </div>
                         </div>
 
-                        <div class="img-contain" v-if="item.imgList && item.imgList.length>3">
+                        <!-- <div class="img-contain" v-if="item.imgList && item.imgList.length>3">
                             <ul class="two-ul">
                                 <div v-for="(twoItem,twoIndex) in item.imgList" :key="twoIndex">
                                     <li class="two-li" v-if="twoIndex<6"><img @click="previewImage(twoItem,item.imgList)" :src='twoItem' /></li>
                                 </div>
-                                <!-- <li class="two-li" v-for="(twoItem,twoIndex) in eqList" :key="twoIndex"><img @click="previewImage" :src='twoItem' /></li> -->
                             </ul>
                             <div class="corner" v-if="item.imgList.length>6">
                                 <div class="img-corner"><img src="/static/images/more.png"> </div>
                                 <span class="number">{{item.quantity}}</span>
                             </div>
-                        </div>
+                        </div> -->
                     </li>
                 </ul>
             </div>
@@ -185,8 +185,16 @@
                     </div>
                     <ul class="two-ul">
                         <li v-if="item.projectTypeName">
-                            <div class="one"><img src="/static/images/1.png"></div>
-                            <div class="two">{{item.projectTypeName}}</div>
+                            <span class="one" style="float:left;margin-right:20rpx;"><img src="/static/images/1.png"></span>
+                            <ul class="three-ul">
+                                <li class="three-li" v-for="(item07,index07) in item.performanceProjectTypes" :key="index07" v-if="item07.medalCount !== 0">
+                                    <span> {{item07.projectTypeName}}  &nbsp;<img style="width:16rpx;height:16rpx" src="/static/images/star.png" alt="">&nbsp; {{item07.medalCount}}</span>
+                                </li>
+                                <li class="three-li-01" style="margin-right:20rpx;" v-for="(item07,index07) in item.performanceProjectTypes" :key="index07" v-if="item07.medalCount == 0">
+                                    <span>{{item07.projectTypeName}}  </span>
+                                </li>
+                            </ul>
+
                         </li>
                         <li v-if="item.startTimeStr">
                             <div class="one"><img src="/static/images/2.png"></div>
@@ -201,11 +209,11 @@
                         </li>
                         <li  v-if="item.employers">
                             <div class="one"><img src="/static/images/4.png"></div>
-                            <div class="two">{{item.employers}}</div>
+                            <div class="two">业主：{{item.employers}}</div>
                         </li>
                         <li v-if="item.remarks">
                             <div class="one"><img src="/static/images/5.png"></div>
-                            <div class="two">{{item.remarks}}</div>
+                            <div class="two">工程量：{{item.remarks}}</div>
                         </li>
                     </ul>
                 </li>
@@ -507,18 +515,7 @@ export default {
                         let arr02 = []
                         item.nearImgList = arr02.concat(arr01)
 
-                        if(item.evaluateImgList != null){
-                            let arr = []
-                            item.evaluateImgList.map(
-                                function(item,index){
-                                    let obj = {}
-                                    obj.url = item
-                                    obj.sort = 1
-                                    arr.push(obj)
-                                }
-                            )
-                            item.nearImgList = arr.slice(0,1).concat(item.nearImgList)
-                        }
+
                         if(item.prizeList != null){
                             let arr = []
                             item.prizeList.map(
@@ -526,6 +523,18 @@ export default {
                                     let obj = {}
                                     obj.url = item
                                     obj.sort = 2
+                                    arr.push(obj)
+                                }
+                            )
+                            item.nearImgList = arr.slice(0,1).concat(item.nearImgList)
+                        }
+                        if(item.evaluateImgList != null){
+                            let arr = []
+                            item.evaluateImgList.map(
+                                function(item,index){
+                                    let obj = {}
+                                    obj.url = item
+                                    obj.sort = 1
                                     arr.push(obj)
                                 }
                             )
@@ -838,6 +847,13 @@ export default {
     justify-content: center;
     .text-ul {
         list-style: none;
+        width: 680rpx;
+        height: auto;
+        text-align: center;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap-reverse;
+        justify-content: center;
         .text-li {
             float: left;
             height: 40rpx;
@@ -846,8 +862,10 @@ export default {
             font-family: "PingFangSC-Regular";
             font-size: 24rpx;
             color: rgb(202, 146, 9);
-            display: flex;
-            align-items: center;
+            // display: flex;
+            // justify-content: space-around;
+            // flex-direction: row;
+            // align-items: center;
             margin-right: 10rpx;
             padding: 0rpx 10rpx 0 10rpx;
             margin: 6rpx;
@@ -864,9 +882,10 @@ export default {
     align-items: center;
     margin: 0 auto;
     margin-top: 48rpx;
-    padding: 24rpx 0 24rpx 0;
+    padding: 28rpx 0 28rpx 0;
     background: rgba(252, 184, 19, 0.1);
     position: relative;
+    border-radius: 8rpx;
     .one {
         font-size: 34rpx;
         color: black;
@@ -1130,6 +1149,7 @@ export default {
     height: auto;
     margin: 0 auto;
     margin-top: 96rpx;
+    margin-bottom:40rpx;
     .self {
         font-family: "PingFang-SC-Semibold";
         font-size: 34rpx;
@@ -1269,7 +1289,7 @@ export default {
     .self {
         font-family: "PingFang-SC-Semibold";
         font-size: 36rpx;
-        font-weight: 650;
+        font-weight: 550;
     }
     .one-ul {
         .one-li {
@@ -1296,9 +1316,10 @@ export default {
                         margin-bottom: 3rpx;
                         z-index: 100;
                         position: relative;
+                        overflow: hidden;
                         .img-01 {
                             width: 220rpx;
-                            height: 222rpx;
+                            // height: auto;
                             border-right: 3rpx solid #fff;
                         }
                         .img-02{
@@ -1350,9 +1371,10 @@ export default {
                         margin-bottom: 3rpx;
                         z-index: 100;
                         position: relative;
+                        overflow: hidden;
                         .img-01 {
                             width: 220rpx;
-                            height: 222rpx;
+                            // height: auto;
                             border-right: 3rpx solid #fff;
                         }
                         .img-02{
@@ -1414,6 +1436,52 @@ export default {
                         font-family: "PingFangSC-Regular";
                         position: relative;
                         top:-2rpx;
+                    }
+                }
+                .three-ul{
+                    list-style: none;
+                    width: 700rpx;
+                    height: auto;
+                    .three-li{
+                        height: 40rpx;
+                        width: auto;
+                        background-color: rgba(252, 184, 19,.2);
+                        font-family: 'PingFangSC-Regular';
+                        font-size: 24rpx;
+                        color: rgb(202, 146, 9);
+                        display: flex;
+                        justify-content: flex-start;
+                        flex-direction: column;
+                        align-items: center;
+                        margin-right: 10rpx;
+                        margin-bottom: 8rpx;
+                        float: left;
+                        overflow: hidden;
+                        border-radius: 8rpx;
+                        padding-right: 8rpx;
+                        padding-left: 8rpx;
+                        img{
+                            width: 16rpx;
+                            height: 16rpx;
+                            margin-left: 4rpx;
+                            margin-right: 4rpx;
+                        }
+                    }
+                    .three-li-01{
+                        height: 40rpx;
+                        width: auto;
+                        font-family: 'PingFangSC-Regular';
+                        font-size: 24rpx;
+                        color: black;
+                        display: flex;
+                        justify-content: space-around;
+                        flex-direction: column;
+                        align-items: center;
+                        margin-right: 10rpx;
+                        margin-bottom: 8rpx;
+                        float: left;
+                        border-radius: 8rpx;
+                        font-size: 30rpx;
                     }
                 }
             }

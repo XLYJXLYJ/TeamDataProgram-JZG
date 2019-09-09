@@ -23,20 +23,18 @@
                     <p class="one">职位</p>
                     <p class="two">{{position}}</p>
                 </li>
-                <li class="one-li" style="height:400rpx;width:95%;margin-left:40rpx;">
-                    <p class="one">在职证明</p>
-                    <ul class="two-ul">
+                <li class="one-li" style="display: flex;flex-direction:column;justify-content:space-between;width:95%;">
+                    <p class="one" style="margin-left:20rpx;">在职证明</p>
+                    <ul class="two-ul" style="margin-left:20rpx;">
                         <li class="two-li" v-for="(item,index) in imgs" :key='index'  @click="PreviewImage(item,imgs)">
                             <img :src="item" />
                         </li>
                     </ul>
-                </li>
-                <li class="one-li">
-                    <p style="color:#FCB813;margin-top:48rpx" @click="make">《建筑业优质班组共建共享计划规则》</p>
-                </li>
-                <li class="one-li">
-                    <button style="background-color:#fcb813;border:none;height: 96rpx;width: 670rpx;" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
-                    <button style="background-color:#fcb813;border:none;height: 96rpx;width: 670rpx;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
+                    <p style="color:#FCB813;margin-top:36rpx;margin-left:20rpx;margin-bottom:40rpx" @click="make">建筑业优质班组共建共享计划规则</p>
+                    <div>
+                        <button style="background-color:#fcb813;border:none;height: 96rpx;width: 670rpx;margin-bottom:40rpx" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
+                        <button style="background-color:#fcb813;border:none;height: 96rpx;width: 670rpx;margin-bottom:40rpx" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
+                    </div>
                 </li>
             </ul>
         </div>

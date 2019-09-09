@@ -19,7 +19,7 @@
                     <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-left:6rpx;position:relative;top:-5rpx!important;" src="/static/images/bottom.png" alt=""></div>
                     <mp-picker ref="cityPicker" :mode="mode" themeColor="#FCB813" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
                 </div>
-                <span style="color:#CCCCCC">|</span>
+                <span style="color:#CCCCCC;position: absolute;left: 374rpx;">|</span>
                 <div>
                     <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                         <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
@@ -40,7 +40,7 @@
                         <div class="city"  @click="showCity">{{city}}<img style="width:20.2rpx;height:16rpx;margin-top:-16rpx!important" src="/static/images/bottom.png" alt=""></div>
                         <mp-picker ref="cityPicker" :mode="mode" themeColor="#FCB813" :deepLength=deepLength :pickerValueDefault="cityPickerValueDefault" @onChange="onCityChange" @onConfirm="onCityConfirm" @onCityCancel="onCancel" :pickerValueArray="pickerCityValueArray"></mp-picker>
                     </div>
-                    <span v-if="!isTop" style="color:#CCCCCC">|</span>
+                    <span v-if="!isTop" style="color:#CCCCCC;position: absolute;left: 374rpx;">|</span>
                     <div v-if="!isTop">
                         <!-- <picker mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" :range="multiArray">
                             <div class="select picker" type="default">{{sort}} <img style="width:20.2rpx;height:16rpx;" src="/static/images/bottom.png" alt=""></div>
@@ -617,7 +617,7 @@ export default {
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
-        height: 66rpx;
+        height: 80rpx;
         background: white;
         border-bottom: 1rpx solid #e5e5e5;
         font-weight: 550;
@@ -787,6 +787,7 @@ export default {
                         width: 480rpx;
                         height: 46rpx;
                         overflow: hidden;
+                        font-weight: 100;
                         .text-li{
                             height: 40rpx;
                             width: auto;
@@ -802,6 +803,7 @@ export default {
                             margin-bottom: 8rpx;
                             float: left;
                             overflow: hidden;
+                            border-radius: 8rpx;
                             img{
                                 width: 16rpx;
                                 height: 16rpx;
@@ -813,6 +815,7 @@ export default {
                     .achievement{
                         font-family: 'PingFangSC-PingFangSC-Light';
                         font-size: 28rpx;
+                        font-weight: 100;
                     }
                 }
             }

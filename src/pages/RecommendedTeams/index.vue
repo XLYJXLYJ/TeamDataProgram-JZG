@@ -11,8 +11,8 @@
                     <p class="company-name" v-if="item.contractorPrincipal">{{item.contractorPrincipal}}</p>
                     <p class="company-name" v-if="!item.contractorPrincipal"> </p>
                     <span class="status" v-if='item.reviewStatus==3'>审核中</span>
-                    <span class="status" v-if='item.reviewStatus==2'>不通过</span>
-                    <span class="status" v-if='item.reviewStatus==1'>通过</span>
+                    <span class="status" v-if='item.reviewStatus==2'>审核不通过</span>
+                    <span class="status" v-if='item.reviewStatus==1'>审核通过</span>
                     <span class="status" v-if='item.reviewStatus==0'>未注册</span>
                     <span class="time">  {{item.recommendTimeStr}}推荐</span><br/>
                     <span class="cause0">  推荐语: {{item.recommendDesc}}</span>

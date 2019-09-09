@@ -1,5 +1,5 @@
 <template>
-        <div>
+        <div style="background:#fcfcfc;padding-top:40rpx;padding-bottom:40rpx;">
             <!--弹窗的页面-->
             <div class="modalMask" v-show="isModel" @click="hidePanel"></div>
             <div class="modalDialog" v-show="changeModel">
@@ -16,11 +16,11 @@
                 circular
                 indicator-color="rgba(255,255,255,.5)"
                 indicator-active-color="#ffffff"
-                style="height:346rpx"
+                style="height:300rpx"
             >
                 <block v-for="item in imgUrls" :key="item.id">
-                    <swiper-item>
-                        <image :src="item.img" class="slide-image" style="height:380rpx" @click="goshare(item.url,item.order)"/>
+                    <swiper-item  style="height:280rpx">
+                        <image :src="item.img" class="slide-image" @click="goshare(item.url,item.order)"/>
                         <!-- <text class="text1">{{cit}}{{item.desc}}</text>
                         <text class="text2">查看详情</text> -->
                     </swiper-item>
@@ -232,6 +232,14 @@ image {
     width: 100%;
     height: 390rpx;
     border-radius: 8rpx;
+}
+.slide-image {
+    width: 670rpx;
+    height: 282rpx;
+    border-radius: 8rpx;
+    padding-top: 5rpx;
+    // box-shadow:0px 0px 6px #FCB813;
+    box-shadow: 0px 10px 10px -10px#FCB813;
 }
 .text1{
     width: auto;
