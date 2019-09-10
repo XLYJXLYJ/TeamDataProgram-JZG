@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <goIndex title="申请加入共建共享计划"></goIndex>
+        <goIndex03 title="申请加入共建共享计划"></goIndex03>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -44,19 +44,23 @@
                 </div>
                 <div class="img-block">
                     <p class="title" style="margin-bottom:20rpx;">在职证明（请提交三种资料之一：1.公司出具的证明函、2.工作证、3.名片）</p>
-                    <mp-uploader
-                        @upLoadSuccess="upLoadSuccess"
-                        @upLoadFail="upLoadFail"
-                        @uploadDelete="uploadDelete"
-                        ref="uploader"
-                        :showTip='false'
-                        :maxLength='12'
-                        :isMaxHiddenChoose='true'
-                    ></mp-uploader>
+                         <div class="j-pic-upload">
+                            <ul>
+                                <li v-for="(src,index) in imgData" :key="src">
+                                    <img @click="previewImg(index)" :src="src" class="img" >
+                                    <img class="delete-icon" @click="deleI(index)" src="/static/images/delete.png">
+                                </li>
+                            </ul>
+
+                            <div class="j-upload-btn" @click="uploadImg1()" :style="{'width':width || '143rpx','height':height || '143rpx'}">
+                                <span class="j-upload-add">+</span>
+                            </div>
+                        </div>
+                    <div>
+                        <button class="confirm" @click="applicationSharing">提交</button>
+                    </div>
                 </div>
-                <div>
-                    <button class="confirm" @click="applicationSharing">提交</button>
-                </div>
+ 
                 <p class="title">
                     建筑业优秀班组数据库是建造工平台提供的服务，点击提交即表示同意
                     <span style="color:#fcb813;" @click="agree">《建造工用户协议》</span>
@@ -69,12 +73,12 @@
 <script>
 import { mapState,mapMutations } from 'vuex'
 import {  USER_INFO } from '../../store/modules/mutation-type'
-import goIndex from "@/components/goIndex01.vue";
+import goIndex03 from "@/components/goIndex03.vue";
 import mpUploader from "mpvue-weui/src/uploader";
 import fly from "@/services/WxApi";
 export default {
     components: {
-        goIndex,
+        goIndex03,
         mpUploader
     },
     data() {
@@ -91,7 +95,8 @@ export default {
             btn: true,
             imgMessage:[],
             dataImg:[],
-            url:''
+            url:'',
+            imgData:[]
         };
     },
     computed: {
@@ -101,22 +106,97 @@ export default {
     },
     mounted() {
         let This = this
-        This.phone = '';
         This.phone_code = '';
-        This.name = '';
-        This.company = '';
-        This.position = ''
-        This.$refs.uploader.clearFiles()
+
+
         This.imgMessage = ''
-        This.url = getCurrentPages()
-        This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
-        This.url = '/' +  This.url[0]
+        fly.post('/contractor/getMySharingPlan').then(function (res) {
+            let data = res.response
+            wx.setStorageSync('joinSharePlanStatus',data.reviewStatus)
+            if(data.reviewStatus==0){
+                This.status='未申请'
+            }
+            else if(data.reviewStatus==1){
+                This.status='审核通过'
+            }
+            else if(data.reviewStatus==2){
+                This.status='审核不通过'
+            }
+            else{
+                This.status='审核中'
+            }
+            This.phone=data.mobile || '—',
+            This.name=data.username || '—',
+            This.company=data.companyName || '—',
+            This.position=data.positionName || '—';
+            if(data.imgs){
+                This.imgData = data.imgs.split(",") || '—'
+            }
+
+        })
+        // This.url = getCurrentPages()
+        // This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
+        // This.url = '/' +  This.url[0]
     },
     destroyed() {
         let This = this
         clearTimeout(This.Timeout)
     },
     methods: {
+        chooseImg(res){
+            let This = this
+            This.imgData.push(res.all)
+        },
+        uploadImg1(){            
+            let This = this
+            wx.chooseImage({
+                count: This.max || 6,
+                sizeType: ['compressed'],
+                sourceType: ['album', 'camera'],
+                success: function (successRes) {
+                    for(let i=0;i<successRes.tempFilePaths.length;i++){
+                        wx.showLoading({
+                            title:'上传图片中'
+                        })
+                        wx.getFileSystemManager().readFile({
+                            filePath: successRes.tempFilePaths[i], //选择图片返回的相对路径
+                            encoding: 'base64', //编码格式
+                            success:(res) =>{
+                                // let img = 'data:image/png;base64,' + res.data
+                                // let img1 = res.data
+                                // This.dataImg.push(img1)
+                                // This.uploadImg()
+                                let data = {
+                                    imgs:res.data
+                                }
+                                fly.post('/uploadImg',data).then(function (res) {
+                                    This.imgData.push(res.response)
+                                })
+                                wx.hideLoading();
+                            }
+                        })
+                    }
+                }
+            })
+        },
+        deleI(index){
+            let This = this;
+            This.imgData.splice(index,1);
+            This.deleteImg(This.imgData);
+        },
+        deleteImg(res){
+            let This = this
+            This.imgData = res
+        },
+        previewImg(index){
+            let This = this;
+            let arr = []
+            arr.push(This.imgData[index])
+            wx.previewImage({
+                current:This.imgData[index],
+                urls:arr
+            });
+        },
         goTop(){
             wx.pageScrollTo({
                 scrollTop: 200,
@@ -176,7 +256,6 @@ export default {
         },
         upLoadSuccess(successRes){
             let This = this
-            console.log(successRes)
             for(let i=0;i<successRes.tempFilePaths.length;i++){
                 wx.showLoading({
                     title:'上传图片中'
@@ -274,7 +353,7 @@ export default {
                 });
                 return;
             }
-            if(This.imgMessage.length==0){
+            if(This.imgData.length==0){
                 wx.showToast({
                     title: "请上传在职证明",
                     icon: "none",
@@ -288,7 +367,7 @@ export default {
                 username:This.name,
                 companyName:This.company,
                 positionName:This.position,
-                imgs:This.imgMessage.join(",")
+                imgs:This.imgData.join(",")
             }
             fly.post('/contractor/applyJoinSharingPlan',data).then(function (res) {
                 wx.setStorageSync('token', res.response.authorization) 
@@ -335,8 +414,9 @@ export default {
             }
         }
         .img-block {
+            display:block;
             width: 100%;
-            height: 330rpx;
+            height: auto;
         }
         .title {
             font-size: 28rpx;
@@ -364,6 +444,55 @@ export default {
             border:none;
         }
     }
+
+    .j-pic-upload{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        position: relative;
+        ul{
+            height: auto;
+            width: auto;
+            li{
+                width: 144rpx;
+                height: 144rpx;
+                float: left;
+                position: relative;
+                margin-right:20rpx;
+                margin-bottom: 32rpx;
+                overflow: hidden;
+                border-radius: 12rpx;
+                .img{
+                    width:144rpx;
+                    border-radius: 12rpx;
+                }
+                .delete-icon{
+                    position: absolute;
+                    right: 0rpx;
+                    top: 0rpx;
+                    z-index: 100;
+                }
+            }
+        }
+
+        .j-upload-btn{
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12rpx;
+            margin-bottom: 32rpx;
+            .j-upload-add{
+                font-size: 80rpx;
+                font-weight: 500;
+                color:#C9C9C9;
+            }
+        }
+    }
+
+
 }
 .getCode {
     color: #fcb813;

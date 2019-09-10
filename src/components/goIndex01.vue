@@ -131,7 +131,7 @@ export default {
             align-items: center;
             justify-content: flex-start;
             position: absolute;
-            left: 7px;
+            left: 10rpx;
             display: flex;
             align-items: center;
             background: #fff;
@@ -146,8 +146,8 @@ export default {
             }
             .opt-back {
                 .back-image {
-                width: 48rpx;
-                height: 48rpx;
+                width: 22rpx;
+                height: 36rpx;
                 }
             }
             .line {

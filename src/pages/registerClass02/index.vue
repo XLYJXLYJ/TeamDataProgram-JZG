@@ -1,6 +1,6 @@
 <template>
-    <div class="register">
-        <goIndex01 title="推荐班组"></goIndex01>
+    <div class="register02">
+        <goIndex02 title="推荐班组"></goIndex02>
         <div v-if="isAlert">
             <selfAlert
                 v-bind:changeModel="ischangeModel"
@@ -71,12 +71,12 @@
 </template>
 
 <script>
-import goIndex01 from "@/components/goIndex01.vue";
+import goIndex02 from "@/components/goIndex02.vue";
 import mpPicker from "mpvue-weui/src/picker";
 import fly from "@/services/WxApi";
 export default {
     components: {
-        goIndex01,
+        goIndex02,
         mpPicker
     },
     data() {
@@ -144,6 +144,7 @@ export default {
     },
     methods: {
         goTop(){
+            console.log('进来了')
             wx.pageScrollTo({
                 scrollTop: 300,
                 duration: 200,
@@ -181,7 +182,7 @@ export default {
             let This = this
             if (!This.name) {
                 wx.showToast({
-                    title: "请输入姓名",
+                    title: "请输入班组名称",
                     icon: "none",
                     duration: 2000
                 })
@@ -203,7 +204,7 @@ export default {
                 })
                 return;
             } 
-            if (!This.sort) {
+            if (!This.projectType) {
                 wx.showToast({
                     title: "请选择班组类别",
                     icon: "none",
@@ -211,15 +212,7 @@ export default {
                 })
                 return;
             } 
-            
-            if (!This.recommendDesc) {
-                wx.showToast({
-                    title: "请输入推荐语",
-                    icon: "none",
-                    duration: 2000
-                })
-                return;
-            } 
+
             let data = {
                 username:This.name,
                 mobile:This.phone,
@@ -265,7 +258,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.register {
+.register02 {
     width: 100%;
     height: 1500rpx;
     .contain {

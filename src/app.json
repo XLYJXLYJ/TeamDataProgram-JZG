@@ -1,6 +1,8 @@
 {
-  "pages": [
-    "pages/index/main",
+  "pages": [ 
+    "pages/index/main", 
+    "pages/repeatRegister/main",
+    "pages/registerClass02/main",
     "pages/register/main",
     "pages/introdution/main",
     "pages/web/main",
@@ -17,7 +19,6 @@
     "pages/my/main",
     "pages/achievement/main",
     "pages/logs/main"
-
   ],
   "window": {
     "backgroundTextStyle": "light",

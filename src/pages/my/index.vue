@@ -228,12 +228,12 @@ export default {
             justify-content: center;
         }
         p{
-            margin-top: 38rpx;
             font-size: 34rpx;
             font-weight: bold;
             color: rgb(51, 51, 51);
             text-align: center;
             margin: 3rpx auto;
+            margin-top: 12rpx;
         }
     }
     ul{

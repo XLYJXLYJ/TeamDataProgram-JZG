@@ -5,7 +5,7 @@
             <ul class="one-ul">
                 <li class="one-li">
                     <p class="one">加入状态</p>
-                    <p class="two">{{status}}</p>
+                    <p class="two">{{status}}<span v-if="status=='审核不通过'">，原因：{{remark}}</span></p>
                 </li>
                 <li class="one-li">
                     <p class="one">手机号码</p>
@@ -23,17 +23,17 @@
                     <p class="one">职位</p>
                     <p class="two">{{position}}</p>
                 </li>
-                <li class="one-li" style="display: flex;flex-direction:column;justify-content:space-between;width:95%;">
-                    <p class="one" style="margin-left:20rpx;">在职证明</p>
-                    <ul class="two-ul" style="margin-left:20rpx;">
+                <li class="one-li" style="display: flex;flex-direction:column;justify-content:space-between;width:100%;">
+                    <p class="one" style="margin-left:40rpx;">在职证明</p>
+                    <ul class="two-ul" style="margin-left:40rpx;">
                         <li class="two-li" v-for="(item,index) in imgs" :key='index'  @click="PreviewImage(item,imgs)">
                             <img :src="item" />
                         </li>
                     </ul>
-                    <p style="color:#FCB813;margin-top:36rpx;margin-left:20rpx;margin-bottom:40rpx" @click="make">建筑业优质班组共建共享计划规则</p>
+                    <p style="color:#FCB813;margin-top:36rpx;margin-left:40rpx;margin-bottom:40rpx" @click="make">建筑业优质班组共建共享计划规则</p>
                     <div>
-                        <button style="background-color:#fcb813;border:none;height: 96rpx;width: 670rpx;margin-bottom:40rpx" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
-                        <button style="background-color:#fcb813;border:none;height: 96rpx;width: 670rpx;margin-bottom:40rpx" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
+                        <button style="background-color:#fcb813;border:none;height:96rpx;width:670rpx;margin-bottom:40rpx;margin-top:56rpx;" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
+                        <button style="background-color:#fcb813;border:none;height:96rpx;width:670rpx;margin-bottom:40rpx;margin-top:56rpx;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
                     </div>
                 </li>
             </ul>
@@ -52,7 +52,8 @@ export default {
             name: "",
             company: "",
             position: "",
-            imgs:''
+            imgs:'',
+            remark:''
         };
     },
     onShow() {
@@ -72,11 +73,14 @@ export default {
             else{
                 This.status='审核中'
             }
+            This.remark = data.remark
             This.phone=data.mobile || '—',
             This.name=data.username || '—',
             This.company=data.companyName || '—',
-            This.position=data.positionName || '—',
-            This.imgs=data.imgs.split(",") || '—'
+            This.position=data.positionName || '—';
+            if(data.imgs){
+                This.imgs=data.imgs.split(",") || '—'
+            }
         })
     },
     methods: {
@@ -88,7 +92,7 @@ export default {
         },
         goshare(){
             wx.redirectTo({
-                url:'/pages/register/main'
+                url:'/pages/repeatRegister/main'
             })
         },
         make(){

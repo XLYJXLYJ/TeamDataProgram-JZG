@@ -21,16 +21,21 @@
                 <img @click="headPreviewImage" :src="headimg" />
             </div>
             <div class="title">{{organizationName}}</div>
+            <!-- <p>{{ContractorProjectType}}</p> -->
             <div class="tag">
                 <ul class="text-ul">
-                    <li v-for="(item,index) in ContractorProjectType" :key="index" class="text-li">
-                        <span v-if="item.medalNum"> {{item.projectTypeName}}  &nbsp;<img style="width:16rpx;height:16rpx" src="/static/images/star.png" alt="">&nbsp; {{item.medalNum}}</span>
+                    <li v-for="(item,index) in ContractorProjectType" :key="index" class="text-li" v-if="item.medalNum">
+                        <span> {{item.projectTypeName}}  &nbsp;<img style="width:16rpx;height:16rpx" src="/static/images/star.png" alt="">&nbsp; {{item.medalNum}}</span>
                     </li>
+                    <!-- <li v-for="(item,index) in ContractorProjectType" :key="index" class="text-li">
+                        <span v-if="!item.medalNum"> {{item.projectTypeName}}</span>
+                    </li> -->
                 </ul>
             </div>
-            <div class="detail1" v-if="recommendUserName">
+
+            <div class="detail1" v-if="recommendUserName!==null">
                 <p class="one">{{recommendDesc}}</p>
-                <p class="two">推荐人：{{recommendUserName}}  {{recommendUserPosition}}</p>
+                <p class="two">推荐人：{{recommendUserName}}<span style="opacity: 0;">. .</span>{{recommendUserPosition}}</p>
                 <p class="three">{{recommendCompany}}</p>
                 <img src="/static/images/good.png" alt="">
             </div>
@@ -88,7 +93,7 @@
             </div>
             <div class="work">
                 <ul>
-                    <title v-if="qtotal" style="font-weight:650">施工报价<span style="font-weight:650">({{qtotal}} 项)</span> </title>
+                    <title v-if="qtotal" style="font-weight:650">施工报价<span style="font-weight:650">（ {{qtotal}} 项 ）</span> </title>
                     <li v-for="(item,index) in subModels" :key="index">
                         <p>{{item.name}}</p>
                         <ul class="two-ul">
@@ -102,7 +107,7 @@
                 </ul>
             </div>
             <div class="equip" v-if="equipmentCount">
-                <p class="self"><span style="font-weight:650">自有设备( {{eqList.length}} 种)</span></p>
+                <p class="self"><span style="font-weight:650">自有设备（ {{eqList.length}} 种 ）</span></p>
                 <ul class="one-ul">
                     <li class="one-li" v-for="(item,index) in eqList" :key="index">
                         <div class="machine">{{item.remark}}
@@ -124,7 +129,7 @@
                             </ul>
                             <div class="corner" v-if="item.imgList.length>3">
                                 <div class="img-corner"><img src="/static/images/more.png"> </div>
-                                <span class="number">{{item.quantity}}</span>
+                                <span class="number">{{item.author}}</span>
                             </div>
                         </div>
 
@@ -362,7 +367,7 @@ export default {
                     if(item.imgList.length == 0){
                         item.imgList = ''
                     }
-                    item.quantity = item.imgList.length
+                    item.author = item.imgList.length
                 }
             )
             This.quantity = resData.eqList.quantity
@@ -1182,6 +1187,7 @@ export default {
             .img-contain-01 {
                 position: relative;
                 height: 236rpx;
+                margin-bottom: 22rpx;
                 .two-ul{
                     display:inline;
                     white-space: nowrap;
@@ -1205,7 +1211,7 @@ export default {
                 .corner {
                     position: absolute;
                     right: 8rpx;
-                    bottom: 13rpx;
+                    bottom: 14rpx;
                     background: rgba(0, 0, 0, 0.4);
                     padding: 0rpx 10rpx 0rpx 10rpx;
                     z-index: 100;

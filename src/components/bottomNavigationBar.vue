@@ -188,9 +188,35 @@ export default {
                 This.isModel = true
                 This.path = '/pages/login/main'
             }else{
-                wx.redirectTo({
-                    url:'/pages/registerClass/main'
-                })
+                if(wx.getStorageSync('joinSharePlanStatus')==1){
+                    wx.redirectTo({
+                        url:'/pages/registerClass/main'
+                    })
+                }else if(wx.getStorageSync('joinSharePlanStatus')==0){
+                    wx.showToast({
+                        title: "未加入共建共享",
+                        icon: "none",
+                        duration: 1000
+                    });
+                }else if(wx.getStorageSync('joinSharePlanStatus')==2){
+                    wx.showToast({
+                        title: "共建共享未审核通过",
+                        icon: "none",
+                        duration: 1000
+                    });
+                }else if(wx.getStorageSync('joinSharePlanStatus')==3){
+                    wx.showToast({
+                        title: "共建共享审核中",
+                        icon: "none",
+                        duration: 1000
+                    });
+                }else{
+                    wx.showToast({
+                        title: "未登录，请先登录",
+                        icon: "none",
+                        duration: 1000
+                    });  
+                }
             }
         }
     }

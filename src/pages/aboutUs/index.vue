@@ -86,9 +86,10 @@ export default {
         }
     }
     .about-bottom {
-        position: fixed;
-        bottom: 40rpx;
+        position: relative;
+        top:96rpx;
         width: 100%;
+        margin-bottom: 40rpx;
         p {
             display: flex;
             justify-content: center;

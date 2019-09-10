@@ -1,6 +1,6 @@
 <template>
     <div class="recommend">
-        <goBackNav url='/pages/index/main'></goBackNav>
+        <goBackNav url='/pages/index/main' title='我推荐的班组'></goBackNav>
         <div class="no-recommend" v-if="!list.length">
           <img src="/static/images/none.png">
         </div>
@@ -10,10 +10,10 @@
                 <li class="card-li" v-for="(item,index) in list" :key="index">
                     <p class="company-name" v-if="item.contractorPrincipal">{{item.contractorPrincipal}}</p>
                     <p class="company-name" v-if="!item.contractorPrincipal"> </p>
-                    <span class="status" v-if='item.reviewStatus==3'>审核中</span>
-                    <span class="status" v-if='item.reviewStatus==2'>审核不通过</span>
-                    <span class="status" v-if='item.reviewStatus==1'>审核通过</span>
-                    <span class="status" v-if='item.reviewStatus==0'>未注册</span>
+                    <span class="status" v-if='item.reviewStatus==3'>审核中<span style="opacity: 0;">. .</span></span>
+                    <span class="status" v-if='item.reviewStatus==2'>审核不通过<span style="opacity: 0;">. .</span></span>
+                    <span class="status" v-if='item.reviewStatus==1'>审核通过<span style="opacity: 0;">. .</span></span>
+                    <span class="status" v-if='item.reviewStatus==0'>未注册<span style="opacity: 0;">. .</span></span>
                     <span class="time">  {{item.recommendTimeStr}}推荐</span><br/>
                     <span class="cause0">  推荐语: {{item.recommendDesc}}</span>
                     <p class="cause" v-if='item.reviewStatus==2'>原因：{{item.remark}}</p>
@@ -69,12 +69,17 @@ export default {
             })
             fly.post('/contractor/getMyRecommendContractor').then(function (res) {
                 This.list = res.response
+                This.list.map(
+                    function(item,index){
+                        item.recommendTimeStr = item.recommendTimeStr.trim()
+                    }
+                )
                 wx.hideLoading();
             }) 
         },
         goReClass(){
             wx.redirectTo({
-                url:'/pages/registerClass/main'
+                url:'/pages/registerClass02/main'
             });
         },
         goClass(index){
@@ -110,13 +115,13 @@ export default {
         font-size: 34rpx;
         background: #FCB813;
         color: black;
-        font-weight: 550;
+        font-weight: 650;
         border: none;
         border-radius: 8rpx;
         flex:0;
         margin: 80rpx auto;
         text-align: center;
-        padding: 16rpx 0;
+        padding: 20rpx 0;
     }
     .shareButton::after {
         border: none;
