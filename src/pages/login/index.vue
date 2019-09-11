@@ -25,8 +25,8 @@
                             autocomplete="off"
                             placeholder-style="color:#ccc;"
                         />
-                        <!-- <p @click="GetCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p> -->
-                        <p @click="GetCode" class="getCodeDisabled">{{btnTxt}}</p>
+                        <p @click="GetCode" :class="{getCode:btn, getCodeDisabled:!btn}">{{btnTxt}}</p>
+                        <!-- <p @click="GetCode" class="getCodeDisabled">{{btnTxt}}</p> -->
                     </div>
                 </div>
                 <div>
@@ -142,7 +142,7 @@ export default {
                 wx.setStorageSync('nickName', res.response.nickName) 
                 wx.setStorageSync('username', res.response.username) 
                 // This.test(res.response)
-
+                wx.setStorageSync('img',res.response.headImg)
                 wx.showToast({
                     title: "登录成功",
                     icon: "none",
@@ -229,7 +229,7 @@ export default {
     }
 }
 .getCode {
-    color: black;
+    color: #fcb813;
 }
 .getCodeDisabled {
     color: #CCCCCC;

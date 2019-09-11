@@ -212,7 +212,14 @@ export default {
                 })
                 return;
             } 
-
+            if (!This.recommendDesc) {
+                wx.showToast({
+                    title: "请输入推荐评语",
+                    icon: "none",
+                    duration: 2000
+                })
+                return;
+            }
             let data = {
                 username:This.name,
                 mobile:This.phone,

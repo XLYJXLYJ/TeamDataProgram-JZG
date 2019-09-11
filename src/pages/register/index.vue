@@ -107,7 +107,7 @@ export default {
         This.company = '';
         This.position = ''
         This.$refs.uploader.clearFiles()
-        This.imgMessage = ''
+        This.imgMessage = []
         This.url = getCurrentPages()
         This.url = This.url[0].__displayReporter.showReferpagepath.split('.')
         This.url = '/' +  This.url[0]
@@ -194,9 +194,9 @@ export default {
                         }
                         fly.post('/uploadImg',data).then(function (res) {
                             This.imgMessage.push(res.response)
-                            wx.hideLoading();
-                        })
 
+                        })
+                    wx.hideLoading();
                     }
                 })
             }

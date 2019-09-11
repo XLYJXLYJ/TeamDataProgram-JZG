@@ -214,7 +214,7 @@ export default {
             
             if (!This.recommendDesc) {
                 wx.showToast({
-                    title: "请输入推荐语",
+                    title: "请输入推荐评语",
                     icon: "none",
                     duration: 2000
                 })

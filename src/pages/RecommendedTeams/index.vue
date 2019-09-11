@@ -14,8 +14,8 @@
                     <span class="status" v-if='item.reviewStatus==2'>审核不通过<span style="opacity: 0;">. .</span></span>
                     <span class="status" v-if='item.reviewStatus==1'>审核通过<span style="opacity: 0;">. .</span></span>
                     <span class="status" v-if='item.reviewStatus==0'>未注册<span style="opacity: 0;">. .</span></span>
-                    <span class="time">  {{item.recommendTimeStr}}推荐</span><br/>
-                    <span class="cause0">  推荐语: {{item.recommendDesc}}</span>
+                    <span class="time"> {{item.recommendTimeStr}}推荐</span><br/>
+                    <span class="cause0"> 推荐语: {{item.recommendDesc}}</span>
                     <p class="cause" v-if='item.reviewStatus==2'>原因：{{item.remark}}</p>
                 </li>
 

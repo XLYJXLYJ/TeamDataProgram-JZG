@@ -370,7 +370,7 @@ export default {
                 imgs:This.imgData.join(",")
             }
             fly.post('/contractor/applyJoinSharingPlan',data).then(function (res) {
-                wx.setStorageSync('token', res.response.authorization) 
+                // wx.setStorageSync('token', res.response.authorization) 
                 if(res.response.gender == 1 ){
                     wx.setStorageSync('gender', '男') 
                 }else{

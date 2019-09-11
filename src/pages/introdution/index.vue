@@ -1200,9 +1200,13 @@ export default {
                         margin-bottom: 3rpx;
                         z-index: 100;
                         position: relative;
+                        overflow: hidden;
                         img {
-                            width: 220rpx;
-                            height: 222rpx;
+                            // width: 220rpx;
+                            // height: 222rpx;
+                            position: absolute;
+                            left: -40%;
+                            top: -40%;
                             border-right: 3rpx solid #fff;
                         }
                     }
@@ -1324,8 +1328,11 @@ export default {
                         position: relative;
                         overflow: hidden;
                         .img-01 {
-                            width: 220rpx;
-                            // height: auto;
+                            min-width: 100rpx;
+                            min-height: 200rpx;
+                            position: absolute;
+                            left:-40%;
+                            top: -40%;
                             border-right: 3rpx solid #fff;
                         }
                         .img-02{
@@ -1379,8 +1386,11 @@ export default {
                         position: relative;
                         overflow: hidden;
                         .img-01 {
-                            width: 220rpx;
-                            // height: auto;
+                            min-width: 100rpx;
+                            min-height: 100rpx;
+                            position: absolute;
+                            left:-40%;
+                            top: -40%;
                             border-right: 3rpx solid #fff;
                         }
                         .img-02{

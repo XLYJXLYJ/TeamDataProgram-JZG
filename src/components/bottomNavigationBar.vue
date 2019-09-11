@@ -194,7 +194,7 @@ export default {
                     })
                 }else if(wx.getStorageSync('joinSharePlanStatus')==0){
                     wx.showToast({
-                        title: "未加入共建共享",
+                        title: "加入共建共享计划后方可推荐",
                         icon: "none",
                         duration: 1000
                     });
