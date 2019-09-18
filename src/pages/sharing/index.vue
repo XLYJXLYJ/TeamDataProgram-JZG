@@ -32,8 +32,8 @@
                     </ul>
                     <p style="color:#FCB813;margin-top:36rpx;margin-left:40rpx;margin-bottom:40rpx" @click="make">建筑业优质班组共建共享计划规则</p>
                     <div>
-                        <button style="background-color:#fcb813;border:none;height:96rpx;width:670rpx;margin-bottom:40rpx;margin-top:56rpx;" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
-                        <button style="background-color:#fcb813;border:none;height:96rpx;width:670rpx;margin-bottom:40rpx;margin-top:56rpx;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
+                        <button style="background-color:#fcb813;border:none;height:96rpx;width:670rpx;margin-bottom:40rpx;margin-top:56rpx;display:flex;align-items:center;justify-content:center;font-weight:650;" v-if="status=='审核不通过'" @click="goshare">再次申请加入</button>
+                        <button style="background-color:#fcb813;border:none;height:96rpx;width:670rpx;margin-bottom:40rpx;margin-top:56rpx;display:flex;align-items:center;justify-content:center;font-weight:650;" v-if="status=='未申请'" @click="goshare">申请加入共建共享</button>
                     </div>
                 </li>
             </ul>

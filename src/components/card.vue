@@ -548,6 +548,7 @@ export default {
         height: 96rpx;
         position: absolute;
         bottom: 0rpx;
+        border-top: 1px solid #e5e5e5;
     }
     button {
         width: 100%;
@@ -561,8 +562,6 @@ export default {
         align-items: center;
         background: #fff;
         border-bottom: none;
-        border-top: 1px solid #e5e5e5;
-
     }
     button::after {
         border: none;

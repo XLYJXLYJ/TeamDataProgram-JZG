@@ -90,8 +90,8 @@ export default {
             // wx.navigateBack({ 
             //     delta: 2, 
             // });
-            wx.redirectTo({
-                url: '/pages/index/main'
+            wx.reLaunch({
+                url: '/pages/index/main?id=666'
             });
         },
         homeClick() {

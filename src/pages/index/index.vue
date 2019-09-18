@@ -61,7 +61,11 @@ export default {
         };
     },
     onShareAppMessage: (res) => {
-        console.log(res)
+        console.log(res.id)
+
+    },
+    onLoad(options){
+        let This = this
     },
     methods:{
         indexFuc(data){

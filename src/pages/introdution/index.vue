@@ -13,6 +13,17 @@
             </div>
         </div>
 
+        <div v-if="isAlert1">
+            <!--弹窗的页面-->
+            <div class="modalMask1" v-show="isModel1" @click="hidePanel1"></div>
+            <div class="modalDialog1" v-show="changeModel1">
+                <div class="modalContent1">
+                    <p class="contentTip1">优质班组数据库请求获取您的微信昵称、头像等公开信息，以便继续使用建筑业优质班组数据库</p>
+                    <p class="alert1" @click="closeAlert"><button open-type="getUserInfo" @getuserinfo="getUserInfo">好的</button></p> 
+                </div>
+            </div>
+        </div>
+
         <goIndex :title='title'></goIndex>
 
 
@@ -52,8 +63,6 @@
                 <div class="num" v-if="isIos">
                     <span style="display:flex;justify-content: center;align-items: center;" v-if="isIos">{{projectPerformanceCount}}</span>
                 </div>
-                               
-
             </div>
         </div>
 
@@ -70,7 +79,6 @@
                 </div>
             </div>
         </div>
-
 
         <div v-if="isTab">
             <div class="basic">
@@ -224,12 +232,11 @@
                 </li>
             </ul>
         </div>
-
     </div>
 </template>
 
 <script>
-import goIndex from "@/components/goIndex.vue";
+import goIndex from "@/components/goIndex01.vue";
 import selfAlert from "@/components/alert.vue";
 import fly from "@/services/WxApi";
 export default {
@@ -261,6 +268,9 @@ export default {
             isAlert: false,
             isModel:'',
             changeModel:'',
+            isAlert1: false,
+            isModel1:'',
+            changeModel1:'',
             isTop:false,
             statusBarHeight: "", // 状态栏高度
             titleBarHeight: "", // 标题栏高度
@@ -283,13 +293,6 @@ export default {
     },
     onPageScroll: function(res) {
         let This = this
-        if (res.scrollTop > 350) {
-            
-
-        } else {
-           
-        }
-
         let query = wx.createSelectorQuery()
         query.select('#tab').boundingClientRect((rect) => {
             let top = rect.top
@@ -302,9 +305,6 @@ export default {
             }
             // 这里是关键
         }).exec()
-
-
-
     },
     onLoad(options){
         let This = this
@@ -562,16 +562,6 @@ export default {
             )
         })
     },
-    onShareAppMessage: (res) => {
-        let that =this;
-        wx.getShareInfo({
-            success: (res)=> { 
-                console.log(res)
-            },
-            fail: function (res) { console.log(res) },
-            complete: function (res) { console.log(res) }
-        })
-    },
     onShareAppMessage: function () {
 
     },
@@ -587,12 +577,10 @@ export default {
     //         contractorId:This.contractorId || wx.getStorageSync('contractorId')
     //     }
     //     fly.post('/contractor/getProjectPerformanceList',data).then(function (res) {
-    //         let resData = res.response.list[0]
-            
+    //         let resData = res.response.list[0]  
     //     })
     //     fly.post('/contractor/getHQContractorDetail',data).then(function (res) {
     //         let resData = res.response
-
     //     })
     // },
 
@@ -672,59 +660,93 @@ export default {
         seePhone() {
             let This = this
             // This.$emit("alertframe", true);
-            if(This.phone!='查看联系方式'){
-                wx.makePhoneCall({
-                    phoneNumber: This.phone
-                })
-            }else{
-                This.isAlert = true
-                This.isModel = true
-                This.changeModel = true
-                let data = {
-                    contractorId:This.contractorId || wx.getStorageSync('contractorId')
-                }
-                fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
-                    This.val = res.response
-                    if(This.val.alertType==1){
-                        This.titleAlert = '查看联系方式'
-                        This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您剩余 '+This.val.remainCount+' 次班组联系方式查看机会。'
-                        This.text = '好的'
-                    }else if(This.val.alertType==2){
-                        This.titleAlert = '查看联系方式'
-                        This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，请加入共建共享计划获得更多权限，成功通过审核，可增加 ' +  This.val.joinAddCount +' 次的班组查看权限。'
-                        This.text = '立即加入共建共享计划'
-                    }else{
-                        This.titleAlert = '获取更多班组联系方式'
-                        This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您可推荐新班组获得更多的权限。每成功推荐1个新班组，可增加 ' + This.val.joinAddCount +' 次的班组查看权限'
-                        This.text = '推荐班组'
+            let token = wx.getStorageSync('token')
+            if(token){
+                if(This.phone!='查看联系方式'){
+                    wx.makePhoneCall({
+                        phoneNumber: This.phone
+                    })
+                }else{
+                    This.isAlert = true
+                    This.isModel = true
+                    This.changeModel = true
+                    let data = {
+                        contractorId:This.contractorId || wx.getStorageSync('contractorId')
                     }
+                    fly.post('/contractor/viewHQContractorContact',data).then(function (res) {
+                        This.val = res.response
+                        if(This.val.alertType==1){
+                            This.titleAlert = '查看联系方式'
+                            This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您剩余 '+This.val.remainCount+' 次班组联系方式查看机会。'
+                            This.text = '好的'
+                        }else if(This.val.alertType==2){
+                            This.titleAlert = '查看联系方式'
+                            This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，请加入共建共享计划获得更多权限，成功通过审核，可增加 ' +  This.val.joinAddCount +' 次的班组查看权限。'
+                            This.text = '立即加入共建共享计划'
+                        }else{
+                            This.titleAlert = '获取更多班组联系方式'
+                            This.content = '您已查看 '+This.val.viewCount+' 个班组的联系方式，您可推荐新班组获得更多的权限。每成功推荐1个新班组，可增加 ' + This.val.joinAddCount +' 次的班组查看权限'
+                            This.text = '推荐班组'
+                        }
 
-                    if(res.response.mobile == null){
-                        This.phone = '查看联系方式'
-                    }else{
-                        This.phone = res.response.mobile
-                    }
-                })
-            }
+                        if(res.response.mobile == null){
+                            This.phone = '查看联系方式'
+                        }else{
+                            This.phone = res.response.mobile
+                        }
+                    })
+                }
+            }else{
+                console.log('6666666')
+                This.isAlert1 = true
+                This.changeModel1 = true
+                This.isModel1 = true
+            }    
         },
         getUserInfo (e) {
+            let This = this
             let userInfo = JSON.parse(e.mp.detail.rawData)
-            let data = {
-                nickName:userInfo.nickName,
-                headImg:userInfo.avatarUrl,
-                gender:userInfo.gender,
-                areaName:[userInfo.country,userInfo.province,userInfo.city]
-            }
-            fly.post('/contractor/weChatAuth',data).then(function (res) {
-                wx.setStorageSync('token', res.response.authorization) 
-                if(res.response.gender == 1 ){
-                    wx.setStorageSync('gender', '男') 
-                }else{
-                    wx.setStorageSync('gender', '女') 
+             This.isAlert1 = false
+            This.changeModel1 = false
+            This.isModel1 = false
+            wx.login({
+                success (res) {
+                    if (res.code) {
+                    //发起网络请求
+                        let data = {
+                            nickName:userInfo.nickName,
+                            code:res.code,
+                            headImg:userInfo.avatarUrl,
+                            gender:userInfo.gender,
+                            areaName:[userInfo.country,userInfo.province,userInfo.city]
+                        }
+                        fly.post('/contractor/weChatAuth',data).then(function (res) {
+                            if(res.response.headImg == null){
+                                wx.setStorageSync('img','/static/images/user.png')
+                            }else{
+                                wx.setStorageSync('img',res.response.headImg)
+                            }
+                            
+                            wx.setStorageSync('joinSharePlanStatus',res.response.joinSharePlanStatus)
+                            wx.setStorageSync('token', res.response.authorization) 
+                            if(res.response.gender == 1 ){
+                                wx.setStorageSync('gender', '男') 
+                            }else{
+                                wx.setStorageSync('gender', '女') 
+                            }
+                            wx.setStorageSync('mobile', res.response.mobile) 
+                            wx.setStorageSync('nickName', res.response.nickName) 
+                            wx.setStorageSync('username', res.response.username) 
+                            wx.reLaunch({
+                                url:'/pages/introdution/main'
+                            })
+                            // This.test(res.response)
+                            // This.$emit('info',res.response)
+                        })
+                    } else {
+                        console.log('登录失败！' + res.errMsg)
+                    }
                 }
-                wx.setStorageSync('mobile', res.response.mobile) 
-                wx.setStorageSync('nickName', res.response.nickName) 
-                wx.setStorageSync('username', res.response.username) 
             })
         },
         hidePanel: function(event) {
@@ -733,6 +755,13 @@ export default {
             This.changeModel = !This.changeModel;
             This.isModel = !This.isModel;
             this.$emit("func", false);
+        },
+        hidePanel1: function(event) {
+            //这句是说如果我们点击到了id为myPanel以外的区域
+            let This = this
+            This.isAlert1 = false
+            This.changeModel1 = false;
+            This.isModel1 = false;
         },
         goWhere(){
             let This = this
@@ -758,6 +787,78 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.modalMask1 {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.5;
+    overflow: hidden;
+    z-index: 9000;
+    color: #fff;
+}
+.modalDialog1 {
+    box-sizing: border-box;
+    width: 590rpx;
+    height: 332rpx;
+    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    z-index: 9999;
+    background: #fff;
+    margin: -180rpx 95rpx;
+    border-radius: 8rpx;
+}
+.modalContent1 {
+    box-sizing: border-box;
+    display: flex;
+    font-size: 32rpx;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    img {
+        width: 590rpx;
+        height: 340rpx;
+        margin-bottom: 40rpx;
+    }
+    .contentTip1 {
+        font-size: 34rpx;
+        color: black;
+        font-family: "PingFangSC-Regular";
+        display: flex;
+        justify-content: center;
+        width: 514rpx;
+        padding-top: 42rpx;
+    }
+    .alert1{
+        width:100%;
+        height: 96rpx;
+        position: absolute;
+        bottom: 0rpx;
+        border-top: 1px solid #e5e5e5;
+    }
+    button {
+        width: 100%;
+        height: 96rpx;
+        font-size: 34rpx;
+        color: #FCB813;
+        font-family: "PingFangSC-Medium";
+        font-weight: 650;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        border-bottom: none;
+    }
+    button::after {
+        border: none;
+    }
+}
+
+
 .modalMask {
     width: 100%;
     height: 100%;

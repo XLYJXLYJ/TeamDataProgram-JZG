@@ -272,23 +272,26 @@ export default {
     .alert{
         width:100%;
         height: 96rpx;
+        position: absolute;
+        bottom: 0rpx;
+        border-top: 1px solid #e5e5e5;
     }
     button {
         width: 100%;
         height: 96rpx;
-        margin-top: 40rpx;
         font-size: 34rpx;
         color: #FCB813;
         font-family: "PingFangSC-Medium";
-        font-weight: 550;
+        font-weight: 650;
         display: flex;
         justify-content: center;
         align-items: center;
         background: #fff;
         border-bottom: none;
-        border-top: 1px solid #e5e5e5;
     }
-
+    button::after {
+        border: none;
+    }
 }
 .tabBar-box {
     position: fixed;
